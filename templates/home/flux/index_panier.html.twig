@@ -1,0 +1,74 @@
+<div class="zonecom">
+    <div>
+        {% if flux.user.avatar %}
+            <img src="{{ vich_uploader_asset(flux.user.avatar) }}" alt="Image" class="img-circle" width="40" height="40">  
+        {% endif %}
+        {% if panier.recoltes is not empty or panier.plants is not empty %}
+            <a class="nom_user" href="{{ path('app_show_garden', {nickname: flux.user.nickname}) }}">{{ flux.user.nickname }}</a>
+        {% endif %}
+        <span class="dateheure">
+        {% if  panier.updatedat == panier.createdat %}
+            le {{ panier.updatedat|date("d/m/y") }}
+        {% else %} 
+            modifié le {{ panier.updatedat|date("d/m/y") }} 
+        {% endif %}
+        </span>
+    </div>
+</div>  
+                {% if panier.recoltes is not empty %}
+                        <table class="table table-hover table-striped table_jardin table_ajout">
+                            <thead>
+                            <tr>
+                                <th>Espèce</th>
+                                <th class="colorrose">Récolte</th>
+                                <th>Méthode</th>
+                                <th>Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for rec in panier.recoltes %}
+                                <tr>
+                                    <td style="text-align: left"><img src="{{ asset('images/icon/' ~ rec.consommable.iconlien) }}" alt="Image" width="20" height="20">&nbsp;{{ rec.consommable.description }}</td>
+                                    <td style="text-align: center">{{ rec.quantity }}<small><i>kg</i></small></td>
+                                    <td style="text-align: center"><small><i>{{ rec.methode.nom }} </i></small></td>
+                                    <td style="text-align: center"><small><i>{{ rec.createdat|date("d/m/Y")}}</i></small></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                {% endif %}
+                {% if panier.plants is not empty %}
+                    <table class="table table-hover table-striped table_jardin table_ajout">
+                        <thead>
+                            <tr>
+                                <th>Espèce</th>
+                                <th class="colorvert">Plantation</th>
+                                <th><strong>Etat</strong></th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for pl in panier.plants %}
+                            <tr>
+                                <td style="text-align: left"><img src="{{ asset('images/icon/' ~ pl.consommable.iconlien) }}" alt="Image" width="20" height="20">&nbsp;{{ pl.consommable.description }}</td>
+                                <td style="text-align: center"> {{ pl.quantite }}</td>
+                                <td style="text-align: center"> <i><small>{{ pl.state.nom }}</small></i></td>
+                                <td style="text-align: center"><small><i>{{ pl.createdat|date("d/m/Y")}}</small></i></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+                {% set lUser = 0 %}
+                {% for l in flux.likes %}
+                    {% if l.user == app.user %}
+                        {% set lUser = 1 %}
+                    {% endif %}
+                {% endfor %}
+                {{ include('home/flux/index_like.html.twig', { 'commentaires': flux.commentaires , 'likes': flux.likes, 'flux_id' : flux.id }) }}
+                <div class="zonecom" >
+                    <span class="likecolor nbrlikes-{{flux.id}}">
+                        <small>{% trans with {'likes': flux.likes.count} %}number_of_likes{% endtrans %}</small>
+                    </span>
+                </div>
+        {{ include('home/flux/index_com.html.twig', { 'commentaires': flux.commentaires , 'likes': flux.likes, 'flux_id' : flux.id }) }}

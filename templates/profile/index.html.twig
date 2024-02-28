@@ -1,0 +1,133 @@
+{# @var user \App\Entity\User #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+
+    <div class="wrapper">
+        {{ form_start(form) }}
+
+            <div class="row cadre_blanc_no_border" style="text-align:center;">
+                <h1><img src="{{ vich_uploader_asset(user.avatar) }}" alt="Image" class="img-circle" width="100" height="100"></h1>
+                <a href="#monavatar" data-toggle="collapse" aria-expanded="false" aria-controls="MonCollapse">
+                    <small><i>Modifier mon avatar</i></small>
+                </a>
+            
+                <section id="monavatar" class="collapse">
+                    <small>
+                        {{ form_label(form.avatar) }}
+                        {{ form_widget(form.avatar) }}
+                        {{ form_errors(form.avatar) }}
+                    </small>
+                </section>
+            </div>
+
+        <div>
+        <br/>
+        <div class="row cadre_blanc">Mail : {{ user.email }}</div>
+        <div class="row cadre_blanc">
+            <a href="#monmdp" data-toggle="collapse" aria-expanded="false" aria-controls="MonCollapse">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                </svg>
+            </a>
+            Modifier le mot de passe
+            <section id="monmdp" class="collapse">
+                <br/>
+                {{ form_label(form.newPlainPassword.first) }}
+                {{ form_widget(form.newPlainPassword.first) }}
+                <br/>
+                {{ form_label(form.newPlainPassword.second) }}
+                {{ form_widget(form.newPlainPassword.second) }}
+            </section>
+            {{ form_errors(form.newPlainPassword) }}
+        </div>
+        <div class="row cadre_blanc">
+            <a href="#monnickname" data-toggle="collapse" aria-expanded="false" aria-controls="MonCollapse">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                </svg>
+            </a>
+            Pseudo : {{ user.nickname }}
+            <!-- le contenu masqué -->
+            <section id="monnickname" class="collapse">
+                {{ form_label(form.nickname) }}
+                {{ form_widget(form.nickname) }}
+                {{ form_errors(form.nickname) }}
+            </section>
+        </div>
+        <div class="row cadre_blanc">
+            <a href="#monage" data-toggle="collapse" aria-expanded="false" aria-controls="MonCollapse">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                </svg>
+            </a>
+            Age : {{ user.age | default('n/a') }}
+            <section id="monage" class="collapse">
+                {{ form_label(form.age) }}
+                {{ form_widget(form.age) }}
+                {{ form_errors(form.age) }}
+            </section>
+        </div>
+        <div class="row cadre_blanc">
+            <a href="#mazone" data-toggle="collapse" aria-expanded="false" aria-controls="MonCollapse">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                </svg>
+            </a>
+            Département : {{ user.administrativeArea ? user.administrativeArea.name : 'n/a' }}
+            <section id="mazone" class="collapse">
+                {{ form_label(form.administrativeArea) }}
+                {{ form_widget(form.administrativeArea) }}
+                {{ form_errors(form.administrativeArea) }}
+            </section>
+        </div>
+        <div class="row cadre_blanc">
+            <a href="#masurface" data-toggle="collapse" aria-expanded="false" aria-controls="MonCollapse">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                </svg>
+            </a>
+            Surface : {{ user.surface ? user.surface.nom : 'n/a' }}
+            <section id="masurface" class="collapse">
+                {{ form_label(form.surface) }}
+                {{ form_widget(form.surface) }}
+                {{ form_errors(form.surface) }}
+            </section>
+        </div>
+        <div class="row cadre_blanc">
+            <a href="#montel" data-toggle="collapse" aria-expanded="false" aria-controls="MonCollapse">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                </svg>
+            </a>
+            Téléphone : {{ user.telephone | default('n/a') }}
+            <section id="montel" class="collapse">
+                {{ form_label(form.telephone) }}
+                {{ form_widget(form.telephone) }}
+                {{ form_errors(form.telephone) }}
+            </section>
+        </div>
+        <div class="row cadre_blanc">
+                {{ form_label(form.actualPlainPassword) }}
+                {{ form_widget(form.actualPlainPassword) }}
+                {{ form_errors(form.actualPlainPassword)  }}
+        </div>
+
+        <div class="row cadre_transparent">
+            {{ form_widget(form._token) }}
+            <div class="row cadre_post">
+                {{ form_label(form.submit, "Enregistrer") }}
+                {{ form_widget(form.submit) }}
+            </div>
+        </div>
+            {{ form_end(form, {'render_rest': false}) }}
+
+        <small>Consultez les <a href="{{ path('app_cond') }}" target="_blank">CGU</a></small>
+        <br/>
+        <small><a href="{{ path('app_logout') }}">Déconnexion</a></small>
+    </div>
+
+{% endblock %}

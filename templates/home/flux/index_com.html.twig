@@ -1,0 +1,31 @@
+
+        <div style="text-align:left;margin-top: 0.5em;" class="nbrcoms-{{flux.id}}">
+            {% if commentaires.count > 1 %}
+                <small><i><a class="myDIVcomload" data-flux="{{ flux.id }}" style="color:#3b5336;"> Voir les ({{ commentaires.count }}) commentaires  </a></i></small>
+            {% endif %}
+            <div id="myDIVcomload-{{flux.id }}" style="display: none;" >
+                {% for c in commentaires %}
+                    {% if not loop.last %}
+                        {{ include('home/flux/com_seul.html.twig', { 'c': c }) }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% if commentaires.count == 1 %}
+                {% for c in commentaires %}
+                    {{ include('home/flux/com_seul.html.twig', { 'c': c }) }}
+                {% endfor %}
+            {% elseif commentaires.count > 1 %}
+                {% for c in commentaires %}
+                    {% if loop.last %}
+                        {{ include('home/flux/com_seul.html.twig', { 'c': c }) }}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="myDIVcom-{{flux.id }}"></div>
+        <div id="myDIVnew-{{flux.id }}" style="display: none;">
+            <textarea class="commentaire" id="input-{{flux.id }}" placeholder="Ajouter un commentaire"></textarea>
+                <button type="button" class="colorblue add-comment btn" data-url="{{ path('addcomment', {'id': flux_id}) }}" data-flux="{{ flux.id }}">Ajouter</button>
+   
+        </div>
+

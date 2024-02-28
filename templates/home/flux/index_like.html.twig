@@ -1,0 +1,16 @@
+<div class="zonebutton" >
+    <span>
+        <a href="{{ path('like',{'id': flux.id}) }}"
+           class="like-post likecolor"
+           data-flux="{{ flux.id }}"
+           data-likes-count="{{ flux.likes.count }}"
+           data-likes-singular="<strong>__COUNT__ J'aime</strong>"
+           data-likes-plural="<strong>__COUNT__ J'aime</strong>">
+            <i style="font-size:28px;" class="fa {{ lUser == 1 ? 'fa-heart' : 'fa-heart-o' }}"> </i>
+        </a>&nbsp
+    </span>
+    <span>
+        <a class="myDIVnew likecolor" data-flux="{{ flux.id }}"> <i style="font-size:28px;" class="fa fa-comment-o"></i></a>
+        {#    {{ render(path('commentaire', {'id': flux_id})) }}  #}
+    </span>
+</div>

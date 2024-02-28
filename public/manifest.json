@@ -1,0 +1,13 @@
+{
+  "name": "GreenGarden",
+  "short_name": "GreenGarden",
+  "lang": "fr",
+  "start_url": "/carnet",
+  "display": "standalone",
+  "theme_color": "#759978",
+  "icons": [
+    {
+      "src": "/images/LOGO.png"
+    }
+  ]
+}

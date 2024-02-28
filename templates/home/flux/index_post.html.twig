@@ -1,0 +1,46 @@
+<div class="zonecom">
+    <div>
+        {% if flux.user.avatar %}
+            <img src="{{ vich_uploader_asset(flux.user.avatar) }}" alt="Image" class="img-circle" width="40" height="40">  
+        {% endif %}
+        <a class="nom_user" href="{{ path('app_show_garden', {nickname: flux.user.nickname}) }}">{{ flux.user.nickname }}</a>
+        <span class="dateheure">
+        le {{ flux.createdat|date("d/m/y") }}
+        </span>
+    </div>
+</div>  
+
+
+    <div style="text-align:left;">
+        <br/>
+       <div  class="colorblue">Note</div> {{ post.description }}
+    </div>
+        {% for p in post.photos %}      
+            {% if p.imageName != "aujourdhui.png"  %}
+                {{ include('home/flux/display_photo.html.twig', { 'p': p }) }}
+            {% endif %}     
+        {% endfor %}
+
+      
+
+    <div style="text-align:left">
+        {% set lUser = 0 %}
+        {% for l in flux.likes %}
+            {% if l.user == app.user %}
+                {% set lUser = 1 %}
+            {% endif %}
+        {% endfor %}
+        {{ include('home/flux/index_like.html.twig', { 'commentaires': flux.commentaires , 'likes': flux.likes, 'flux_id' : flux.id }) }}
+        <div class="zonecom" >
+            <span class="likecolor nbrlikes-{{flux.id}}">
+                <small>{% trans with {'likes': flux.likes.count} %}number_of_likes{% endtrans %}</small>
+            </span>
+        </div>
+
+
+
+        {{ include('home/flux/index_com.html.twig', { 'commentaires': flux.commentaires , 'likes': flux.likes, 'flux_id' : flux.id }) }}
+    </div>
+
+
+

@@ -1,0 +1,53 @@
+<details class="specifications" id="statistics">
+    <div class="row fond">
+    <table class="table table-hover table_jardin" >
+        <thead>
+            <tr>
+                <th>
+                    <a href="{{ path('ajouter_achat') }}"> <img src="{{ asset('images/ajouter.png') }}" alt="Image"  width="25"></a>
+                </th>
+                <th>Type</th>
+                <th>Titre</th>
+                <th>Qté</th>
+                <th>Prix</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% set prix_tot = 0 %}
+        {% set q_tot = 0 %}
+        {% for achat in achats %}
+            {% set prix_tot = prix_tot + achat.prix * achat.quantite %}
+            {% set q_tot = q_tot + achat.quantite %}
+            <tr>
+                <td><small>{{ achat.createdAt|date("d/m/y") }}</small></td>
+                <td style=" text-align: center">{{ achat.type.nom }}</td>
+                <td style=" text-align: center">{{ achat.descritpion }}</td>
+                <td style=" text-align: center">{{ achat.quantite }}</td>
+                <td style=" text-align: center">{{ achat.prix }}<small><i>€</i></small></td>
+                {% if achat.user == user %}
+                    <td>
+                        {% if user %}
+                            {% if app.user == achat.user %}
+                                <a href="{{ path('supp_achat', {id: achat.id}) }}"> <img src="{{ asset('images/supp_def.jpg') }}" alt="Image"  width="20"></a>
+                            {% endif %}
+                        {%  endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        <tr>
+            <td style="text-align: left"><strong>TOTAL</strong></td>
+            <td style="text-align: center"></td>
+            <td style="text-align: center"></td>
+            <td style="text-align: center"><strong>{{ q_tot}}</strong></td>
+            <td style="text-align: center"><strong>{{ prix_tot|number_format(2, '.', ' ')}}<small><i>€</i></small></strong></td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+    <summary class="row cadre_blanc">
+        <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/amenagement_ja.png') }}" alt="Image" width="25" height="25">&nbsp;&nbsp;Dépenses ({{ prix_tot }}<small><i>€</i></small>)</span>
+        <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
+    </summary>
+</details>

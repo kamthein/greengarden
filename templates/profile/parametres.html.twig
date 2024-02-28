@@ -1,0 +1,158 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Potager{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('style') }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="wrapper text-center">
+        <div class="row cadre_blanc" >
+            -- En cours de développement --
+            <p><strong>Activer ou désactiver les options </strong> </p>
+            <br/>
+            <table class="table">
+                <tr>
+                    <th>
+                        Jardin
+                    </th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>
+                        Graphique Plantations
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Graphique Récoltes
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Graphique Récoltes par méthode
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Jardiniers à suivre
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Filtre par méthode
+                    </td>
+                    <td style="text-align: right">
+                        <input disabled type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Comparaison Année précédente
+                    </td>
+                    <td style="text-align: right">
+                        <input disabled type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Carnet
+                    </th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>
+                        Ajout Note
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Ajout Dépense
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Météo
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Calendrier - Historique
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Calendrier - Prévisions
+                    </td>
+                    <td style="text-align: right">
+                        <input disabled type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Actu
+                    </th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>
+                        Graphique de la communauté
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Les meilleurs récoltes
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Filtres
+                    </td>
+                    <td style="text-align: right">
+                        <input checked type="checkbox" name="options[]" value="{{ user.id }}">
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+{% endblock %}

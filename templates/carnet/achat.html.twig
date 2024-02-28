@@ -1,0 +1,25 @@
+<table class="table table-striped table_jardin" >
+    <thead>
+    <tr>
+        <th  class="colortgris">Depense</th>
+        <th></th>
+        <th>Qté</th>
+        <th>Prix</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set user_achat = 0 %}
+    {% set prix_achat = 0 %}
+    {% for achat in achats %}
+        {% set prix_achat = prix_achat + achat.prix %}
+        <tr>
+            <td style=" text-align: center">{{ achat.type.nom }}</td>
+            <td style=" text-align: center">{{ achat.descritpion }}</td>
+            <td style=" text-align: center">{{ achat.quantite }}</td>
+            <td style=" text-align: center">{{ achat.prix }}<small><i>€</i></small></td>
+        </tr>
+        {% set user_achat = achat.user.id %}
+    {% endfor %}
+    </tbody>
+</table>
+<hr/>

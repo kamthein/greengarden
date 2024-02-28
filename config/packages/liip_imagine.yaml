@@ -1,0 +1,39 @@
+# Documentation on how to configure the bundle can be found at: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
+
+    resolvers :
+        default :
+            web_path : ~
+
+    twig:
+        mode: lazy
+    filter_sets :
+        cache : ~
+
+        my_fixed_filter:
+            filters:
+
+                # use and setup the "fixed" filter
+                fixed:
+
+                    # set the fixed size to "120x90" pixels
+                    width: 380
+                    height: 380
+
+        user_mini_thumbnail:
+
+            # il existe de nombreux filtres prédéfinis (http://symfony.com/doc/master/bundles/LiipImagineBundle/filters.html) mais il est aussi possible d’en créer.
+            quality: 75
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [ 52, 52 ], mode: lazy }
+
+        photo_thumbnail:
+
+            # il existe de nombreux filtres prédéfinis (http://symfony.com/doc/master/bundles/LiipImagineBundle/filters.html) mais il est aussi possible d’en créer.
+            quality: 75
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [ 380, 380 ], mode: lazy }

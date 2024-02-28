@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+<div class="wrapper">
+    <div class="container-fluid text-center">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <h1 class="h3 mb-3 font-weight-normal"><strong>Créer un compte</strong></h1>
+                <small>C'est facile et rapide</small>
+                <hr style="width: 100%; background: none repeat scroll 0 0 #EAEAEA; height: 1px;" />
+                {% form_theme form with [
+                    _self,
+                    'bootstrap_4_layout.html.twig',
+                    '@VichUploader/Form/fields.html.twig'
+                ] %}
+        {{ form_start(form) }}
+                <div class="mb-1">
+            {{ form_label(form.nickname) }}
+                </div>
+                <div class="mb-1">
+            {{ form_widget(form.nickname) }}
+            {{ form_errors(form.nickname) }}
+                </div>
+                <br/>
+                <div class="mb-1">
+            {{ form_label(form.email) }}
+                </div>
+                <div class="mb-1">
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+                </div>
+                <br/>
+                <div class="mb-1">
+            {{ form_label(form.newPlainPassword) }}
+                </div>
+                <div class="mb-1">
+            {{ form_widget(form.newPlainPassword) }}
+            {{ form_errors(form.newPlainPassword) }}
+                </div>
+            <br/>
+                <p>
+                    <small>Je reconnais avoir lu et compris les <a href="{{ path('app_cond') }}" target="_blank">CGU</a> et je les accepte</small>
+                    {{ form_widget(form.agreeTerms) }}
+                    {{ form_errors(form.agreeTerms) }}
+                </p>
+            {{ form_widget(form.submit, { 'attr': {'class': 'mdl-button-rond mdl-button--raised mdl-button--bleufonce mdl-button--colored'} }) }}
+
+            {{ form_end(form) }}
+
+                <br/> <small><a href="{{ path('home') }}">Vous avez déjà un compte?</a></small><br/><br/>
+
+    </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+    {% if panier.recoltes is not empty  %}
+        <table class="table table-striped table_jardin">
+            <thead>
+                <tr>
+                    <th class="colorrose">Recolte</th>
+                    <th>Qté</th>
+                    <th><strong>Méthode</strong></th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rec in panier.recoltes %}
+                    {% if  rec.createdat|date('Y-m-d') == date|date('Y-m-d')%}
+                        <tr>
+                            <td style="text-align: left"><img src="{{ asset('images/icon/' ~ rec.consommable.iconlien) }}" alt="Image" width="20" height="20">&nbsp;{{ rec.consommable.description }}</td>
+                            <td style="text-align: center">{{ rec.quantity }}<small><i>kg</i></small></td>
+                            <td style="text-align: center"><small><i>{{ rec.methode.nom }} </i></small></td>
+                            <td style="text-align: center"><small><i>{{ rec.createdat|date("d/m/Y")}}</small></i></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr/>
+    {% endif %}
+
+    {% if panier.plants is not empty %}
+        <table class="table table-striped table_jardin" style="margin-bottom:-0.5em;">
+            <thead>
+                <tr>
+                    <th class="colorvert">Plantation</th>
+                    <th>Qté</th>
+                    <th><strong>Etat</strong></th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pl in panier.plants %}
+                    {% if  pl.createdat|date('Y-m-d') == date|date('Y-m-d')%}
+                        <tr>
+                            <td style="text-align: left"><img src="{{ asset('images/icon/' ~ pl.consommable.iconlien) }}" alt="Image" width="20" height="20">&nbsp;{{ pl.consommable.description }}</td>
+                            <td style="text-align: center"> {{ pl.quantite }}</td>
+                            <td style="text-align: center"> <i><small>{{ pl.state.nom }}</small></i></td>
+                            <td style="text-align: center"><i><small>{{ pl.createdat|date("d/m/Y")}}</small></i></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr/>
+    {% endif %}
+
+

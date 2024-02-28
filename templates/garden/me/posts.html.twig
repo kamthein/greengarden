@@ -1,0 +1,22 @@
+    <details class="specifications" id="statistics">
+        <div class="row fond">
+        {% set nbr = 0 %}
+        {% for flux in fluxes %}
+             {{  flux.post.description }}
+            <br/><small>{{  flux.createdat|date('d/m/y') }} </small>
+            {% set nbr = nbr +1 %}
+            {% for p in flux.post.photos %}
+                {% if p.imageName != "aujourdhui.png"  %}
+                    {{ include('home/flux/display_photo.html.twig', { 'p': p }) }}
+                {% endif %}   
+            {% endfor %}
+            {{ include('garden/me/modif_flux.html.twig', { 'commentaires': flux.commentaires , 'likes': flux.likes, 'flux_id' : flux.id, 'flux': flux }) }}
+        {% endfor %}
+
+
+        </div>
+        <summary class="row cadre_blanc">
+            <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/a_propos.png') }}" alt="Image" width="30" height="30">&nbsp;&nbsp;Notes ({{ nbr }})</span>
+            <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
+        </summary>
+    </details>

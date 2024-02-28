@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{% endblock %}
+
+{% block title %}Ajout plantation{% endblock %}
+{% form_theme form with [
+    _self,
+    'bootstrap_4_layout.html.twig'
+] %}
+{% block body %}
+
+    <div class="wrapper text-center">
+        <div class="row cadre_blanc_no_border">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <br/>
+            <table class="table table_ajout"  >
+                <tr>
+                    <th >Espèce</th>
+                    <td class="text-right">{{ form_widget(form.consommable , {'attr': {'class': 'task_field select2auto'}}) }}</td>
+                </tr>
+                <tr>
+                    <th>Etat</th>
+                    <td class="text-right">{{ form_widget(form.state , {'attr': {'class': 'task_field'}}) }}{{ form_errors(form.quantite) }}</td>
+                </tr>
+                <tr>
+                    <th>Qté</th>
+                    <td class="text-right">{{ form_widget(form.quantite , {'attr': {'class': 'task_field'}}) }}{{ form_errors(form.quantite) }}</td>
+                </tr>
+            </table>
+            <p><small>La quantité se saisie en pièce. <br/>(1m linéaire = 10-15 pièces)</small></p>
+            <br/>
+
+            <div class="row cadre_post">
+                {{ form_label(form.submit, "Enregistrer") }}
+                {{ form_widget(form.submit) }}
+            </div>
+            <br/>
+            <br/>
+            {{ form_end(form) }}
+    </div>
+    </div>
+
+    <script>
+        jQuery(document).ready(function() {
+            $('.select2auto').select2();
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Publier une note{% endblock %}
+
+{% block javascripts %}
+      {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
+      {{ parent() }}
+{% endblock %}
+
+{% form_theme form with [
+      _self,
+      'bootstrap_4_layout.html.twig'
+] %}
+
+{% block body %}
+<div class="wrapper text-center">
+      <div class="row cadre_blanc_no_border">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <br/>
+
+            {{ form_widget(form.post.description , {'attr': {'class': 'task_field'}}) }}
+            {{ form_errors(form.post.description) }}
+            <br/>
+            <div class="upload-image-strip">
+                  <button type="button" class="file-select-button mdl-button mdl-button--raised mdl-button--colored">
+                        <img class="img-responsive" src="{{ asset('images/ajout_post.png') }}" alt="Image" width="32" height="32"> <span class="name-file"> Ajouter une image </span>
+                  </button>
+                  {{ form_widget(form.post.photos) }}
+            </div>
+            <div class="row cadre_post">
+                  {{ form_label(form.submit) }}
+                  {{ form_widget(form.submit) }}
+            </div>
+            <br/><br/>
+            {{ form_widget(form._token) }}
+            {{ form_end(form,{'render_rest': false}) }}
+      </div>
+</div>
+
+
+      <script>
+
+            $('.file-select-button').click(function(){
+                  $(this).closest('.upload-image-strip').find('input').click();
+            });
+
+            $('.upload-image-strip input').on('change', function (e) {
+                  let filename = e.target.value.split('\\').pop();
+                  let nf = $(this).closest('.upload-image-strip').find('.name-file');
+
+                  if (filename.length > 12) {
+                        let extension = filename.split('.').pop();
+                        let truncate = filename.substr(0, 12) + '... .' + extension;
+
+                        nf.text(truncate);
+                  } else if(filename.length > 0) {
+                        nf.text(filename);
+                  }
+            });
+      </script>
+
+
+{% endblock %}
+
+
+

@@ -1,0 +1,38 @@
+
+    <details class="specifications" id="statistics">
+        <div class="row fond">
+            {% set nbr = 0 %}
+        <table class="table">
+            {% for friend in amis %}
+                {% set nbr = nbr + 1 %}
+                    <tr>
+                        <th>
+                            <a href="{{ path('app_show_garden', {nickname: friend.userFollowed.nickname}) }}">
+                                <img src="{{ vich_uploader_asset(friend.userFollowed.avatar) }}" alt="Image" class="img-circle" width="50" height="50">
+                            </a>
+                            <a class="nom_user" href="{{ path('app_show_garden', {nickname: friend.userFollowed.nickname}) }}">{{ friend.userFollowed.nickname }} </a>
+                        </th>
+                        <td style="text-align: right">
+                            {% if user %}
+                                {% if app.user == friend.userFriend %}
+                                    <a href="{{ path('supp_ami', {id: friend.userFollowed.id}) }}"> <img src="{{ asset('images/supp_def.jpg') }}" alt="Image"  width="20"></a>
+                                {% endif %}
+                            {%  endif %}
+                        </td>
+            {% endfor %}
+        </table>
+        {% if app.user == user %}
+            <p>
+                <a href="{{ path("ajout_amis") }}">
+                    <button class="mdl-button mdl-button--raised mdl-button--vert mdl-button--colored">
+                        Ajoutez des amis
+                    </button>
+                </a>
+            </p>
+        {% endif %}
+        </div>
+        <summary class="{{ classe }}">
+                <span class="deroulfloatl">&nbsp<img src="{{ asset('images/friends.png') }}" alt="Image" width="25" height="25">&nbsp;&nbsp;Amis ({{ nbr }})</span>
+                <span class="deroulfloatr"><span style="margin-top:0.5em;" class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
+        </summary>
+    </details>

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue{% endblock %}
+
+ {% block stylesheets %}
+     {{ parent() }}
+ {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('style') }}
+{% endblock %}
+
+{% block body %}
+    {% set route_name = app.request.attributes.get('_route') %}
+    <div class="wrapper_desktop text-center">
+        <div class="row">
+            <div class="col-sm-3">
+                <a href="{{ path('ajouter') }}">
+                    <button class="colorblue mdl-button mdl-button--raised mdl-button--colored">
+                        <img class="img-responsive" src="{{ asset('images/carnet.png') }}" alt="Image" width="32" height="32">
+                        Nouvelle note
+                    </button>
+                </a>
+                <a href="{{ path ('ajouter_recolte', {id: 0}) }}">
+                    <button class="colorrose mdl-button mdl-button--raised mdl-button--colored">
+                        <img class="img-responsive" src="{{ asset('images/ajout_recolte.png') }}" alt="Image" width="32" height="32" >
+                        Nouvelle récolte
+                    </button>
+                </a>
+            </div>
+            <div class="col-sm-5">
+                {{ include('home/_content.html.twig')}}
+            </div>
+            <div class="col-sm-4">
+                {{ include('home/_content_mosaique.html.twig')}}
+            </div>
+          </div>
+    </div>
+{% endblock %}

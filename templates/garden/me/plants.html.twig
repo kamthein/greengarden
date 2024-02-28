@@ -1,0 +1,57 @@
+    <details class="specifications" id="statistics" >
+        <div class="row fond">
+        <div>
+            <img src="{{ asset('photo/plantation.png') }}" alt="Image" class="img-responsive size-img" style="max-height : 340px;display: block;margin-left: auto;margin-right: auto;">
+        </div>
+        <hr>
+        {% set nbr = 0 %}
+        {% for panier in paniers %}
+            {% if panier.plants is not empty %}
+                <table class="table table-hover table-striped table_jardin">
+                    <thead>
+                        <tr>
+                            <th>
+                                {% if app.user.id == panier.flux.user.id  %}
+                                    <a href="{{ path('ajouter_plant', {id: panier.id}) }}"> <img src="{{ asset('images/ajouter.png') }}" alt="Image"  width="25"></a>
+                                {% endif %}
+                            </th>
+                            <th>Espèce</th>
+                            <th>Qté</th>
+                            <th><strong>Etat</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pl in panier.plants %}
+                            {% set nbr = nbr + pl.quantite %}
+                            <tr>
+                                <td style="text-align: center"><small>{{ pl.createdAt|date("d/m/y") }}</small></td>
+                                <td style="text-align: left"><img src="{{ asset('images/icon/' ~ pl.consommable.iconlien) }}" alt="Image" width="20" height="20">&nbsp;{{ pl.consommable.description }}</td>
+                                <td style="text-align: center"> {{ pl.quantite }}</td>
+                                <td style="text-align: center"> <i><small>{{ pl.state.nom }}</small></i></td>
+                                
+                                {% if pl.user == user %}
+                                    <td >
+                                        {% if user %}
+                                            {% if app.user == pl.user %}
+                                              <a href="{{ path('supp_plant', {id: pl.id}) }}"> <img src="{{ asset('images/supp_def.jpg') }}" alt="Image"  width="20"></a>
+                                            {% endif %}
+                                            
+                                        {%  endif %}
+                                    </td>
+                                {% endif %}
+                                
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+                {{ include('garden/me/modif_flux.html.twig', { 'commentaires': panier.flux.commentaires , 'likes': panier.flux.likes, 'flux_id' : panier.flux.id, 'flux': panier.flux }) }}
+            {% endif %}
+        {% endfor %}
+        </div>
+        <summary class="row cadre_blanc">
+            <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/semis_ja.png') }}" alt="Image" width="25" height="25">&nbsp;&nbsp;Plantations ({{ nbr }})</span>
+            <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
+
+        </summary>
+    </details>
+

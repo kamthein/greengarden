@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout achats{% endblock %}
+{% form_theme form with [
+    _self,
+    'bootstrap_4_layout.html.twig'
+] %}
+{% block body %}
+    <div class="wrapper text-center">
+        <div class="row cadre_blanc_no_border">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <br/>
+            <table class="table table_ajout">
+                <tr>
+                    <th>Type</th>
+                    <td class="text-right">{{ form_widget(form.type, {'attr': {'class': 'task_field'}}) }}</td>
+                </tr>
+                <tr>
+                    <th>Titre</th>
+                    <td class="text-right">{{ form_widget(form.descritpion, {'attr': {'class': 'task_field'}}) }}</td>
+                </tr>
+                <tr>
+                    <th>Qté</th>
+                    <td class="text-right">{{ form_widget(form.quantite, {'attr': {'class': 'task_field'}}) }}</td>
+                </tr>
+                <tr>
+                    <th>Prix (unitaire)</th>
+                    <td class="text-right">{{ form_widget(form.prix, {'attr': {'class': 'task_field'}}) }}</td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
+            <div class="row cadre_post">
+                {{ form_label(form.submit, "Enregistrer") }}
+                {{ form_widget(form.submit) }}
+            </div>
+            <br/><br/>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+

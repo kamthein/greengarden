@@ -1,0 +1,13 @@
+{% for flux in flux %}
+    {% if flux.panier is not null %}
+        {% if flux.panier.plants is not empty or flux.panier.recoltes is not empty%}
+            <div class="row cadre_blanc">
+                {{ include('home/flux/index_panier.html.twig', { 'panier': flux.panier}) }}
+            </div>
+        {% endif %}
+    {% elseif flux.post is not null %}
+        <div class="row cadre_blanc">
+            {{ include('home/flux/index_post.html.twig', { 'post': flux.post}) }}
+        </div>
+    {% endif %}
+{% endfor %}

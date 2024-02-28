@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Potager{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {%  if app.user.nbco < 7 %}
+        <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    {%  endif %}
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    {%  if app.user.nbco < 7 %}
+        <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    {%  endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="wrapper_desktop text-center">
+       <div class="row">
+        <div class="col-sm-4">
+            <div class="row cadre_blanc_no_border">
+                <img src="{{ asset('images/meteo.png') }}" alt="Image" width="50" height="50">
+                <br/>
+                {% if  user.administrativearea %}
+                <a target="_blank" href='https://meteofrance.com/previsions-meteo-france/{{user.administrativearea.meteolink}}' >
+                  Consultez la météo de votre région <br/>
+                    {{ user.administrativeArea.name }}
+                </a>
+                {% else %}
+                    <a href="{{ path('profile') }}"> Veuillez renseigner votre département pour accéder à la météo</a>
+                {% endif %}
+            </div>
+                <a href="{{ path('ajouter_plant', {id: 0}) }}">
+                    <button class="colorvert mdl-button mdl-button--raised mdl-button--colored">
+                        <img class="img-responsive" src="{{ asset('images/ajout_plant.png') }}" alt="Image" width="32" height="32" >
+                        Plantation <div class="cercle_vert"></div>
+                    </button>
+                </a>
+                <a href="{{ path ('ajouter_recolte', {id: 0}) }}">
+                    <button class="colorrose mdl-button mdl-button--raised mdl-button--colored">
+                        <img class="img-responsive" src="{{ asset('images/ajout_recolte.png') }}" alt="Image" width="32" height="32" >
+                        Récolte <div class="cercle_rose"></div>
+                    </button>
+                </a>
+                <a href="{{ path ('ajouter_achat') }}">
+                    <button class="colorgris mdl-button mdl-button--raised mdl-button--colored">
+                        <img class="img-responsive" src="{{ asset('images/ajout_achat.png') }}" alt="Image" width="32" height="32" >
+                        Dépense <div class="cercle_gris"></div>
+                    </button>
+                </a>
+
+        </div>
+        <div class="col-sm-8">
+            <div class="row cadre_blanc">
+                {%  set date_avt =  date|date_modify("first day of this month -1 month")|date('Y-m-d') %}
+                {%  set date_aps =  date|date_modify("first day of this month +1 month")|date('Y-m-d') %}
+                <div id="conteneur">
+                    <div class="element 1">
+                        <a class="navbar-brand" href="{{ path('carnet',{'date': date_avt}) }}">
+                            <img src="{{ asset('images/prec.png') }}" alt="Image" class="img-responsive" width="30" height="30">
+                        </a>
+                    </div>
+                    <div>
+                        <strong><span>{{ date_calendrier_mois }}</span></strong>
+                    </div>
+                    <div class="element 3">
+                        <a class="navbar-brand" href="{{ path('carnet',{'date': date_aps}) }}">
+                            <img src="{{ asset('images/suiv.png') }}" alt="Image" class="img-responsive" width="30" height="30">
+                        </a>
+                    </div>
+                </div>
+                <table class="calendar">
+                    {% set j = 0 %}
+                    {% for i in 1..date_semaine %}
+                        <tr>
+                            {% for day in jours %}
+                                {% if date_premier_jour|date_modify('+' ~ j ~ 'day')|date('d-y-m') == date|date('d-y-m') %}
+                                    <td style="background-color:gainsboro">
+                                {% else %}
+                                    <td>
+                                {% endif %}
+                                    {% if i == 1 %}
+                                        <div class="calendar_week">{{ day }}</div>
+                                    {% endif %}
+                                    {% if date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m') == date|date('y-m') %}
+                                        <div class="calendar_day">{{ date_premier_jour|date_modify('+' ~ j ~ 'day')|date('d') }}</div>
+                                    {% else %}
+                                        <div class="calendar_day_opacity">{{ date_premier_jour|date_modify('+' ~ j ~ 'day')|date('d') }}</div>
+                                    {% endif %}
+                                    {% set break = false %}
+                                    {% for ev in events %}
+                                            {% if date_premier_jour|date_modify('+' ~ j ~ 'day')|date('d-m-y') ==  ev.date_event|date('d-m-y')   %}
+                                                {% if ev.recolte != 0 %}
+                                                    <a class="menufloatl" href="{{ path('carnet',{'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d') }) }}">
+                                                        <div class="cercle_rose"></div>
+                                                    </a>
+                                                {% endif %}
+                                                {% if ev.plant != 0 %}
+                                                    <a class="menufloatl" href="{{ path('carnet',{'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d') }) }}">
+                                                        <div class="cercle_vert"></div>
+                                                    </a>
+                                                {% endif %}
+                                                {% if ev.achat != 0 %}
+                                                    <a class="menufloatl" href="{{ path('carnet',{'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d') }) }}">
+                                                        <div class="cercle_gris"></div>
+                                                    </a>
+                                                {% endif %}
+                                                {% if ev.post != 0 %}
+                                                    <a class="menufloatl" href="{{ path('carnet',{'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d') }) }}">
+                                                        <div class="cercle_bleu"></div>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                    {% endfor %}
+                                </td>
+                                {% set j = j + 1 %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>                  
+                <br/><strong>{{ date_calendrier }}</strong><br/>
+                <div class="calendar_day">Votre activité du jour</div>
+                    <br/>
+                    {{ include('carnet/activite_jour.html.twig', { 'fluxes': fluxes_day, 'achats' : achats_day}) }}
+                </div>
+            </div>
+        </div>
+
+       
+    </div>
+
+{% endblock %}
+
+
+
+
+

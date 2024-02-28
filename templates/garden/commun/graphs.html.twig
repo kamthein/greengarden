@@ -1,0 +1,32 @@
+<details class="specifications" id="statistics">
+    <div class="row fond">
+    <a class="printresult"><img src="{{ asset('images/print.png') }}" alt="Image" width="30" height="30"></a>
+    <p><strong>Quantités récoltées par mois</strong> </p>
+    {% if r_byuser is not empty %}
+        {% set r_tot = 0 %}
+        {% for consor in r_byuser %}
+            {% set r_tot = r_tot + consor.recolte %}
+        {% endfor %}
+        <p>TOTAL : {{ r_tot|number_format(1, '.', ' ')}} <small><i>kg</i></small></p>
+        {{ render_chart(chart, {'class': 'my-chart'}) }}
+    {% else %}
+        <p><i>Aucune récolte pour le moment. Il faut récolter pour afficher ce graphique.</i></p>
+    {% endif %}
+    <br/><br/>
+    <p><strong>Quantités récoltées par méthode</strong> </p>
+
+                {# Vérifiez le contenu de chart_don_r #}
+                {# {{ dump(chart_don_r) }} #} 
+
+    {% if r_byuser is not empty %}
+        {{ render_chart(chart_don_r, {'class': 'my-chart'}) }}
+    {% else %}
+        <p><i>Aucune récoltes pour le moment. Il faut récolter pour afficher ce graphique.</i></p>
+    {% endif %}
+    <br/>
+    </div>
+    <summary class="row cadre_blanc">
+            <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/jardin_ja.png') }}" alt="Image" width="25" height="25">&nbsp;&nbspGraphiques</span>
+            <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
+    </summary>
+</details>

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mot de passe oublié {% endblock %}
+ {% block MessageFlash %} {% endblock %}
+{% block body %}
+
+    <div class="wrapper">
+        <div class="container-fluid text-center">
+            <div class="row">
+                <div class="col-sm-12">
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="col-sm-12">
+                                <div class="alert  alert-{{ label }} alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                        &times;
+                                    </button>
+
+                                    <span class="msg_login">{{ message | raw }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    <form method="post" action="{{ path('reset_password') }}">
+                        <h1 class="h3 mb-3 font-weight-normal"> Entrez votre adresse Mail</h1>
+                        <br/>
+                        <div class="form-group">
+
+                            <input type="email" value="" name="email" id="inputEmail" class="form-control"
+                                   placeholder="Email" required
+                                   autofocus
+                                   aria-placeholder="Veuillez saisir votre adresse Mail *">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        </div>
+
+                        <br>
+                        <button class="mdl-button-rond mdl-button--raised mdl-button--bleufonce mdl-button--colored" type="submit">
+                            Rénitialiser votre mot de passe
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

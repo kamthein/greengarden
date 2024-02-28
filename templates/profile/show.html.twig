@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title   %} Profil de  {{user.nickname}} {% endblock %}
+
+{% block body %}
+
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="entete_user">
+                {% if user.avatar %}
+                    <h1><img src="{{ vich_uploader_asset(user.avatar) }}" alt="Image" class="img-circle" width="100" height="100"></h1>
+                {% endif %}
+            </div>
+            <br/>
+            <ul class="list-group">
+                <li class="list-group-item">{{ user.nickname }}</li>
+                {% if user.age %}
+                    <li class="list-group-item">{{ user.age }} ans</li>
+                {% endif %}
+            </ul>
+            <br/>
+            {% if user.administrativeArea %}
+            <ul class="list-group">
+                <li class="list-group-item">{{ user.administrativeArea.name }}</li>
+            </ul>
+            {% endif %}
+            <br/>
+            {% if user.surface %}
+                <ul class="list-group">
+                    <li class="list-group-item">{{ user.surface.nom }}</li>
+                </ul>
+            {% endif %}
+            <br/>
+            {% if user.telephone %}
+                <ul class="list-group">
+                    <li class="list-group-item">{{ user.telephone }}</li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+

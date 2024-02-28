@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta name="GreenGarden"
+          content="GreenGarden enregistre toutes les données de ton potager. Il te permet, de partager tes expériences, de demander de l'aide à la communauté, de proposer tes semences et récoltes"/>
+    <meta charset="UTF-8">
+    <title>{% block title %}GreenGarden{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="manifest" href="/manifest.json"/>
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="GreenGarden">
+    <meta name="apple-mobile-web-app-title" content="GreenGarden">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-starturl" content="/carnet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" href="/images/LOGO.png">
+    <link rel="apple-touch-icon" href="/images/LOGO.png">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    {% block stylesheets %}
+        {# 'app' must match the first argument to addEntry() in webpack.config.js #}
+        {{ encore_entry_link_tags('app') }}
+        <!-- Renders a link tag (if your module requires any CSS)-->
+    {% endblock %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+        <!-- Renders app.js & a webpack runtime.js file
+            <script src="/build/runtime.js" defer></script>
+            <script src="/build/app.js" defer></script>
+           See note below about the "defer" attribute -->
+    {% endblock %}
+</head>
+<body>
+{% set route_name = app.request.attributes.get('_route') %}
+        <nav class="navbar-default flex-row">
+                <div class="header-logo">
+                    <a class="navbar-brand my-auto" href="{{ path('home') }}">
+                        <img alt="GreenGarden" src="{{ asset('images/LOGO.png') }}">
+                    </a>
+                    <strong class="my-auto">
+                        {% if route_name == "home" %}  GreenGarden - Actu 
+                        {% elseif route_name == "carnet" %} GreenGarden - Carnet 
+                        {% elseif route_name == "garden" %} GreenGarden - Jardin 
+                        {% elseif route_name == "profile" %} GreenGarden - Profil
+                        {% elseif route_name == "shop" %} GreenGarden - Boutique  
+                        {% else %} GreenGarden  
+                        {% endif %}
+                    </strong>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{ path('home') }}">Actu</a></li>
+                        <li><a href="{{ path('carnet', {'date': "now"|date('Y-m-d')}) }}">Carnet</a></li>
+                        <li><a href="{{ path('garden') }}">Jardin</a></li>
+                        <li><a href="{{ path('profile') }}">Profil</a></li>
+                    </ul>
+                    {% endif %}
+                </div><!-- /.navbar-collapse -->  
+        </nav>
+<main role="main" class="margin-constraint">
+    {% block body %}{% endblock %}
+</main>
+{%  if app.user and app.user.nbco < 7 %}
+    <script>
+        $(document).ready(function () {
+            introJs(".intro").start();
+        });
+    </script>
+{%  endif %}
+</body>
+

@@ -1,0 +1,12 @@
+{% set vide = 0 %}
+{% if achats is not empty %}
+    {{ include('carnet/achat.html.twig', { 'achats' : achats_day}) }}
+    {% set vide = 1 %}
+{% endif %}
+{% if fluxes is not empty %}
+    {{ include('carnet/fluxes.html.twig', { 'fluxes' : fluxes_day, 'date' : date}) }}
+    {% set vide = 1 %}
+{% endif %}
+{% if vide == 0 %}
+    <p><i>Aucune activité aujourd'hui!</i></p>
+{% endif %}

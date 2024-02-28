@@ -1,0 +1,12 @@
+
+<div class="row cadre_blanc">
+    <div class="mosaique">
+          {% for flux in flux %}
+              {% if flux.post is not null %}
+                  {% for p in flux.post.photos %}
+                      {{ include('home/flux/display_photo_mosaique.html.twig', { 'p': p }) }}
+                  {% endfor %}
+              {% endif %}
+          {% endfor %}
+    </div>
+</div>
