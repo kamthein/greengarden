@@ -1,0 +1,25 @@
+{% set vide = 0 %}
+{% if fluxes is not empty %}
+        {% for flux in fluxes %}
+            {% if flux.panier is not null %}
+                {% if flux.panier.plants is not empty or flux.panier.recoltes is not empty %}
+                    <p>
+                        {{ include('carnet/displayPanier.html.twig', { 'panier': flux.panier, 'date' : date}) }}
+                    </p>
+                {% endif %}
+            {% elseif flux.post is not null%}
+                <p>
+                    {{ include('carnet/displayPost.html.twig', { 'post': flux.post}) }}
+                </p>
+            {% elseif flux.achat is not null%}
+                {{ include('carnet/displayAchat.html.twig', { 'achat' : flux.achat}) }}
+            {% endif %}
+        {% endfor %}
+        
+    {% set vide = 1 %}
+
+{% endif %}
+
+{% if vide == 0 %}
+    <p><i>Aucune activité aujourd'hui!</i></p>
+{% endif %}

@@ -78,10 +78,7 @@ class PageJardinController extends AbstractController
         //Liste des paniers et leurs récoltes
         $paniers = $panierRepository->panierbyuser($user);
         //Liste des achats
-        $achats = $achatRepository->findby(array('user' => $user), array('createdat' => 'DESC'));
-
-
-        //$liste_synthese = array_merge($p_byuser + $r_byuser);
+        $achats = $fluxRepository->achatbyuser($user);
 
 
         //On vérifie si on a une requête AJAX

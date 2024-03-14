@@ -34,11 +34,15 @@ class Achat
      */
     private $createdat;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="achats")
-     * @ORM\JoinColumn(nullable=false)
+        /**
+     * @ORM\OneToOne(targetEntity=Flux::class, inversedBy="achat", cascade={"persist", "remove"})
      */
-    private $user;
+    private $flux;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $shared;
 
     /**
      * @ORM\Column(type="integer")
@@ -91,14 +95,14 @@ class Achat
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getShared(): ?bool
     {
-        return $this->user;
+        return $this->shared;
     }
 
-    public function setUser(?User $user): self
+    public function setShared(bool $shared): self
     {
-        $this->user = $user;
+        $this->shared = $shared;
 
         return $this;
     }
@@ -126,4 +130,18 @@ class Achat
 
         return $this;
     }
+
+
+    public function getFlux(): ?flux
+    {
+        return $this->flux;
+    }
+
+    public function setFlux(?flux $flux): self
+    {
+        $this->flux = $flux;
+
+        return $this;
+    }
+
 }

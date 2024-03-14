@@ -136,21 +136,9 @@
             <br/>
                     {# Vérifiez le contenu de events #}
                     {# {{ dump(fluxes_day) }} #}
-            {{ include('carnet/activite_jour.html.twig', { 'fluxes': fluxes_day, 'achats' : achats_day, 'date' : date}) }}
+            {{ include('carnet/displayListDayActivity.html.twig', { 'fluxes': fluxes_day, 'date' : date}) }}
         </div>
 
-        <div class="row cadre_blanc_no_border">
-            <img src="{{ asset('images/meteo.png') }}" alt="Image" width="50" height="50">
-            <br/>
-            {% if  user.administrativearea %}
-            <a target="_blank" href='https://meteofrance.com/previsions-meteo-france/{{user.administrativearea.meteolink}}' >
-              Consultez la météo de votre région <br/>
-                {{ user.administrativeArea.name }}
-            </a>
-            {% else %}
-                <a href="{{ path('profile') }}"> Veuillez renseigner votre département pour accéder à la météo</a>
-            {% endif %}
-        </div>
     </div>
     </div>
 

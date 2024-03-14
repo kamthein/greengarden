@@ -24,11 +24,8 @@ class PageCarnetController extends AbstractController
         $entityManager = $doctrine->getManager();
         $this->CompteurCo($user, $entityManager);
 
-        // Liste des flux du jour : panier, recolte, post
+        // Liste des flux du jour : panier, recolte, post, achat
         $fluxes_day = $fluxRepository->fluxbyuserToday($user, $date);
-
-        // Liste des achats du jour
-        $achats_day = $achatRepository->achatbyuserToday($user, $date);
 
         $date_jour = $date->format('Y-m-d H:i:s');
         $mois = $date->format('m');
@@ -48,17 +45,16 @@ class PageCarnetController extends AbstractController
         // Liste des flux du mois : recolte
         $events_recolte = $fluxRepository->dateFluxRecolte($user, $startingday, (clone $startingday)->modify('+ 32 days'));
         // Liste des flux du mois : achat
-        $events_achat = $achatRepository->dateAchat($user, $startingday, (clone $startingday)->modify('+ 32 days'));
+        $events_achat = $fluxRepository->dateFluxAchat($user, $startingday, (clone $startingday)->modify('+ 32 days'));
 
         $event = array_merge($events_note, $events_plantation, $events_recolte, $events_achat);
 
         // flux vide
         $vide = $fluxRepository->TrouverVide();
 
-        return $this->render('carnet/index.html.twig', [
+        return $this->render('carnet/home.html.twig', [
             'user' => $user,
             'fluxes_day' =>$fluxes_day,
-            'achats_day' => $achats_day,
             'date' => $date_jour,
             'date_calendrier' => $date_formatee,
             'date_calendrier_mois' => $date_mois,

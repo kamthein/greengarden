@@ -68,8 +68,24 @@
         <p><strong>Communauté</strong></p>
         {{ include('garden/commun/amis.html.twig', { 'amis': amis , 'user' : user, 'classe' : classe})}}
     <br/>
-    <a href="{{'whatsapp://send?text=http://www.GreenGarden.fr/bou/' ~ user.nickname }}"> Envoyer mon jardin à un ami</a>
+    <div class="row cadre_blanc_no_border">
+        <a href="{{'whatsapp://send?text=http://www.GreenGarden.fr/bou/' ~ user.nickname }}"> Envoyer mon jardin à un ami</a>
+    </div>
+    <div class="row cadre_blanc_no_border">
+        <img src="{{ asset('images/meteo.png') }}" alt="Image" width="50" height="50">
+        <br/>
+        {% if  user.administrativearea %}
+            <a target="_blank" href='https://meteofrance.com/previsions-meteo-france/{{user.administrativearea.meteolink}}' >
+              Consultez la météo de votre région <br/>
+                {{ user.administrativeArea.name }}
+            </a>
+        {% else %}
+            <a href="{{ path('profile') }}"> Veuillez renseigner votre département pour accéder à la météo</a>
+        {% endif %}
+    </div>
+
 </div>
+
 
 {% endblock %}
 

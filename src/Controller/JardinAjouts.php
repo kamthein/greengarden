@@ -14,9 +14,9 @@ use App\Entity\Plant;
 use App\Entity\Post;
 use App\Entity\Recolte;
 use App\Entity\User;
-use App\Form\AchatType;
 use App\Form\FluxPanierType;
-use App\Form\FluxType;
+use App\Form\FluxPostType;
+use App\Form\FluxAchatType;
 use App\Form\FriendType;
 use App\Form\PlantType;
 use App\Form\RecolteType;
@@ -70,7 +70,7 @@ class JardinAjouts extends AbstractController
         $post->addPhoto($image);
         $flux->setPost($post);
 
-        $form = $this->createForm(FluxType::class, $flux)->handleRequest($request);
+        $form = $this->createForm(FluxPostType::class, $flux)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -152,23 +152,28 @@ class JardinAjouts extends AbstractController
 
     /**
      * @Route("/ajoutachat", name="ajouter_achat")
-     * Ajouter un achat (pas de flux car on ne publie pas les achats)
+     * Ajouter un achat
      */
-    public function ajoutAchat(Request $request, UserInterface $user, ManagerRegistry $doctrine): Response
+    public function ajoutAchat(Request $request, UserInterface $user, ManagerRegistry $doctrine, EntityManagerInterface $em): Response
     {
         $entityManager = $doctrine->getManager();
         assert($user instanceof User);
 
+        $daydate =  new DateTime('now');
+        $flux = $this->NewFluxDefault($user, $daydate);
+
         $achat = new Achat();
+        $achat->setShared(true);
         $achat->setCreatedat(new DateTime('now'));
         $achat->setDescritpion("");
-        $achat->setUser($user);
-        $form = $this->createForm(AchatType::class, $achat)->handleRequest($request);
+        $flux->setAchat($achat);
+
+        $form = $this->createForm(FluxAchatType::class, $flux)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $achat->setCreatedat(new DateTime('now'));
-            $this->persistAndFlush($entityManager, $achat);
+            $this->persistAndFlush($entityManager, $flux);
             $this->addFlash('success', 'Votre achat a été enregistré !');
             // return $this->redirectToRoute('app_crop_image', ['id'=> $image->getId()]);
             return $this->RedirectCarnetDate();

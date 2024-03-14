@@ -46,7 +46,7 @@
                         <img alt="GreenGarden" src="{{ asset('images/LOGO.png') }}">
                     </a>
                     <strong class="my-auto">
-                        {% if route_name == "home" %}  GreenGarden - Actu 
+                        {% if route_name == "home" %}  GreenGarden - jardin 
                         {% elseif route_name == "carnet" %} GreenGarden - Carnet 
                         {% elseif route_name == "garden" %} GreenGarden - Jardin 
                         {% elseif route_name == "profile" %} GreenGarden - Profil
@@ -67,10 +67,9 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ path('home') }}">Actu</a></li>
-                        <li><a href="{{ path('carnet', {'date': "now"|date('Y-m-d')}) }}">Carnet</a></li>
-                        <li><a href="{{ path('garden') }}">Jardin</a></li>
-                        <li><a href="{{ path('profile') }}">Profil</a></li>
+                        <li><a href="{{ path('garden') }}">Mon Jardin</a></li>
+                        <li><a href="{{ path('carnet', {'date': "now"|date('Y-m-d')}) }}">Mon Carnet</a></li>
+                        <li><a href="{{ path('profile') }}">Mon Profil</a></li>
                     </ul>
                     {% endif %}
                 </div><!-- /.navbar-collapse -->  
