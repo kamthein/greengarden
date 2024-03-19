@@ -7,31 +7,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=MethodeRepository::class)
- */
+#[ORM\Entity(repositoryClass: MethodeRepository::class)]
 class Methode
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $nom;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Recolte::class, mappedBy="methode")
-     */
+    #[ORM\OneToMany(targetEntity: Recolte::class, mappedBy: 'methode')]
     private $recoltes;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $image_lien;
 
 

@@ -8,61 +8,39 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=PanierRepository::class)
- */
+#[ORM\Entity(repositoryClass: PanierRepository::class)]
 class Panier
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdat;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $updatedat;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Recolte::class, mappedBy="panier", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: Recolte::class, mappedBy: 'panier', cascade: ['persist', 'remove'])]
     private $recoltes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Plant::class, mappedBy="panier", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: Plant::class, mappedBy: 'panier', cascade: ['persist', 'remove'])]
     private $plants;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $titre;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="panier", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'panier', cascade: ['persist', 'remove'])]
     private $photo;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $shared;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Flux::class, inversedBy="panier", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Flux::class, inversedBy: 'panier', cascade: ['persist', 'remove'])]
     private $flux;
 
 

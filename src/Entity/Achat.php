@@ -6,52 +6,34 @@ use App\Repository\AchatRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=AchatRepository::class)
- */
+#[ORM\Entity(repositoryClass: AchatRepository::class)]
 class Achat
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="achats")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Type::class, inversedBy: 'achats')]
+    #[ORM\JoinColumn(nullable: false)]
     private $type;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $descritpion;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdat;
 
-        /**
-     * @ORM\OneToOne(targetEntity=Flux::class, inversedBy="achat", cascade={"persist", "remove"})
-     */
+        #[ORM\OneToOne(targetEntity: Flux::class, inversedBy: 'achat', cascade: ['persist', 'remove'])]
     private $flux;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $shared;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $quantite;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type: 'float')]
     private $prix;
 
     public function getId(): ?int

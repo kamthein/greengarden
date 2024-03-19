@@ -15,163 +15,109 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity("email", message="A user with the same email address already exists.")
- */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity('email', message: 'A user with the same email address already exists.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     *
-     */
+    
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     *
-     * @Assert\NotBlank(message="Email address is required.", groups={"Registration"})
-     * @Assert\Email(groups={"Registration"})
-     *
-     */
+    
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\NotBlank(message: 'Email address is required.', groups: ['Registration'])]
+    #[Assert\Email(groups: ['Registration'])]
     private $email;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $roles;
 
     /**
      * @var string The hashed password
-     *
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: 'string')]
     private $password;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(min=3, max=15)
-     *
-     */
+    
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 15)]
     private $nickname;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     *
-     */
+    
+    #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     *
-     * @Assert\Type("int", groups={"Profile"})
-     *
-     */
+    
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\Type('int', groups: ['Profile'])]
     private $age;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     */
+    
+    #[ORM\Column(type: 'string', nullable: true)]
     private $telephone;
 
-    /**
-     * @ORM\Column(type="boolean")
-     *
-     */
+    
+    #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Recolte::class, mappedBy="user", orphanRemoval=true)
-     *
-     */
+    
+    #[ORM\OneToMany(targetEntity: Recolte::class, mappedBy: 'user', orphanRemoval: true)]
     private $recoltes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Flux::class, mappedBy="user", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: Flux::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private $fluxes;
 
     /**
-     * @Assert\NotBlank(groups={"Profile"})
      * @UserPassword(groups={"Profile"})
      */
+    #[Assert\NotBlank(groups: ['Profile'])]
     private $actualPlainPassword;
 
-    /**
-     * @Assert\NotBlank(
-     *   message="Merci de saisir un mot de passe",
-     *   groups={"Registration"}
-     * )
-     * @Assert\Length(
-     *   min=6,
-     *   max=120,
-     *   minMessage="Votre mot de passe doit comporter au moins {{ limit }} caractères",
-     *   groups={"Registration"}
-     * )
-     */
+    #[Assert\NotBlank(message: 'Merci de saisir un mot de passe', groups: ['Registration'])]
+    #[Assert\Length(min: 6, max: 120, minMessage: 'Votre mot de passe doit comporter au moins {{ limit }} caractères', groups: ['Registration'])]
     private $newPlainPassword;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Photo::class, mappedBy="user", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Photo::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private $avatar;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="user", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'user', orphanRemoval: true)]
     private $commentaires;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'user')]
     private $likes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Plant::class, mappedBy="user", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Plant::class, mappedBy: 'user', orphanRemoval: true)]
     private $plants;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $last_co;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $nb_co;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Friend::class, mappedBy="user_friend")
-     */
+    #[ORM\OneToMany(targetEntity: Friend::class, mappedBy: 'user_friend')]
     private $friends;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Friend::class, mappedBy="user_followed")
-     */
+    #[ORM\OneToMany(targetEntity: Friend::class, mappedBy: 'user_followed')]
     private $followed;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Achat::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Achat::class, mappedBy: 'user')]
     private $achats;
 
     /**
      * le token qui servira lors de l'oubli de mot de passe
      * @var string
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $resetToken;
     /**
      *
      * @var int
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $flagResetToken;
 
     public function __construct()

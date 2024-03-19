@@ -8,46 +8,30 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=PostRepository::class)
- */
+#[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=1000, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 1000, nullable: true)]
     private $description;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdat;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $titre;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $shared;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="post", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'post', cascade: ['persist', 'remove'])]
     private $photos;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Flux::class, inversedBy="post", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Flux::class, inversedBy: 'post', cascade: ['persist', 'remove'])]
     private $flux;
 
 

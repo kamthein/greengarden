@@ -7,54 +7,36 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=PlantRepository::class)
- */
+#[ORM\Entity(repositoryClass: PlantRepository::class)]
 class Plant
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdat;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="plants")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'plants')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Consommable::class, inversedBy="plants")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Consommable::class, inversedBy: 'plants')]
+    #[ORM\JoinColumn(nullable: false)]
     private $consommable;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="plants")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: State::class, inversedBy: 'plants')]
+    #[ORM\JoinColumn(nullable: false)]
     private $state;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type: 'float')]
     private $quantite;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Panier::class, inversedBy="plants")
-     */
+    #[ORM\ManyToOne(targetEntity: Panier::class, inversedBy: 'plants')]
     private $panier;
 
     public function __construct()

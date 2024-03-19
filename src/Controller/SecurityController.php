@@ -19,9 +19,7 @@ use Symfony\Component\Uid\Uuid;
 final class SecurityController extends AbstractController
 {
     public $translator;
-    /**
-     * @Route("/login", name="app_login", methods={"GET", "POST"})
-     */
+    #[Route(path: '/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         return $this->render('security/login.html.twig', [
@@ -30,25 +28,19 @@ final class SecurityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/logout", name="app_logout")
-     */
+    #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
         throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    /**
-     * @Route("/resetting", name="forgotten_password")
-     */
-    public function passwordReset(Request $request)
+    #[Route(path: '/resetting', name: 'forgotten_password')]
+    public function passwordReset()
     {
         return $this->render('security/reset.html.twig');
     }
 
-    /**
-     * @Route("/forget-password", name="reset_password")
-     */
+    #[Route(path: '/forget-password', name: 'reset_password')]
     public function forgottenPassword(Request $request,  ManagerRegistry $doctrine, UserRepository $userRepository, UserMailerService $mailer): Response
     {
         $entityManager = $doctrine->getManager();
@@ -82,9 +74,7 @@ final class SecurityController extends AbstractController
         return $this->render('security/reset.html.twig');
     }
 
-    /**
-     * @Route("/reset_password/{token}", name="app_reset_password")
-     */
+    #[Route(path: '/reset_password/{token}', name: 'app_reset_password')]
     public function resetPassword(Request $request, string $token, ManagerRegistry $doctrine,UserPasswordHasherInterface $passwordEncoder)
     {
         $entityManager = $doctrine->getManager();
@@ -135,9 +125,7 @@ final class SecurityController extends AbstractController
     }
 
 
-    /**
-     * @Route("/change_password/{token}", name="app_change_password")
-     */
+    #[Route(path: '/change_password/{token}', name: 'app_change_password')]
     public function ChangePassword(Request $request, string $token, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordEncoder)
     {
         

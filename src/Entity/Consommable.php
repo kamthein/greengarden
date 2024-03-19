@@ -10,98 +10,73 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use RuntimeException;
 
 /**
- * @ORM\Entity(repositoryClass=ConsommableRepository::class)
- *
  * @Gedmo\Tree(type="nested")
  */
+#[ORM\Entity(repositoryClass: ConsommableRepository::class)]
 class Consommable
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @Gedmo\TreeLeft
-     * @ORM\Column(type="integer", options={"default": 0})
      */
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $treeLeft;
 
     /**
      * @Gedmo\TreeLevel
-     * @ORM\Column(type="integer", options={"default": 0})
      */
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $treeLevel;
 
     /**
      * @Gedmo\TreeRight
-     * @ORM\Column(type="integer", options={"default": 0})
      */
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $treeRight;
 
     /**
      * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity=Consommable::class, inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
+    #[ORM\ManyToOne(targetEntity: Consommable::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $parent;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Consommable::class, mappedBy="parent")
-     * @ORM\OrderBy({"treeLeft" = "ASC"})
-     */
+    #[ORM\OneToMany(targetEntity: Consommable::class, mappedBy: 'parent')]
+    #[ORM\OrderBy(['treeLeft' => 'ASC'])]
     private $children;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $nom;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $icon_lien;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $badge1;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $badge2;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $badge3;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $prix;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     private $calorie;
 
-        /**
-     * @ORM\OneToMany(targetEntity=Recolte::class, mappedBy="consommable")
-     */
+        #[ORM\OneToMany(targetEntity: Recolte::class, mappedBy: 'consommable')]
     private $recoltes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Plant::class, mappedBy="consommable")
-     */
+    #[ORM\OneToMany(targetEntity: Plant::class, mappedBy: 'consommable')]
     private $plants;
 
 

@@ -23,11 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 class PageHomeController extends AbstractController
 {
 
-    /**
-     * @Route("/", name="home")
-     * Afficher la page d'acceuil
-     */
-    public function index(ChartBuilderInterface $chartBuilder,PaginatorInterface $paginator,Request $request, FluxRepository $fluxRepository)
+    #[Route(path: '/', name: 'home')] // Afficher la page d'acceuil
+    public function index(ChartBuilderInterface $chartBuilder,PaginatorInterface $paginator, FluxRepository $fluxRepository)
     {
         if ($this->isGranted('ROLE_USER')){
             
@@ -42,11 +39,8 @@ class PageHomeController extends AbstractController
     }
 
 
-    /**
-     * @Route("/full_photo", name="home_photo")
-     * Afficher page home_photo
-     */
-    public function home_photo(ChartBuilderInterface $chartBuilder,PaginatorInterface $paginator,Request $request, FluxRepository $fluxRepository)
+    #[Route(path: '/full_photo', name: 'home_photo')] // Afficher page home_photo
+    public function home_photo(ChartBuilderInterface $chartBuilder,PaginatorInterface $paginator, FluxRepository $fluxRepository)
     {
         if ($this->isGranted('ROLE_USER')){
 
@@ -61,11 +55,8 @@ class PageHomeController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/full_amis", name="home_amis")
-     * Afficher page index_amis
-     */
-    public function index_amis(ChartBuilderInterface $chartBuilder,UserInterface $user, PaginatorInterface $paginator,Request $request, FriendRepository $friendRepository, FluxRepository $fluxRepository)
+    #[Route(path: '/full_amis', name: 'home_amis')] // Afficher page index_amis
+    public function index_amis(ChartBuilderInterface $chartBuilder,UserInterface $user, PaginatorInterface $paginator, FriendRepository $friendRepository, FluxRepository $fluxRepository)
     {
         if ($this->isGranted('ROLE_USER')){
 
@@ -78,10 +69,7 @@ class PageHomeController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/oneflux/{id}", name="oneflux")
-     * Afficher un flux seulement
-     */
+    #[Route(path: '/oneflux/{id}', name: 'oneflux')] // Afficher un flux seulement
     public function oneflux(ChartBuilderInterface $chartBuilder, int $id, FluxRepository $fluxRepository)
     {
         if ($this->isGranted('ROLE_USER')){

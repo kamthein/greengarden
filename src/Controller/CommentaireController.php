@@ -14,9 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CommentaireController extends AbstractController
 {
-    /**
-     * @Route("/commentaire/{flux_id}", name="commentaire")
-     */
+    #[Route(path: '/commentaire/{flux_id}', name: 'commentaire')]
     public function ajoutCommentaire(Request $request, ManagerRegistry $doctrine, $flux_id)
 
     {

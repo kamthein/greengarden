@@ -26,10 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class JardinSupp extends AbstractController
 {
-    /**
-     * @Route("/suppflux/{id}", name="supp_flux")
-     * Supprimer un flux (et le post ou le panier associé)
-     */
+    #[Route(path: '/suppflux/{id}', name: 'supp_flux')] // Supprimer un flux (et le post ou le panier associé)
     public function suppFlux(int $id, ManagerRegistry $doctrine, FluxRepository $fluxRepository)
     {
 
@@ -41,10 +38,7 @@ class JardinSupp extends AbstractController
         return $this->redirectToRoute('garden');
     }
 
-    /**
-     * @Route("/supppost/{id}", name="supp_post")
-     * Supprimer un post
-     */
+    #[Route(path: '/supppost/{id}', name: 'supp_post')] // Supprimer un post
     public function suppPost(int $id, ManagerRegistry $doctrine, PostRepository $postRepository)
     {
         $entityManager = $doctrine->getManager();
@@ -55,10 +49,7 @@ class JardinSupp extends AbstractController
         return $this->redirectToRoute('garden');
     }
 
-    /**
-     * @Route("/supppanier/{id}", name="supp_panier")
-     * Supprimer un panier et toutes ses récoltes ou plantations
-     */
+    #[Route(path: '/supppanier/{id}', name: 'supp_panier')] // Supprimer un panier et toutes ses récoltes ou plantations
     public function suppPanier(int $id, ManagerRegistry $doctrine, PanierRepository $panierRepository )
     {
         $entityManager = $doctrine->getManager();
@@ -69,10 +60,7 @@ class JardinSupp extends AbstractController
         return $this->redirectToRoute('garden');
     }
 
-    /**
-     * @Route("/supprecolte/{id}", name="supp_recolte")
-     * Supprimer une récolte (le panier n'est pas supprimé)
-     */
+    #[Route(path: '/supprecolte/{id}', name: 'supp_recolte')] // Supprimer une récolte (le panier n'est pas supprimé)
     public function suppRecolte(int $id, ManagerRegistry $doctrine, RecolteRepository $recolteRepository)
     {
         $entityManager = $doctrine->getManager();
@@ -84,10 +72,7 @@ class JardinSupp extends AbstractController
     }
 
 
-    /**
-     * @Route("/suppplant/{id}", name="supp_plant")
-     * Supprimer une plantation (le panier n'est pas supprimé)
-     */
+    #[Route(path: '/suppplant/{id}', name: 'supp_plant')] // Supprimer une plantation (le panier n'est pas supprimé)
     public function suppPlant(int $id, ManagerRegistry $doctrine, PlantRepository $planRepository)
     {
 
@@ -100,10 +85,7 @@ class JardinSupp extends AbstractController
     }
 
 
-    /**
-     * @Route("/supppamn/{id}", name="supp_achat")
-     * Supprimer un achat
-     */
+    #[Route(path: '/supppamn/{id}', name: 'supp_achat')] // Supprimer un achat
     public function suppAchat(int $id, ManagerRegistry $doctrine, AchatRepository $achatRepository)
     {
         $entityManager = $doctrine->getManager();
@@ -115,10 +97,7 @@ class JardinSupp extends AbstractController
     }
 
 
-    /**
-     * @Route("/suppami/{id}", name="supp_ami")
-     * Supprimer des amis
-     */
+    #[Route(path: '/suppami/{id}', name: 'supp_ami')] // Supprimer des amis
     public function suppAmis(int $id, UserInterface $user, ManagerRegistry $doctrine, FriendRepository $friendRepository)
     {
         $entityManager = $doctrine->getManager();

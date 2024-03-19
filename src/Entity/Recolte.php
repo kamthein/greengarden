@@ -7,51 +7,35 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=RecolteRepository::class)
- */
+#[ORM\Entity(repositoryClass: RecolteRepository::class)]
 class Recolte
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     *
-     */
+    
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     */
+    
+    #[ORM\Column(type: 'datetime')]
     private $createdat;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recoltes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'recoltes')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     *
-     */
+    
+    #[ORM\Column(type: 'float', nullable: true)]
     private $quantity;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Consommable::class, inversedBy="recoltes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Consommable::class, inversedBy: 'recoltes')]
+    #[ORM\JoinColumn(nullable: false)]
     private $consommable;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Methode::class, inversedBy="recoltes")
-     */
+    #[ORM\ManyToOne(targetEntity: Methode::class, inversedBy: 'recoltes')]
     private $methode;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Panier::class, inversedBy="recoltes")
-     */
+    #[ORM\ManyToOne(targetEntity: Panier::class, inversedBy: 'recoltes')]
     private $panier;
 
 

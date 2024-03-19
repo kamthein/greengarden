@@ -34,10 +34,7 @@ use function assert;
 class JardinAjouts extends AbstractController
 {
 
-    /**
-     * @Route("/sharedflux/{id}", name="shared_flux")
-     * Rendre un flux Publié ou Archivé
-     */
+    #[Route(path: '/sharedflux/{id}', name: 'shared_flux')] // Rendre un flux Publié ou Archivé
     public function sharedFlux(int $id, ManagerRegistry $doctrine, EntityManagerInterface $em)
     {
         $entityManager = $doctrine->getManager();
@@ -52,10 +49,7 @@ class JardinAjouts extends AbstractController
         return $this->redirectToRoute('garden');
     }
 
-    /**
-     * @Route("/ajoutpost", name="ajouter")
-     * Ajouter un post (et son flux)
-     */
+    #[Route(path: '/ajoutpost', name: 'ajouter')] // Ajouter un post (et son flux)
     public function ajoutPost(Request $request, UserInterface $user, ManagerRegistry $doctrine, EntityManagerInterface $em): Response
     {
         $entityManager = $doctrine->getManager();
@@ -92,10 +86,7 @@ class JardinAjouts extends AbstractController
 
     }
 
-    /**
-     * @Route("/ajoutrecolte/{id?0}", name="ajouter_recolte")
-     * Ajouter une récolte à un panier existant
-     */
+    #[Route(path: '/ajoutrecolte/{id?0}', name: 'ajouter_recolte')] // Ajouter une récolte à un panier existant
     public function ajoutRecolte(Request $request, UserInterface $user, ManagerRegistry $doctrine, $id, EntityManagerInterface $em): Response
     {
         $entityManager = $doctrine->getManager();
@@ -122,10 +113,7 @@ class JardinAjouts extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/ajoutplant/{id?0}", name="ajouter_plant")
-     * Ajout d'une plantation dans un panier existant
-     */
+    #[Route(path: '/ajoutplant/{id?0}', name: 'ajouter_plant')] // Ajout d'une plantation dans un panier existant
     public function ajoutPlantation(Request $request, UserInterface $user, ManagerRegistry $doctrine, $id, EntityManagerInterface $em): Response
     {
         $entityManager = $doctrine->getManager();
@@ -150,10 +138,7 @@ class JardinAjouts extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/ajoutachat", name="ajouter_achat")
-     * Ajouter un achat
-     */
+    #[Route(path: '/ajoutachat', name: 'ajouter_achat')] // Ajouter un achat
     public function ajoutAchat(Request $request, UserInterface $user, ManagerRegistry $doctrine, EntityManagerInterface $em): Response
     {
         $entityManager = $doctrine->getManager();
@@ -183,10 +168,7 @@ class JardinAjouts extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/ajoutami", name="ajout_amis")
-     * AJouter des personnes à suivre
-     */
+    #[Route(path: '/ajoutami', name: 'ajout_amis')] // AJouter des personnes à suivre
     public function ajoutAmis(Request $request, UserInterface $user, ManagerRegistry $doctrine, EntityManagerInterface $em): Response
     {
         $entityManager = $doctrine->getManager();

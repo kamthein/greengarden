@@ -2,11 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Taille;
 use App\Entity\User;
-use App\Entity\ZoneAdministrative;
-use App\Repository\TailleRepository;
-use App\Repository\ZoneAdministrativeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -19,14 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserProfileType extends AbstractType
 {
-    private ZoneAdministrativeRepository $repository;
-    private TailleRepository $repository_taille;
 
-    public function __construct(ZoneAdministrativeRepository $repository, TailleRepository $repository_taille)
-    {
-        $this->repository = $repository;
-        $this->repository_taille = $repository_taille;
-    }
+
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -59,18 +49,6 @@ class UserProfileType extends AbstractType
             ])
 
             ->add('telephone', TextType::class, [
-                'label' => 'Modifier',
-                'required' => false,
-            ])
-            ->add('administrativeArea', EntityType::class, [
-                'class' => ZoneAdministrative::class,
-                'choices' => $this->repository->getZonesListForChoices(),
-                'label' => 'Modifier',
-                'required' => false,
-            ])
-            ->add('surface', EntityType::class, [
-                'class' => Taille::class,
-                'choices' => $this->repository_taille->getTailleListForChoices(),
                 'label' => 'Modifier',
                 'required' => false,
             ])

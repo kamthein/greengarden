@@ -13,9 +13,7 @@ use Symfony\UX\Cropperjs\Factory\CropperInterface;
 
 class CropperController extends AbstractController
 {
-    /**
-     * @Route("/crop/{id}", name="app_crop_image")
-     */
+    #[Route(path: '/crop/{id}', name: 'app_crop_image')]
     public function index(CropperInterface $cropper, Request $request, Photo $photo): Response
     {
 

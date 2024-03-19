@@ -21,16 +21,11 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use function assert;
 use function json_decode;
 
-/**
- * @Route("/ajax")
- */
+#[Route(path: '/ajax')]
 class AjaxController extends AbstractController
 {
 
-    /**
-     * @Route("/like/{id}", name="like", methods={"POST"})
-     * Liker un flux (ou deliker)
-     */
+    #[Route(path: '/like/{id}', name: 'like', methods: ['POST'])] // Liker un flux (ou deliker)
     public function like(Flux $flux, LikeRepository $likeRepository,  ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
@@ -48,10 +43,7 @@ class AjaxController extends AbstractController
     }
 
 
-    /**
-     * @Route("/ami/{id}", name="ami", methods={"POST"})
-     * Ajouter une personne à suivre depuis la page de son profil, ou ne plus suivre
-     */
+    #[Route(path: '/ami/{id}', name: 'ami', methods: ['POST'])] // Ajouter une personne à suivre depuis la page de son profil, ou ne plus suivre
     public function addFriend(User $user, FriendRepository $friendRepository, ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
@@ -69,9 +61,7 @@ class AjaxController extends AbstractController
         return new JsonResponse($suiveur);
     }
 
-    /**
-     * @Route("/addcomment/{id}", name="addcomment", methods={"POST"})
-     */
+    #[Route(path: '/addcomment/{id}', name: 'addcomment', methods: ['POST'])]
     public function addcomment(Request $request, Flux $flux, ManagerRegistry $doctrine): Response
     {
 

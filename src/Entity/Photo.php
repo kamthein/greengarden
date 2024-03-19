@@ -11,16 +11,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity
  * @Vich\Uploadable
  */
+#[ORM\Entity]
 class Photo
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     // ... other fields
@@ -35,39 +33,30 @@ class Photo
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string")
-     *
      * @var string|null
      */
+    #[ORM\Column(type: 'string')]
     private $imageName;
 
     /**
-     * @ORM\Column(type="integer")
-     *
      * @var int|null
      */
+    #[ORM\Column(type: 'integer')]
     private $imageSize;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * @var DateTimeInterface|null
      */
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Panier::class, inversedBy="photo",cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Panier::class, inversedBy: 'photo', cascade: ['persist'])]
     private $panier;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="photos",cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'photos', cascade: ['persist'])]
     private $post;
 
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="avatar",cascade={"persist"})
-     */
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'avatar', cascade: ['persist'])]
     private $user;
 
 

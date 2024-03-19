@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Consommable;
 use App\Entity\ZoneAdministrative;
 use App\Entity\Methode;
+use App\Entity\Garden;
 use App\Entity\Taille;
 use App\Entity\Type;
 use App\Entity\State;
@@ -124,7 +125,7 @@ class AppFixtures extends Fixture
         //Garden1
         $garden1 = new Garden();
         $garden1->setRegion($zones['FR-12']);
-        $garden1->setSurface($tailles['jardin']);
+        $garden1->setSurface($tailles['petitjardin']);
        // $garden1->setUser($user1);
         
         $manager->persist($user1);
@@ -217,9 +218,9 @@ class AppFixtures extends Fixture
         $user3->setAvatar($photouser3);
 
         //Garden3
-        $garden2 = new Garden();
-        $garden2->setRegion($zones['FR-30']);
-        $garden2->setSurface($tailles['grandjardin']);
+        $garden3 = new Garden();
+        $garden3->setRegion($zones['FR-30']);
+        $garden3->setSurface($tailles['grandjardin']);
         //$garden2->setUser($user2);
         
         $manager->persist($user3);

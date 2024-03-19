@@ -15,10 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class PageCarnetController extends AbstractController
 {
-    /**
-     * @Route("/carnet/{date}", name="carnet")
-     * Afficher la page Carnet (pour ajouter des élèments à son jardin)
-     */
+    #[Route(path: '/carnet/{date}', name: 'carnet')] // Afficher la page Carnet (pour ajouter des élèments à son jardin)
     public function pageCarnet(UserInterface $user, ManagerRegistry $doctrine, DateTime $date, FluxRepository $fluxRepository, PanierRepository $panierRepository): Response
     {
         $entityManager = $doctrine->getManager();

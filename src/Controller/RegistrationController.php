@@ -15,9 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class RegistrationController extends AbstractController
 {
     public $emailVerifier;
-    /**
-     * @Route("/register", name="app_register", methods={"GET", "POST"})
-     */
+    #[Route(path: '/register', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(Request $request, UserPasswordHasherInterface $passwordEncoder,  ManagerRegistry $doctrine, UserMailerService $mailer): Response
     {
         $user = new User();
@@ -51,9 +49,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/verify/email", name="app_verify_email")
-     */
+    #[Route(path: '/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -70,6 +66,6 @@ class RegistrationController extends AbstractController
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('garden');
     }
 }

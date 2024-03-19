@@ -5,28 +5,20 @@ namespace App\Entity;
 use App\Repository\FriendRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=FriendRepository::class)
- */
+#[ORM\Entity(repositoryClass: FriendRepository::class)]
 class Friend
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="friends")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'friends')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user_friend;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="followed")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'followed')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user_followed;
 
     public function __construct(?User $user_co = null, ?User $user = null)

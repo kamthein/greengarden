@@ -18,10 +18,7 @@ use function assert;
 
 class PageProfileController extends AbstractController
 {
-    /**
-     * @Route("/me", name="profile")
-     * Afficher sa propre page de profil
-     */
+    #[Route(path: '/me', name: 'profile')] // Afficher sa propre page de profil
     public function pageProfil(Request $request, UserInterface $user, UserPasswordHasherInterface $encoder,  ManagerRegistry $doctrine, PanierRepository $panierRepository): Response
     {
         $entityManager = $doctrine->getManager();
@@ -46,11 +43,8 @@ class PageProfileController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/parametres", name="parametres")
-     * Afficher la page Paramètres
-     */
-    public function pageParametre(Request $request, UserInterface $user): Response
+    #[Route(path: '/parametres', name: 'parametres')] // Afficher la page Paramètres
+    public function pageParametre(UserInterface $user): Response
     {
         assert($user instanceof User);
 

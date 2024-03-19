@@ -8,9 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=FluxRepository::class)
- */
+#[ORM\Entity(repositoryClass: FluxRepository::class)]
 class Flux
 {
     /**
@@ -25,60 +23,40 @@ class Flux
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     public $achats;
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdat;
 
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $updatedat;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="fluxes", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'fluxes', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $shared;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Post::class, mappedBy="flux", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Post::class, mappedBy: 'flux', cascade: ['persist', 'remove'])]
     private $post;
 
 
-        /**
-     * @ORM\OneToOne(targetEntity=Achat::class, mappedBy="flux", cascade={"persist", "remove"})
-     */
+        #[ORM\OneToOne(targetEntity: Achat::class, mappedBy: 'flux', cascade: ['persist', 'remove'])]
     private $achat;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Panier::class, mappedBy="flux", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Panier::class, mappedBy: 'flux', cascade: ['persist', 'remove'])]
     private $panier;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="flux", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'flux', cascade: ['persist', 'remove'])]
     private $commentaires;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="flux", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'flux', orphanRemoval: true)]
     private $likes;
 
     public function __construct()

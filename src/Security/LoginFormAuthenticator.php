@@ -38,7 +38,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
             && $request->isMethod('POST');
     }
 
-    public function authenticate(Request $request): PassportInterface
+    public function authenticate(Request $request): \Symfony\Component\Security\Http\Authenticator\Passport\Passport
     {
         $email = $request->request->get('email');
         $password = $request->request->get('password');
