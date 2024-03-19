@@ -14,6 +14,18 @@ use Doctrine\ORM\Mapping as ORM;
 class Flux
 {
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    public $paniers;
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    public $posts;
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    public $achats;
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -142,7 +154,7 @@ class Flux
         $this->post = $post;
 
         // set (or unset) the owning side of the relation if necessary
-        $newFlux = null === $post ? null : $this;
+        $newFlux = $post instanceof \App\Entity\Post ? $this : null;
         if ($post->getFlux() !== $newFlux) {
             $post->setFlux($newFlux);
         }
@@ -160,7 +172,7 @@ class Flux
         $this->achat = $achat;
 
         // set (or unset) the owning side of the relation if necessary
-        $newFlux = null === $achat ? null : $this;
+        $newFlux = $achat instanceof \App\Entity\Achat ? $this : null;
         if ($achat->getFlux() !== $newFlux) {
             $achat->setFlux($newFlux);
         }
@@ -178,7 +190,7 @@ class Flux
         $this->panier = $panier;
 
         // set (or unset) the owning side of the relation if necessary
-        $newFlux = null === $panier ? null : $this;
+        $newFlux = $panier instanceof \App\Entity\Panier ? $this : null;
         if ($panier->getFlux() !== $newFlux) {
             $panier->setFlux($newFlux);
         }

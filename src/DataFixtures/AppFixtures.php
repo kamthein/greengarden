@@ -24,7 +24,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
-    private $encoder;
+    private \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $encoder;
 
     /** @var Consommable[] */
     private array $consommables = [];
@@ -36,25 +36,36 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // Liste des consommables - Entity Consommable
-        $this->loadConsommables($manager);
-
-        $zones['FR-073'] = new ZoneAdministrative('FR', 'Savoie');
-        $zones['FR-074'] = new ZoneAdministrative('FR', 'Haute-Savoie');
-        $zones['FR-075'] = new ZoneAdministrative('FR', 'Paris');
-
-        foreach ($zones as $zone) {
-            $manager->persist($zone);
-        }
 
         // Liste de la surface de l'utilisateur - Entity Taille
-        $tailles['interieur'] = new Taille('Interieur', '0 - 5m2', 10);
-        $tailles['balcon'] = new Taille('Balcon', '5 - 10m2', 50);
-        $tailles['terrasse'] = new Taille('Terrasse', '> 10m2', 100);
-        $tailles['jardin'] = new Taille('Jardin', '> 15m2', 150);
+        $tailles['pot'] = new Taille('Pot', '5m2', 5);
+        $tailles['interieur'] = new Taille('Intérieur', '10m2', 10);
+        $tailles['balcon'] = new Taille('Balcon', '10m2', 10);
+        $tailles['terrasse'] = new Taille('Terrasse', '30m2', 30);
+        $tailles['petitjardin'] = new Taille('Petit Jardin', '50m2', 50);
+        $tailles['moyenjardin'] = new Taille('Moyen Jardin', '100m2', 100);
+        $tailles['grandjardin'] = new Taille('Grand Jardin', '200m2', 200);
 
         foreach ($tailles as $taille) {
             $manager->persist($taille);
+        }
+
+        $zones['FR-01'] = new ZoneAdministrative('Zone Continentale : Est et Nord-Est', 'Ardennes');
+        $zones['FR-02'] = new ZoneAdministrative('Zone Continentale : Est et Nord-Est', 'Alsace');
+        $zones['FR-03'] = new ZoneAdministrative('Zone Continentale : Est et Nord-Est', 'Lorraine');
+        $zones['FR-04'] = new ZoneAdministrative('Zone Continentale : Est et Nord-Est', 'Haute Saône');
+        $zones['FR-10'] = new ZoneAdministrative('Zone Méditerranéenne : Sud-Est', 'Corse');
+        $zones['FR-11'] = new ZoneAdministrative('Zone Méditerranéenne : Sud-Est', 'Provence');
+        $zones['FR-12'] = new ZoneAdministrative('Zone Méditerranéenne : Sud-Est', 'Rousillon');
+        $zones['FR-13'] = new ZoneAdministrative('Zone Méditerranéenne : Sud-Est', 'Côtes méditerranéennes');
+        $zones['FR-20'] = new ZoneAdministrative('Zone Océanique', 'Ouest bordant la Manche et Océan Atlantique');
+        $zones['FR-30'] = new ZoneAdministrative('Zone Semi-océanique', 'Centre de la France');
+        $zones['FR-30'] = new ZoneAdministrative('Zone Montagnarde', 'Alpes');
+        $zones['FR-31'] = new ZoneAdministrative('Zone Montagnarde', 'Massif Central');
+        $zones['FR-32'] = new ZoneAdministrative('Zone Montagnarde', 'Pyrénées');
+
+        foreach ($zones as $zone) {
+            $manager->persist($zone);
         }
 
         // Liste de l'état de la plantation - Entity State
@@ -64,6 +75,9 @@ class AppFixtures extends Fixture
         foreach ($states as $state) {
             $manager->persist($state);
         }
+
+        // Liste des consommables - Entity Consommable
+        $this->loadConsommables($manager);
 
         // Liste des méthode de culture pour les récoltes - Entity Méthode
         $methodes['butte'] = new Methode('Butte', 'method_butte.png');
@@ -99,8 +113,6 @@ class AppFixtures extends Fixture
         $user1->setEmail('camille@example.com');
         $user1->setNickname('Camille');
         $user1->setRoles(['ROLE_ADMIN']);
-        $user1->setAdministrativeArea($zones['FR-075']);
-        $user1->setSurface($tailles['jardin']);
         $user1->setAge(31);
         $user1->setTelephone('+33 6 72 54 41 29');
         $user1->setPassword($this->encoder->hashPassword($user1, 'admin'));
@@ -108,8 +120,15 @@ class AppFixtures extends Fixture
         $photouser1->setImageName("th.jpg");
         $photouser1->setImageSize(236);
         $user1->setAvatar($photouser1);
+
+        //Garden1
+        $garden1 = new Garden();
+        $garden1->setRegion($zones['FR-12']);
+        $garden1->setSurface($tailles['jardin']);
+       // $garden1->setUser($user1);
         
         $manager->persist($user1);
+        $manager->persist($garden1);
         $manager->persist($photouser1);
 
 
@@ -141,8 +160,6 @@ class AppFixtures extends Fixture
         $user2->setEmail('John@example.com');
         $user2->setNickname('John');
         $user2->setRoles(['ROLE_ADMIN']);
-        $user2->setAdministrativeArea($zones['FR-074']);
-        $user2->setSurface($tailles['balcon']);
         $user2->setAge(25);
         $user2->setTelephone('0400000000');
         $user2->setPassword($this->encoder->hashPassword($user2, 'admin'));
@@ -152,7 +169,14 @@ class AppFixtures extends Fixture
         $photouser2->setImageSize(236);
         $user2->setAvatar($photouser2);
         
+        //Garden2
+        $garden2 = new Garden();
+        $garden2->setRegion($zones['FR-20']);
+        $garden2->setSurface($tailles['balcon']);
+       // $garden2->setUser($user2);
+        
         $manager->persist($user2);
+        $manager->persist($garden2);
         $manager->persist($photouser2);
 
         // Flux et panier du User2
@@ -183,8 +207,6 @@ class AppFixtures extends Fixture
         $user3->setEmail('doe@example.com');
         $user3->setNickname('Doe');
         $user3->setRoles(['ROLE_ADMIN']);
-        $user3->setAdministrativeArea($zones['FR-074']);
-        $user3->setSurface($tailles['jardin']);
         $user3->setAge(32);
         $user3->setTelephone('0400000000');
         $user3->setPassword($this->encoder->hashPassword($user3, 'admin'));
@@ -193,8 +215,15 @@ class AppFixtures extends Fixture
         $photouser3->setImageName("th3.jpg");
         $photouser3->setImageSize(236);
         $user3->setAvatar($photouser3);
+
+        //Garden3
+        $garden2 = new Garden();
+        $garden2->setRegion($zones['FR-30']);
+        $garden2->setSurface($tailles['grandjardin']);
+        //$garden2->setUser($user2);
         
         $manager->persist($user3);
+        $manager->persist($garden3);
         $manager->persist($photouser3);
 
         // Flux et Panier Doe
@@ -345,13 +374,13 @@ class AppFixtures extends Fixture
          
         // John, note avec photo
         $fluxuser22 = new Flux();
-        $fluxuser22->setCreatedat(new DateTime(), strtotime('-4 day'));
-        $fluxuser22->setUpdatedat(new DateTime(), strtotime('-4 day'));
+        $fluxuser22->setCreatedat(new DateTime());
+        $fluxuser22->setUpdatedat(new DateTime());
         $fluxuser22->setUser($user2);
         $fluxuser22->setShared(True);
         $postuser2 = new post();
         $postuser2->setDescription('Merci merci les insectes');
-        $postuser2->setCreatedat(new DateTime(), strtotime('-4 day'));
+        $postuser2->setCreatedat(new DateTime());
         $postuser2->setShared(True);
         $postuser2->setFlux($fluxuser22);
         $photo10 = new Photo();

@@ -38,8 +38,8 @@
                 {% for consor in r_byuser %}
                     {% set eco = eco + consor.prix * consor.recolte %}
                 {% endfor %}
-                {% for achat in achats %}
-                    {% set dep = dep + achat.achat.prix * achat.achat.quantite %}
+                {% for fluxachat in fluxAchats %}
+                    {% set dep = dep + fluxachat.achat.prix * fluxachat.achat.quantite %}
                 {% endfor %}
                 {% set tot =  eco - dep  %}
                 

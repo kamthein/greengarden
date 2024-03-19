@@ -15,17 +15,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ConsommableUpdateTreeCommand extends Command
 {
+    public $manager;
     protected static $defaultName = 'app:consommable:update-tree';
     protected static $defaultDescription = 'Update the nested tree of consommables';
-
-    private ManagerRegistry $doctrine;
     private ConsommableRepository $repository;
 
     public function __construct(ManagerRegistry $entityManager, ConsommableRepository $repository)
     {
         parent::__construct();
 
-        $entityManager = $doctrine->getManager();
+        $doctrine->getManager();
         $this->manager = $manager;
         $this->repository = $repository;
     }

@@ -7,6 +7,7 @@
     {%  if app.user.nbco < 7 %}
         <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
     {%  endif %}
+    {{ encore_entry_script_tags('style') }}
 {% endblock %}
 
 {% block stylesheets %}
@@ -131,13 +132,29 @@
                 </tr>
             {% endfor %}
         </table>
-            <br/><strong>{{ date_calendrier }}</strong><br/>
-            <div class="calendar_day">Votre activité du jour</div>
-            <br/>
-                    {# Vérifiez le contenu de events #}
-                    {# {{ dump(fluxes_day) }} #}
-            {{ include('carnet/displayListDayActivity.html.twig', { 'fluxes': fluxes_day, 'date' : date}) }}
+      </div>
+
+    <p> 
+        <div class="calendar_day">Mon activité du jour</div>
+    </p>
+        {{ include('carnet/displayListDayActivity.html.twig', { 'fluxes': fluxes_day, 'date' : date}) }}
+
+    <p><strong><div  class="calendar_day">Mon historique</div></strong></p>
+        {{ include('carnet/historique/histoPosts.html.twig', { 'fluxPosts': fluxPosts|reverse , 'user' : user })}}
+        {{ include('carnet/historique/histoPlants.html.twig', { 'fluxPaniers': fluxPaniers|reverse, 'user' : user  })}}
+        {{ include('carnet/historique/histoRecoltes.html.twig', { 'fluxPaniers': fluxPaniers|reverse , 'user' : user }) }}
+        {{ include('carnet/historique/histoAchat.html.twig', { 'fluxAchats': fluxAchats|reverse , 'user' : user }) }}
+
+        {% if app.user == user and fluxPosts is empty and fluxPaniers is empty and fluxAchats is empty %}
+        <div class="row cadre_post">
+            <a href="{{ path('ajouter') }}">
+                <button class="colorblue mdl-button mdl-button--raised mdl-button--colored">
+                    <img class="img-responsive" src="{{ asset('images/carnet.png') }}" alt="Image" width="32" height="32">
+                    Publiez un premier post
+                </button>
+            </a>
         </div>
+        {% endif %}
 
     </div>
     </div>

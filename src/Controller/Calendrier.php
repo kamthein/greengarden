@@ -18,11 +18,11 @@ class Calendrier
     {
         if($month === null)
         {
-            $month = intval(date("m"));
+            $month = (int) date("m");
         }
         if($year === null)
         {
-            $year = intval(date("Y"));
+            $year = (int) date("Y");
         }
         $this->month = $month;
         $this->year = $year;
@@ -45,14 +45,14 @@ class Calendrier
     {
         $start = new DateTime("{$this->year}-{$this->month}-01");
         $end = (clone $start)->modify('+ 1 month - 1 day');
-        $weeks = intval($end->format('W')) - intval($start->format('W'))+1;
+        $weeks = (int) $end->format('W') - (int) $start->format('W')+1;
         if($weeks === null)
         {
-            return intval($start->format('W'));
+            return (int) $start->format('W');
         }
         if($weeks<0)
         {
-            return intval($end->format('W'))+1;
+            return (int) $end->format('W')+1;
         }
         return $weeks;
     }

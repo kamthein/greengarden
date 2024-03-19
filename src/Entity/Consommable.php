@@ -115,7 +115,7 @@ class Consommable
             $this->setDescription($name);
         }
 
-        if ($parent) {
+        if ($parent instanceof \App\Entity\Consommable) {
             $this->setParent($parent);
         }
     }
@@ -279,11 +279,9 @@ class Consommable
 
     public function removePlant(Plant $plant): self
     {
-        if ($this->plants->removeElement($plant)) {
-            // set the owning side to null (unless already changed)
-            if ($plant->getConsommable() === $this) {
-                $plant->setConsommable(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->plants->removeElement($plant) && $plant->getConsommable() === $this) {
+            $plant->setConsommable(null);
         }
 
         return $this;

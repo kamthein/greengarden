@@ -18,6 +18,7 @@ use Symfony\Component\Uid\Uuid;
 
 final class SecurityController extends AbstractController
 {
+    public $translator;
     /**
      * @Route("/login", name="app_login", methods={"GET", "POST"})
      */
@@ -32,7 +33,7 @@ final class SecurityController extends AbstractController
     /**
      * @Route("/logout", name="app_logout")
      */
-    public function logout()
+    public function logout(): void
     {
         throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
@@ -101,15 +102,12 @@ final class SecurityController extends AbstractController
 
                 return $this->redirectToRoute('app_login');
             }
-            $PasswordCheck = preg_match('#[A-Z]#', $request->request->get('newPassword')) + preg_match('#[a-z]#', $request->request->get('newPassword')) + preg_match('#[0-9]#', $request->request->get('newPassword')) + preg_match('#[^a-zA-Z0-9]#', $request->request->get('newPassword'));
+            $PasswordCheck = preg_match('#[A-Z]#', $request->request->get('newPassword')) + preg_match('#[a-z]#', $request->request->get('newPassword')) + preg_match('#\d#', $request->request->get('newPassword')) + preg_match('#[^a-zA-Z0-9]#', $request->request->get('newPassword'));
             if ($request->request->get('newPassword') == "") {
                 $this->addFlash('danger', 'Veuillez remplir les champs !');
-
                 return $this->redirectToRoute('app_reset_password', ['token' => $token]);
-            }
-            else if (true == strpos($request->request->get('newPassword'), $user->getNickname()) || $request->request->get('newPassword') == $user->getNickname() ) {
+            } elseif (true == strpos($request->request->get('newPassword'), $user->getNickname()) || $request->request->get('newPassword') == $user->getNickname()) {
                 $this->addFlash('danger', 'Le mot de passe ne doit pas contenir votre pseudo');
-
                 return $this->redirectToRoute('app_reset_password', ['token' => $token]);
             } elseif (strlen($request->request->get('newPassword')) < 8) {
                 $this->addFlash('danger', 'Votre mot de passe doit comporter au moins 8 caractères');
@@ -146,7 +144,7 @@ final class SecurityController extends AbstractController
         $entityManager = $doctrine->getManager();
         if ($request->isMethod('POST')) {
             // checking on new password using regex
-            $PasswordCheck = preg_match('#[A-Z]#', $request->request->get('newPassword')) + preg_match('#[a-z]#', $request->request->get('newPassword')) + preg_match('#[0-9]#', $request->request->get('newPassword')) + preg_match('#[^a-zA-Z0-9]#', $request->request->get('newPassword'));
+            $PasswordCheck = preg_match('#[A-Z]#', $request->request->get('newPassword')) + preg_match('#[a-z]#', $request->request->get('newPassword')) + preg_match('#\d#', $request->request->get('newPassword')) + preg_match('#[^a-zA-Z0-9]#', $request->request->get('newPassword'));
             // check if old password is valid
             if (false == $passwordEncoder->isPasswordValid($this->getUser(), $request->request->get('oldPassword'))) {
                 $this->addFlash('danger', $this->translator->trans('incorrect_old_password', [], 'user'));

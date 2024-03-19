@@ -12,8 +12,8 @@ use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class EmailVerifier
 {
-    private $verifyEmailHelper;
-    private $mailer;
+    private \SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface $verifyEmailHelper;
+    private \Symfony\Component\Mailer\MailerInterface $mailer;
     private $entityManager;
 
     public function __construct(VerifyEmailHelperInterface $helper, MailerInterface $mailer,  ManagerRegistry $doctrine)

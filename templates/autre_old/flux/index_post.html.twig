@@ -17,7 +17,7 @@
     </div>
         {% for p in post.photos %}      
             {% if p.imageName != "aujourdhui.png"  %}
-                {{ include('home/flux/display_photo.html.twig', { 'p': p }) }}
+                {{ include('carnet/display_photo.html.twig', { 'p': p }) }}
             {% endif %}     
         {% endfor %}
 

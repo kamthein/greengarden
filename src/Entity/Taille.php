@@ -7,37 +7,29 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=TailleRepository::class)
- */
+#[ORM\Entity(repositoryClass: TailleRepository::class)]
 class Taille
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $id;
+    public $users;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nom;
+    #[ORM\Column(nullable: false)]
+    private ?string $nom = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="surface")
-     */
-    private $users;
+    #[ORM\Column(nullable: true)]
+    private ?string $metre = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $metre;
+    #[ORM\Column(nullable: true)]
+    private ?float $objectif = null;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $objectif;
+    #[ORM\OneToMany(mappedBy: 'surface', targetEntity: Garden::class)]
+    private Collection $taille;
 
     public function __construct(string $nom, string $metre, float $obj)
     {
@@ -45,6 +37,7 @@ class Taille
         $this->nom = $nom;
         $this->metre = $metre;
         $this->objectif =$obj;
+        $this->taille = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -69,36 +62,6 @@ class Taille
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setSurface($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getSurface() === $this) {
-                $user->setSurface(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getMetre(): ?string
     {
         return $this->metre;
@@ -119,6 +82,34 @@ class Taille
     public function setObjectif(float $objectif): self
     {
         $this->objectif = $objectif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Garden>
+     */
+    public function getTaille(): Collection
+    {
+        return $this->taille;
+    }
+
+    public function addTaille(Garden $taille): static
+    {
+        if (!$this->taille->contains($taille)) {
+            $this->taille->add($taille);
+            $taille->setSurface($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaille(Garden $taille): static
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->taille->removeElement($taille) && $taille->getSurface() === $this) {
+            $taille->setSurface(null);
+        }
 
         return $this;
     }

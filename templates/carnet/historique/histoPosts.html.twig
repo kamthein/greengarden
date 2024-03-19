@@ -1,18 +1,17 @@
     <details class="specifications" id="statistics">
         <div class="row fond">
         {% set nbr = 0 %}
-        {% for flux in fluxes %}
-             {{  flux.post.description }}
-            <br/><small>{{  flux.createdat|date('d/m/y') }} </small>
+        {% for fluxpost in fluxPosts %}
+             {{  fluxpost.post.description }}
+            <br/><small>{{  fluxpost.createdat|date('d/m/y') }} </small>
             {% set nbr = nbr +1 %}
-            {% for p in flux.post.photos %}
+            {% for p in fluxpost.post.photos %}
                 {% if p.imageName != "aujourdhui.png"  %}
-                    {{ include('home/flux/display_photo.html.twig', { 'p': p }) }}
+                    {{ include('carnet/display_photo.html.twig', { 'p': p }) }}
                 {% endif %}   
             {% endfor %}
-            {{ include('garden/me/modif_flux.html.twig', { 'commentaires': flux.commentaires , 'likes': flux.likes, 'flux_id' : flux.id, 'flux': flux }) }}
+            {{ include('carnet/historique/com_and_like.html.twig', { 'commentaires': fluxpost.commentaires , 'likes': fluxpost.likes, 'flux_id' : fluxpost.id, 'flux': fluxpost }) }}
         {% endfor %}
-
 
         </div>
         <summary class="row cadre_blanc">

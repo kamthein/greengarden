@@ -216,7 +216,7 @@ class JardinAjouts extends AbstractController
             }
             return $this->redirectToRoute('garden');
         }
-        return $this->render('carnet/ajouter/addAmis.html.twig', [
+        return $this->render('garden/addAmis.html.twig', [
             'users' => $users,
             'amis' => $amis,
             'form' => $form->createView(),
@@ -252,7 +252,6 @@ class JardinAjouts extends AbstractController
 
     /**
      * @param $user
-     * @param DateTime $daydate
      * @return Flux
      * Créer un nouveau flux avec la date du jour et l'utilisateur connecté
      */
@@ -267,7 +266,6 @@ class JardinAjouts extends AbstractController
     }
 
     /**
-     * @param DateTime $daydate
      * @return Panier
      * Créer un nouveau panier avec la date du jour
      */
@@ -280,7 +278,6 @@ class JardinAjouts extends AbstractController
     }
 
     /**
-     * @param Panier $panier
      * @param $user
      * @return Plant
      * Créer une nouvelle plantation dans un panier
@@ -296,9 +293,7 @@ class JardinAjouts extends AbstractController
     }
 
     /**
-     * @param Panier $panier
      * @param $user
-     * @return Recolte
      */
     public function NewRecolteDefault(Panier $panier, $user): Recolte
     {

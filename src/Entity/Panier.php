@@ -234,11 +234,9 @@ class Panier
 
     public function removePlant(Plant $plant): self
     {
-        if ($this->plants->removeElement($plant)) {
-            // set the owning side to null (unless already changed)
-            if ($plant->getPanier() === $this) {
-                $plant->setPanier(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->plants->removeElement($plant) && $plant->getPanier() === $this) {
+            $plant->setPanier(null);
         }
 
         return $this;

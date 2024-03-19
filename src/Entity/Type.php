@@ -13,6 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
 class Type
 {
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    public $achats;
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -22,7 +26,7 @@ class Type
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom;
+    private string $nom;
 
 
   

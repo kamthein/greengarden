@@ -5,14 +5,14 @@
         </div>
         <hr>
         {% set nbr = 0 %}
-        {% for panier in paniers %}
-            {% if panier.plants is not empty %}
+        {% for fluxpanier in fluxPaniers %}
+            {% if fluxpanier.plants is not empty %}
                 <table class="table table-hover table-striped table_jardin">
                     <thead>
                         <tr>
                             <th>
-                                {% if app.user.id == panier.flux.user.id  %}
-                                    <a href="{{ path('ajouter_plant', {id: panier.id}) }}"> <img src="{{ asset('images/ajouter.png') }}" alt="Image"  width="25"></a>
+                                {% if app.user.id == fluxpanier.flux.user.id  %}
+                                    <a href="{{ path('ajouter_plant', {id: fluxpanier.id}) }}"> <img src="{{ asset('images/ajouter.png') }}" alt="Image"  width="25"></a>
                                 {% endif %}
                             </th>
                             <th>Espèce</th>
@@ -21,7 +21,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for pl in panier.plants %}
+                        {% for pl in fluxpanier.plants %}
                             {% set nbr = nbr + pl.quantite %}
                             <tr>
                                 <td style="text-align: center"><small>{{ pl.createdAt|date("d/m/y") }}</small></td>
@@ -44,7 +44,7 @@
                             {% endfor %}
                     </tbody>
                 </table>
-                {{ include('garden/me/modif_flux.html.twig', { 'commentaires': panier.flux.commentaires , 'likes': panier.flux.likes, 'flux_id' : panier.flux.id, 'flux': panier.flux }) }}
+                {{ include('carnet/historique/com_and_like.html.twig', { 'commentaires': fluxpanier.flux.commentaires , 'likes': fluxpanier.flux.likes, 'flux_id' : fluxpanier.flux.id, 'flux': fluxpanier.flux }) }}
             {% endif %}
         {% endfor %}
         </div>

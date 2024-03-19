@@ -26,7 +26,7 @@
 
         </div>
         <div class="entete_stat">
-            {{ include('garden/me/apercu.html.twig', { 'r_byuser' : r_byuser, 'achat' : achats, 'calories' : calories, 'user' : user }) }}
+            {{ include('garden/apercu.html.twig', { 'r_byuser' : r_byuser, 'fluxAchats' : fluxAchats, 'calories' : calories, 'user' : user }) }}
         </div>
     </div>
     <p><strong>Statistiques</strong></p>
@@ -41,32 +41,17 @@
         </a>
     </p>
 
-    <div id="content">
-            {{ include('garden/commun/_content.html.twig', {'p_byuser' : p_byuser, 'r_byuser' : r_byuser, 'user' : user }) }}
+    <div id="content"> 
+{{ include('garden/synthese.html.twig', {'p_byuser' : p_byuser, 'r_byuser' : r_byuser, 'user' : user }) }}
+{{ include('garden/graphs.html.twig', {'p_byuser' : p_byuser, 'r_byuser' : r_byuser, 'chart' : chart, 'chart_don_r' : chart_don_r, 'user' : user}) }}
     </div>
     <br/>
-        <p><strong>Historique</strong></p>
-            {{ include('garden/me/posts.html.twig', { 'fluxes': fluxes|reverse , 'user' : user })}}
-            {{ include('garden/me/plants.html.twig', { 'paniers': paniers|reverse, 'user' : user  })}}
-            {{ include('garden/me/recoltes.html.twig', { 'paniers': paniers|reverse , 'user' : user }) }}
-            {{ include('garden/me/achat.html.twig', { 'achats': achats|reverse , 'user' : user }) }}
-
-        {% if app.user == user and fluxes is empty and plant == false and rec == false and achats is empty %}
-        <div class="row cadre_post">
-            <a href="{{ path('ajouter') }}">
-                <button class="colorblue mdl-button mdl-button--raised mdl-button--colored">
-                    <img class="img-responsive" src="{{ asset('images/carnet.png') }}" alt="Image" width="32" height="32">
-                    Publiez un premier post
-                </button>
-            </a>
-        </div>
-        {% endif %}
 
         <br/>
 
         {% set classe = "row cadre_blanc" %}
         <p><strong>Communauté</strong></p>
-        {{ include('garden/commun/amis.html.twig', { 'amis': amis , 'user' : user, 'classe' : classe})}}
+        {{ include('garden/amis.html.twig', { 'amis': amis , 'user' : user, 'classe' : classe})}}
     <br/>
     <div class="row cadre_blanc_no_border">
         <a href="{{'whatsapp://send?text=http://www.GreenGarden.fr/bou/' ~ user.nickname }}"> Envoyer mon jardin à un ami</a>

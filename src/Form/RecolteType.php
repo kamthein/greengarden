@@ -17,16 +17,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RecolteType extends AbstractType
 {
-    private ConsommableRepository $repository;
     private MethodeRepository $repository_methode;
 
     public function __construct(ConsommableRepository $repository, MethodeRepository $repository_methode)
     {
-        $this->repository = $repository;
         $this->repository_methode = $repository_methode;
 
     }
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('consommable', ConsommableEntityType::class, [
@@ -60,7 +58,7 @@ class RecolteType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Recolte::class,

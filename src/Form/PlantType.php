@@ -17,17 +17,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlantType extends AbstractType
 {
-    private ConsommableRepository $repository;
     private StateRepository $repository_state;
 
     public function __construct(ConsommableRepository $repository, StateRepository $repository_state)
     {
-        $this->repository = $repository;
         $this->repository_state = $repository_state;
 
     }
     
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('consommable', ConsommableEntityType::class, [
@@ -56,7 +54,7 @@ class PlantType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             // Configure your form options here

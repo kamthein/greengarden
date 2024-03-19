@@ -14,6 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class RegistrationController extends AbstractController
 {
+    public $emailVerifier;
     /**
      * @Route("/register", name="app_register", methods={"GET", "POST"})
      */

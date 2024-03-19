@@ -73,12 +73,8 @@ class PageJardinController extends AbstractController
         $chart_donR = $this->graph_repartitionRType($user, $chartBuilder, $year, $recolteRepository);
         //Liste des amis
         $amis = $this->amis($user, $friendRepository);
-        //Liste des posts
-        $flux = $fluxRepository->postbyuser($user);
-        //Liste des paniers et leurs récoltes
-        $paniers = $panierRepository->panierbyuser($user);
         //Liste des achats
-        $achats = $fluxRepository->achatbyuser($user);
+        $FluxAchats = $fluxRepository->achatbyuser($user);
 
 
         //On vérifie si on a une requête AJAX
@@ -90,12 +86,12 @@ class PageJardinController extends AbstractController
                     'r_byuser' => $r_byuser,
                     'chart' => $chart,
                     'chart_don_r' => $chart_donR,
-                    'achats' => $achats,
+                    'amis' => $amis,
                     'calories' => $calories,
+                    'fluxAchats' => $FluxAchats
                 ])
             ]);
         }
-
 
         return $this->render('garden/index.html.twig', [
             'user' => $user,
@@ -104,10 +100,8 @@ class PageJardinController extends AbstractController
             'chart' => $chart,
             'chart_don_r' => $chart_donR,
             'amis' => $amis,
-            'paniers' =>$paniers,
-            'fluxes' => $flux,
-            'achats' => $achats,
             'calories' => $calories,
+            'fluxAchats' => $FluxAchats
         ]);
        
     }
@@ -133,59 +127,6 @@ class PageJardinController extends AbstractController
         return $this->statAnneeUser($user_co,$user, $chartBuilder, $entityManager, $request, 2022, $fluxRepository, $panierRepository , $recolteRepository, $userRepository, $friendRepository);
     }
 
-    public function statAnneeUser($user_co, $user, $chartBuilder, $entityManager, $request, $year, $fluxRepository, $panierRepository , $recolteRepository, $userRepository, $friendRepository): Response
-    {
-        $friend = $friendRepository->isfriend($user_co, $user);
-
-        if ($friend)
-        {
-            $friend = true;
-        }else
-        {
-            $friend = false;
-        }
-        // Calorie User
-        $calories = $this->calories($user, $year, $recolteRepository);
-        // Liste des espèces plantées (en semis et en plant)
-        $p_byuser = $this->p_byuser($user, $year, $userRepository);
-        // Liste des espèces récoltées
-        $r_byuser = $this->r_byuser($user, $year, $userRepository);
-        // Graphique ligne récoltes
-        $chart = $this->graph_recolte($user, $chartBuilder, $year, $recolteRepository);
-        // Graphique donught récoltées par méthode
-        $chart_donR = $this->graph_repartitionRType($user, $chartBuilder, $year, $recolteRepository );
-        //Liste des amis
-        $amis = $this->amis($user, $friendRepository);
-        //Liste des publications (Seulement dans Le Jardin de X)
-        $flux = $fluxRepository->findBy(array('user' => $user, 'shared' => true), array('createdat' => 'DESC'));
-
-        //On vérifie si on a une requête AJAX
-    if($request->get('ajax')) {
-        return new JsonResponse([
-            'content' => $this->renderView('garden/commun/_content.html.twig', [
-                'user' => $user,
-                'p_byuser' => $p_byuser,
-                'r_byuser' => $r_byuser,
-                'chart' => $chart,
-                'chart_don_r' => $chart_donR,
-                'calories' => $calories,
-            ])
-        ]);
-    }
-
-    return $this->render('garden/show.html.twig', [
-        'user' => $user,
-        'p_byuser' => $p_byuser,
-        'r_byuser' => $r_byuser,
-        'chart' => $chart,
-        'chart_don_r' => $chart_donR,
-        'fluxes' => $flux,
-        'amis' => $amis,
-        'calories' => $calories,
-        'friend' => $friend,
-    ]);
-
-}
 
 
     /**
@@ -274,16 +215,20 @@ class PageJardinController extends AbstractController
             $test = false;
             foreach($stat as $s)
             {
-                if (intval($s["mois"]) == $mois)
+                if ((int) $s["mois"] == $mois)
                 {
                     $tab_val[] = [$s["quantity_tot"]];
                     $test = true;
-                    if ($s["quantity_tot"] > $max) $max = $s["quantity_tot"];
+                    if ($s["quantity_tot"] > $max) {
+                        $max = $s["quantity_tot"];
+                    }
                 }
             }
-            if ($test == false)  $tab_val[] = [0];
+            if ($test == false) {
+                $tab_val[] = [0];
+            }
         }
-        $max =$max * 1.2;
+        $max *= 1.2;
 
         $tab_mois = ["","janvier","février","mars","avril", "mai", "juin", "juillet", "Août", "septembre", "octobre", "novembre", "décembre"];
         $chart = $chartBuilder->createChart(Chart::TYPE_LINE);

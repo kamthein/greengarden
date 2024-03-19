@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240314101740 extends AbstractMigration
+final class Version20240314161133 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -34,10 +34,8 @@ final class Version20240314101740 extends AbstractMigration
         $this->addSql('CREATE TABLE post (id INT AUTO_INCREMENT NOT NULL, flux_id INT DEFAULT NULL, description VARCHAR(1000) DEFAULT NULL, createdat DATETIME NOT NULL, titre VARCHAR(255) DEFAULT NULL, shared TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_5A8A6C8DC85926E (flux_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE recolte (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, consommable_id INT NOT NULL, methode_id INT DEFAULT NULL, panier_id INT DEFAULT NULL, createdat DATETIME NOT NULL, quantity DOUBLE PRECISION DEFAULT NULL, INDEX IDX_3433713CA76ED395 (user_id), INDEX IDX_3433713CC9CEB381 (consommable_id), INDEX IDX_3433713C41CCC9A4 (methode_id), INDEX IDX_3433713CF77D927C (panier_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE state (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE taille (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, metre VARCHAR(255) DEFAULT NULL, objectif DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE type (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, administrative_area_id INT UNSIGNED DEFAULT NULL, surface_id INT DEFAULT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, nickname VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', age INT DEFAULT NULL, telephone VARCHAR(255) DEFAULT NULL, is_verified TINYINT(1) NOT NULL, last_co DATETIME DEFAULT NULL, nb_co DOUBLE PRECISION DEFAULT NULL, reset_token VARCHAR(255) DEFAULT NULL, flag_reset_token INT DEFAULT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), INDEX IDX_8D93D649A3D66170 (administrative_area_id), INDEX IDX_8D93D649CA11F534 (surface_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE zone_administrative (id INT UNSIGNED AUTO_INCREMENT NOT NULL, country_code VARCHAR(2) NOT NULL, name VARCHAR(255) NOT NULL, meteolink VARCHAR(255) DEFAULT NULL, UNIQUE INDEX zone_administrative_unique (country_code, name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, nickname VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', age INT DEFAULT NULL, telephone VARCHAR(255) DEFAULT NULL, is_verified TINYINT(1) NOT NULL, last_co DATETIME DEFAULT NULL, nb_co DOUBLE PRECISION DEFAULT NULL, reset_token VARCHAR(255) DEFAULT NULL, flag_reset_token INT DEFAULT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE achat ADD CONSTRAINT FK_26A98456C54C8C93 FOREIGN KEY (type_id) REFERENCES type (id)');
         $this->addSql('ALTER TABLE achat ADD CONSTRAINT FK_26A98456C85926E FOREIGN KEY (flux_id) REFERENCES flux (id)');
         $this->addSql('ALTER TABLE commentaire ADD CONSTRAINT FK_67F068BCA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
@@ -62,8 +60,6 @@ final class Version20240314101740 extends AbstractMigration
         $this->addSql('ALTER TABLE recolte ADD CONSTRAINT FK_3433713CC9CEB381 FOREIGN KEY (consommable_id) REFERENCES consommable (id)');
         $this->addSql('ALTER TABLE recolte ADD CONSTRAINT FK_3433713C41CCC9A4 FOREIGN KEY (methode_id) REFERENCES methode (id)');
         $this->addSql('ALTER TABLE recolte ADD CONSTRAINT FK_3433713CF77D927C FOREIGN KEY (panier_id) REFERENCES panier (id)');
-        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649A3D66170 FOREIGN KEY (administrative_area_id) REFERENCES zone_administrative (id)');
-        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649CA11F534 FOREIGN KEY (surface_id) REFERENCES taille (id)');
     }
 
     public function down(Schema $schema): void
@@ -93,8 +89,6 @@ final class Version20240314101740 extends AbstractMigration
         $this->addSql('ALTER TABLE recolte DROP FOREIGN KEY FK_3433713CC9CEB381');
         $this->addSql('ALTER TABLE recolte DROP FOREIGN KEY FK_3433713C41CCC9A4');
         $this->addSql('ALTER TABLE recolte DROP FOREIGN KEY FK_3433713CF77D927C');
-        $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D649A3D66170');
-        $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D649CA11F534');
         $this->addSql('DROP TABLE achat');
         $this->addSql('DROP TABLE commentaire');
         $this->addSql('DROP TABLE config');
@@ -109,9 +103,7 @@ final class Version20240314101740 extends AbstractMigration
         $this->addSql('DROP TABLE post');
         $this->addSql('DROP TABLE recolte');
         $this->addSql('DROP TABLE state');
-        $this->addSql('DROP TABLE taille');
         $this->addSql('DROP TABLE type');
         $this->addSql('DROP TABLE user');
-        $this->addSql('DROP TABLE zone_administrative');
     }
 }

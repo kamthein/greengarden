@@ -16,18 +16,18 @@
         <tbody>
         {% set prix_tot = 0 %}
         {% set q_tot = 0 %}
-        {% for achat in achats %}
-            {% set prix_tot = prix_tot + achat.achat.prix * achat.achat.quantite %}
-            {% set q_tot = q_tot + achat.achat.quantite %}
+        {% for fluxachat in fluxAchats %}
+            {% set prix_tot = prix_tot + fluxachat.achat.prix * fluxachat.achat.quantite %}
+            {% set q_tot = q_tot + fluxachat.achat.quantite %}
             <tr>
-                <td><small>{{ achat.createdAt|date("d/m/y") }}</small></td>
-                <td style=" text-align: center">{{ achat.achat.type.nom }}</td>
-                <td style=" text-align: center">{{ achat.achat.descritpion }}</td>
-                <td style=" text-align: center">{{ achat.achat.quantite }}</td>
-                <td style=" text-align: center">{{ achat.achat.prix }}<small><i>€</i></small></td>
+                <td><small>{{ fluxachat.achat.createdAt|date("d/m/y") }}</small></td>
+                <td style=" text-align: center">{{ fluxachat.achat.type.nom }}</td>
+                <td style=" text-align: center">{{ fluxachat.achat.descritpion }}</td>
+                <td style=" text-align: center">{{ fluxachat.achat.quantite }}</td>
+                <td style=" text-align: center">{{ fluxachat.achat.prix }}<small><i>€</i></small></td>
 
                     <td>
-                    <a href="{{ path('supp_achat', {id: achat.achat.id}) }}"> <img src="{{ asset('images/supp_def.jpg') }}" alt="Image"  width="20"></a>
+                    <a href="{{ path('supp_achat', {id: fluxachat.achat.id}) }}"> <img src="{{ asset('images/supp_def.jpg') }}" alt="Image"  width="20"></a>
                     </td>
             </tr>
         {% endfor %}

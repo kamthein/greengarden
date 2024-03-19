@@ -6,7 +6,7 @@ use App\Entity\Achat;
 use App\Entity\Flux;
 use DateTime;
 use App\Repository\FluxRepository;
-use App\Repository\AchatRepository;
+use App\Repository\PanierRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,18 +19,16 @@ class PageCarnetController extends AbstractController
      * @Route("/carnet/{date}", name="carnet")
      * Afficher la page Carnet (pour ajouter des élèments à son jardin)
      */
-    public function pageCarnet(UserInterface $user, ManagerRegistry $doctrine, DateTime $date, FluxRepository $fluxRepository, AchatRepository $achatRepository): Response
+    public function pageCarnet(UserInterface $user, ManagerRegistry $doctrine, DateTime $date, FluxRepository $fluxRepository, PanierRepository $panierRepository): Response
     {
         $entityManager = $doctrine->getManager();
         $this->CompteurCo($user, $entityManager);
 
         // Liste des flux du jour : panier, recolte, post, achat
         $fluxes_day = $fluxRepository->fluxbyuserToday($user, $date);
-
         $date_jour = $date->format('Y-m-d H:i:s');
         $mois = $date->format('m');
         $annee = $date->format('Y');
-
         $month = new Calendrier($mois, $annee);
         $date_formatee = $date->format('d')." ".$month->DatetoString();
         $date_mois = $month->DatetoString();
@@ -46,11 +44,21 @@ class PageCarnetController extends AbstractController
         $events_recolte = $fluxRepository->dateFluxRecolte($user, $startingday, (clone $startingday)->modify('+ 32 days'));
         // Liste des flux du mois : achat
         $events_achat = $fluxRepository->dateFluxAchat($user, $startingday, (clone $startingday)->modify('+ 32 days'));
-
+        
         $event = array_merge($events_note, $events_plantation, $events_recolte, $events_achat);
 
         // flux vide
         $vide = $fluxRepository->TrouverVide();
+
+
+        // MON HISTORIQUE
+        //Liste des posts
+        $FluxPosts = $fluxRepository->postbyuser($user);
+        //Liste des paniers et leurs récoltes
+        $FluxPaniers = $panierRepository->panierbyuser($user);
+        //Liste des achats
+        $FluxAchats = $fluxRepository->achatbyuser($user);
+
 
         return $this->render('carnet/home.html.twig', [
             'user' => $user,
@@ -63,11 +71,13 @@ class PageCarnetController extends AbstractController
             'jours' => $days,
             'events' => $event,
             'vides' => $vide,
+            'fluxPaniers' =>$FluxPaniers,
+            'fluxPosts' => $FluxPosts,
+            'fluxAchats' => $FluxAchats,
         ]);
     }
 
     /**
-     * @param UserInterface $user
      * @param ManagerRegistry $doctrine
      * Compte le nombre de connexion à la page carnet
      */

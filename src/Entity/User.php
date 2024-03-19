@@ -97,11 +97,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $fluxes;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ZoneAdministrative::class, inversedBy="users")
-     */
-    private $administrativeArea;
-
-    /**
      * @Assert\NotBlank(groups={"Profile"})
      * @UserPassword(groups={"Profile"})
      */
@@ -135,11 +130,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Like::class, mappedBy="user")
      */
     private $likes;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Taille::class, inversedBy="users")
-     */
-    private $surface;
 
     /**
      * @ORM\OneToMany(targetEntity=Plant::class, mappedBy="user", orphanRemoval=true)
@@ -430,18 +420,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAdministrativeArea(): ?ZoneAdministrative
-    {
-        return $this->administrativeArea;
-    }
-
-    public function setAdministrativeArea(?ZoneAdministrative $administrativeArea): self
-    {
-        $this->administrativeArea = $administrativeArea;
-
-        return $this;
-    }
-
     public function getAvatar(): ?Photo
     {
         return $this->avatar;
@@ -523,17 +501,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSurface(): ?taille
-    {
-        return $this->surface;
-    }
-
-    public function setSurface(?taille $surface): self
-    {
-        $this->surface = $surface;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Plant[]
@@ -713,4 +680,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->resetToken = $resetToken;
     }
+
+ 
 }

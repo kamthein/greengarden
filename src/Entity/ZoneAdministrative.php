@@ -7,46 +7,37 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ZoneAdministrativeRepository::class)
- * @ORM\Table(uniqueConstraints={
- *   @ORM\UniqueConstraint(name="zone_administrative_unique", columns={"country_code", "name"})
- * })
- */
+
+#[ORM\Entity(repositoryClass: ZoneAdministrativeRepository::class)]
 class ZoneAdministrative
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer", options={"unsigned": true})
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $id;
+    public $users;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $countryCode;
+    #[ORM\Column(nullable: true)]
+    private ?string $countryCode = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(nullable: true)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="administrativeArea")
-     */
-    private $users;
+    #[ORM\Column(nullable: true)]
+    private ?string $meteolink = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $meteolink;
+    #[ORM\OneToMany(mappedBy: 'region', targetEntity: Garden::class)]
+    private Collection $gardens;
 
     public function __construct(string $countryCode, string $name)
     {
         $this->countryCode = $countryCode;
         $this->name = $name;
         $this->users = new ArrayCollection();
+        $this->gardens = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -69,36 +60,6 @@ class ZoneAdministrative
         return $this->name;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setAdministrativeArea($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getAdministrativeArea() === $this) {
-                $user->setAdministrativeArea(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getMeteolink(): ?string
     {
@@ -108,6 +69,34 @@ class ZoneAdministrative
     public function setMeteolink(?string $meteolink): self
     {
         $this->meteolink = $meteolink;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Garden>
+     */
+    public function getGardens(): Collection
+    {
+        return $this->gardens;
+    }
+
+    public function addGarden(Garden $garden): static
+    {
+        if (!$this->gardens->contains($garden)) {
+            $this->gardens->add($garden);
+            $garden->setRegion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGarden(Garden $garden): static
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->gardens->removeElement($garden) && $garden->getRegion() === $this) {
+            $garden->setRegion(null);
+        }
 
         return $this;
     }

@@ -65,9 +65,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     // Liste les Consommables de l'utilisateur, le nombre de semis, de plants, et de récoltes.
-    public function resume_table($user, $year)
+    public function resume_table($user, $year): void
     {
-        $query = $this->createQueryBuilder('u')
+        $this->createQueryBuilder('u')
             ->innerJoin('u.panier')
             ->innerJoin('u.recoltes', 'r')
             ->innerJoin('r.consommable', 'c')

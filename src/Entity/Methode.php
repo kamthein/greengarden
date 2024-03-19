@@ -22,7 +22,7 @@ class Methode
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom;
+    private string $nom;
 
     /**
      * @ORM\OneToMany(targetEntity=Recolte::class, mappedBy="methode")

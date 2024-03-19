@@ -1,3 +1,7 @@
+
+    <details class="specifications" id="statistics">
+        <div class="row fond">
+                
 {% set vide = 0 %}
 {% if fluxes is not empty %}
         {% for flux in fluxes %}
@@ -12,7 +16,7 @@
                     {{ include('carnet/displayPost.html.twig', { 'post': flux.post}) }}
                 </p>
             {% elseif flux.achat is not null%}
-                {{ include('carnet/displayAchat.html.twig', { 'achat' : flux.achat}) }}
+                    {{ include('carnet/displayAchat.html.twig', { 'achat' : flux.achat}) }}
             {% endif %}
         {% endfor %}
         
@@ -23,3 +27,13 @@
 {% if vide == 0 %}
     <p><i>Aucune activité aujourd'hui!</i></p>
 {% endif %}
+
+        </div>
+        <summary class="row cadre_blanc">
+            <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/aujourdhui.png') }}" alt="Image" width="30" height="30">&nbsp;&nbsp; {{ date_calendrier }}</span>
+            <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
+        </summary>
+    </details>
+
+
+

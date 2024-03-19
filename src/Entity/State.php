@@ -13,6 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
 class State
 {
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    public $plants;
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -22,7 +26,7 @@ class State
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom;
+    private string $nom;
 
 
     public function __construct(string $nom)
