@@ -46,12 +46,12 @@
                         <img alt="GreenGarden" src="{{ asset('images/LOGO.png') }}">
                     </a>
                     <strong class="my-auto">
-                        {% if route_name == "home" %}  GreenGarden - jardin 
-                        {% elseif route_name == "carnet" %} GreenGarden - Carnet 
-                        {% elseif route_name == "garden" %} GreenGarden - Jardin 
-                        {% elseif route_name == "profile" %} GreenGarden - Profil
-                        {% elseif route_name == "shop" %} GreenGarden - Boutique  
-                        {% else %} GreenGarden  
+                        {% if route_name == "home" %}  Home 
+                        {% elseif route_name == "carnet" %} Mon Carnet 
+                        {% elseif route_name == "garden" %} Mon Jardin 
+                        {% elseif route_name == "profile" %} Mon Profil
+                        {% elseif route_name == "shop" %} La Boutique  
+                        {% else %} Le Prepousse  
                         {% endif %}
                     </strong>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}

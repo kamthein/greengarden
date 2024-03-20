@@ -75,6 +75,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->where( 'r.user = :user' )
             ->andwhere('YEAR(r.createdat)= :year');
     }
+
+        // Liste les jardins
+        public function gardenbyuser($user): void
+        {
+            $this->createQueryBuilder('u')
+                ->innerJoin('u.garden', 'g')
+                ->where( 'g.user = :user' );
+        }
     
 
     /**

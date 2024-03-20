@@ -10,6 +10,7 @@ use App\Entity\Methode;
 use App\Entity\Panier;
 use App\Entity\Recolte;
 use App\Entity\User;
+use App\Entity\Garden;
 use DateTime;
 
 use App\Repository\FluxRepository;
@@ -18,6 +19,7 @@ use App\Repository\AchatRepository;
 use App\Repository\RecolteRepository;
 use App\Repository\UserRepository;
 use App\Repository\FriendRepository;
+use App\Repository\GardenRepository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,30 +33,33 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 
-
 class PageJardinController extends AbstractController
 {
     #[Route(path: '/bou', name: 'garden')] // Afficher sa propre page Jardin
-    public function pageJardin(UserInterface $user, ChartBuilderInterface $chartBuilder,  ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
+    public function pageJardin(UserInterface $user, ChartBuilderInterface $chartBuilder,  ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
     {
         $entityManager = $doctrine->getManager();
-        return $this->statAnnee($user, $chartBuilder, $entityManager, $request, 2024, $fluxRepository, $panierRepository, $achatRepository , $recolteRepository, $userRepository, $friendRepository );
+        return $this->statAnnee($user, $user, $chartBuilder, $entityManager, $request, 2024, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository );
     }
 
-    #[Route(path: '/boupast', name: 'gardenpast')] // Afficher sa propre page Jardin année 2022
-    public function pageJardinPastYear(UserInterface $user, ChartBuilderInterface $chartBuilder,   ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
+       #[Route(path: '/bou/{nickname}', name: 'app_show_garden')] // Afficher la page Jardin d'un autre utilisateur 2024
+    public function pageJardinUser(UserInterface $user_co, User $user, ChartBuilderInterface $chartBuilder,  ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
     {
         $entityManager = $doctrine->getManager();
-        return $this->statAnnee($user, $chartBuilder, $entityManager, $request, 2022, $fluxRepository, $panierRepository, $achatRepository , $recolteRepository, $userRepository, $friendRepository);
+        return $this->statAnnee($user, $user_co, $chartBuilder, $entityManager, $request, 2024, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository);
     }
+
+
 
     /* Fonction pour calculer toutes les données, en fonction de l'utilisateur et de l'année */
-    public function statAnnee( $user, $chartBuilder, $entityManager, $request, $year, $fluxRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository){
+    public function statAnnee( $user, $user_show, $chartBuilder, $entityManager, $request, $year, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository){
         $user->setLastCo(new DateTime('now'));
         $nbco = $user->getNbCo();
         $user->setNbCo($nbco + 1);
         $entityManager->flush();
 
+        // Jardin User
+        $garden = $gardenRepository->findOneby(array('user' => $user));
         // Calorie User
         $calories = $this->calories($user, $year, $recolteRepository);
         // Liste des espèces plantées en semis / en plant
@@ -74,7 +79,7 @@ class PageJardinController extends AbstractController
         //On vérifie si on a une requête AJAX
         if($request->get('ajax')) {
             return new JsonResponse([
-                'content' => $this->renderView('garden/commun/_content.html.twig', [
+                'content' => $this->renderView('garden/index.html.twig', [
                     'user' => $user,
                     'p_byuser' => $p_byuser,
                     'r_byuser' => $r_byuser,
@@ -82,6 +87,7 @@ class PageJardinController extends AbstractController
                     'chart_don_r' => $chart_donR,
                     'amis' => $amis,
                     'calories' => $calories,
+                    'garden' => $garden,
                     'fluxAchats' => $FluxAchats
                 ])
             ]);
@@ -95,26 +101,11 @@ class PageJardinController extends AbstractController
             'chart_don_r' => $chart_donR,
             'amis' => $amis,
             'calories' => $calories,
+            'garden' => $garden,
             'fluxAchats' => $FluxAchats
         ]);
        
     }
-
-
-    #[Route(path: '/bou/{nickname}', name: 'app_show_garden')] // Afficher la page Jardin d'un autre utilisateur 2024
-    public function pageJardinUser(UserInterface $user_co, User $user, ChartBuilderInterface $chartBuilder,  ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, PanierRepository $panierRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
-    {
-        $entityManager = $doctrine->getManager();
-        return $this->statAnneeUser($user_co,$user, $chartBuilder, $entityManager, $request, 2024, $fluxRepository, $panierRepository , $recolteRepository, $userRepository, $friendRepository);
-    }
-
-    #[Route(path: '/bouPast/{nickname}', name: 'app_show_garden_past_year')] // Afficher la page Jardin d'un autre utilisateur 2022
-    public function pageJardinUserPastYear(UserInterface $user_co, User $user, ChartBuilderInterface $chartBuilder, ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, PanierRepository $panierRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
-    {
-        $entityManager = $doctrine->getManager();
-        return $this->statAnneeUser($user_co,$user, $chartBuilder, $entityManager, $request, 2022, $fluxRepository, $panierRepository , $recolteRepository, $userRepository, $friendRepository);
-    }
-
 
 
     /**

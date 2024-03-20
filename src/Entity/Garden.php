@@ -46,6 +46,9 @@ class Garden
     #[ORM\ManyToOne(inversedBy: 'gardens')]
     private ?ZoneAdministrative $region = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'gardens')]
+    private ?User $user = null;
+
 
     public function getId(): ?int
     {
@@ -181,6 +184,17 @@ class Garden
     {
         $this->region = $region;
 
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->User;
+    }
+
+    public function setUser(?User $User): static
+    {
+        $this->User = $User;
         return $this;
     }
 

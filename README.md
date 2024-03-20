@@ -60,9 +60,10 @@ Imagine TOMORROW, there is a GENERAL COLLAPSE. The goal of the website it to bec
 <b>** NEXT FEATURES **</b>
 
 <i>Priorities :</i>
-<p>🛠️ Migrate properly Symfony5 -> Symfony6</p>
-<p></p>🛠️ Fix "Notify by email when a user create his account"</p>
-<p></p>🎨 Improve UI/UX of the current website</p>
+<p>🛠️ Migrate properly Symfony5 -> Symfony6</p> OK DONE
+<p> ADD Garden information and display it in Mon Jardin (linked to a user) </p>
+<p>🛠️ Fix "Notify by email when a user create his account"</p>
+<p>🎨 Improve UI/UX of the current website</p>
 
 <i>Next developments :</i>
 

@@ -89,6 +89,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'user')]
     private $likes;
 
+    #[ORM\OneToMany(targetEntity: Garden::class, mappedBy: 'User', orphanRemoval: true)]
+    private Collection $gardens;
+
     #[ORM\OneToMany(targetEntity: Plant::class, mappedBy: 'user', orphanRemoval: true)]
     private $plants;
 
@@ -138,6 +141,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->friends = new ArrayCollection();
         $this->followed = new ArrayCollection();
         $this->achats = new ArrayCollection();
+        $this->gardens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -625,6 +629,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setResetToken(?string $resetToken): void
     {
         $this->resetToken = $resetToken;
+    }
+
+    /**
+     * @return Collection<int, Garden>
+     */
+    public function getGardens(): Collection
+    {
+        return $this->gardens;
+    }
+
+    public function addGarden(Garden $garden): static
+    {
+        if (!$this->gardens->contains($garden)) {
+            $this->gardens->add($garden);
+            $garden->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGarden(Garden $garden): static
+    {
+        if ($this->gardens->removeElement($garden)) {
+            // set the owning side to null (unless already changed)
+            if ($garden->getUser() === $this) {
+                $garden->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
  

@@ -8,6 +8,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('app') }}
     {{ encore_entry_script_tags('style') }}
     {{ encore_entry_script_tags('print') }}
 {% endblock %}
@@ -23,51 +24,57 @@
                     <h1><img src="{{ vich_uploader_asset(user.avatar) }}" alt="Image" class="img-circle" width="80" height="80"></h1>
                 </a>
             {% endif %}
-
         </div>
         <div class="entete_stat">
             {{ include('garden/apercu.html.twig', { 'r_byuser' : r_byuser, 'fluxAchats' : fluxAchats, 'calories' : calories, 'user' : user }) }}
         </div>
     </div>
-    <p><strong>Statistiques</strong></p>
-    <p>
-        {% set isGardenPast = route_name == 'gardenpast' %}
-        {% set isGarden = route_name == 'garden' %}
-        <a class="filtre{{ isGardenPast ? ' noir_fonce' }}" href="{{ path('gardenpast') }}" style="color:#a69b97;">
-            2022
-        </a>
-        <a class="filtre{{ isGarden ? ' noir_fonce' }}" href="{{ path('garden') }}" style="color:#a69b97;">
-            2024
-        </a>
-    </p>
 
+    {% if app.user != user %}
+    <div class="stars {{ amis == 1 ? 'rating_no' : 'rating' }}">
+        <a href="{{ path('ami',{'id': user.id}) }}"
+           data-user="{{ user.id }}"
+           class="suivis">
+            <i class="fa {{ amis == 1 ? 'fa-star gold' : 'fa-star' }}"> <span class="infosuiveur">{{ amis == 1 ? 'Jardinier suivi' : 'Suivre ce jardinier' }}</span></i>
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="wrapper text-center">
+        <div class="row cadre_blanc_no_border" >
+            <p><b>Surface  :</b> {{ garden.surface.nom}} ({{ garden.surface.metre}}), Objectif de récolte: {{ garden.surface.objectif}} kg</p>
+            <p><b>Région  :</b> {{ garden.region.countryCode}} ({{ garden.region.name}})</p>
+            <p><b>Pluviométrie :</b> Minimun :  {{ garden.minpluvio}} / Maximum : {{ garden.maxpluvio}}</p>
+            <p><b>Terre : </b> Sable : {{ garden.sable}}% , Argile : {{ garden.argile}}% ,  Calcaire :  {{ garden.calcaire}}% , Limon : {{ garden.limon}}%</p>
+            <p><b>Nombre de serres  :</b> {{ garden.serre}} </p>
+            <p><b>Nombre de cuves  :</b> {{ garden.cuve}} </p>
+            <p><b>Production Moyenne Annuelle  :</b> {{ garden.moyenneprod}} KG</p>
+        </div>
+    </div>
     <div id="content"> 
-{{ include('garden/synthese.html.twig', {'p_byuser' : p_byuser, 'r_byuser' : r_byuser, 'user' : user }) }}
-{{ include('garden/graphs.html.twig', {'p_byuser' : p_byuser, 'r_byuser' : r_byuser, 'chart' : chart, 'chart_don_r' : chart_don_r, 'user' : user}) }}
+        {{ include('garden/synthese.html.twig', {'p_byuser' : p_byuser, 'r_byuser' : r_byuser, 'user' : user }) }}
+        {{ include('garden/graphs.html.twig', {'p_byuser' : p_byuser, 'r_byuser' : r_byuser, 'chart' : chart, 'chart_don_r' : chart_don_r, 'user' : user}) }}
     </div>
     <br/>
 
         <br/>
 
         {% set classe = "row cadre_blanc" %}
-        <p><strong>Communauté</strong></p>
         {{ include('garden/amis.html.twig', { 'amis': amis , 'user' : user, 'classe' : classe})}}
-    <br/>
-    <div class="row cadre_blanc_no_border">
-        <a href="{{'whatsapp://send?text=http://www.GreenGarden.fr/bou/' ~ user.nickname }}"> Envoyer mon jardin à un ami</a>
-    </div>
-    <div class="row cadre_blanc_no_border">
+        <br/>
+            <div class="row cadre_blanc_no_border">
+                <a href="{{'whatsapp://send?text=http://www.GreenGarden.fr/bou/' ~ user.nickname }}"> Partager le jardin</a>
+            </div>
+        <div class="row cadre_blanc_no_border">
         <img src="{{ asset('images/meteo.png') }}" alt="Image" width="50" height="50">
         <br/>
      
             <a target="_blank" href='https://meteofrance.com/previsions-meteo-france/' >
-              Consultez la météo de votre région <br/>
+              Consultez la météo locale <br/>
             </a>
     </div>
 
 </div>
-
-
 {% endblock %}
 
 

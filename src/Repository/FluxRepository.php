@@ -19,48 +19,6 @@ class FluxRepository extends ServiceEntityRepository
         parent::__construct($registry, Flux::class);
     }
 
-    //Liste de tous les flux
-    public function flux_tous()
-    {
-        return $this->createQueryBuilder('f')
-            ->where('f.shared = :shared')
-            ->setParameter('shared', true)
-            ->orderBy('f.updatedat', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    //Liste de tous les flux avec photo
-    public function flux_photo_panier()
-    {
-        return $this->createQueryBuilder('f')
-            ->innerJoin('f.panier', 'pa')
-            ->innerJoin('pa.photo', 'p')
-            ->where('f.shared = :shared')
-            ->andWhere( 'p IS NOT NULL ')
-            ->andWhere( 'p.imageName <> :default_recolte ')
-            ->andWhere( 'p.imageName <> :default_plantation ')
-            ->setParameter('default_recolte', "recoltes.png")
-            ->setParameter('default_plantation', "plantation.png")
-            ->setParameter('shared', true)
-            ->orderBy('f.updatedat', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    //Liste de tous les flux avec photo
-    public function flux_photo_post()
-    {
-        return $this->createQueryBuilder('f')
-            ->innerJoin('f.post', 'po')
-            ->innerJoin('po.photos', 'p')
-            ->where('f.shared = :shared')
-            ->setParameter('shared', true)
-            ->orderBy('f.updatedat', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-
 
     //Liste des notes (par utilisateur)
     public function postbyuser($user)

@@ -82,6 +82,8 @@
         
         <table class="calendar">
             {% set j = 0 %}
+                {# Vérifiez le contenu de events #}
+                {# {{ dump(events) }} #}
             {% for i in 1..date_semaine %}
                 <tr>
                     {% for day in jours %}
@@ -99,7 +101,6 @@
                                 <div class="calendar_day_opacity">{{ date_premier_jour|date_modify('+' ~ j ~ 'day')|date('d') }}</div>
                             {% endif %}
                             {% set break = false %}
-
                             {% for ev in events %}
                                     {% if date_premier_jour|date_modify('+' ~ j ~ 'day')|date('d-m-y') ==  ev.date_event|date('d-m-y')   %}
                                         {% if ev.recolte != 0 %}
@@ -108,8 +109,6 @@
                                             </a>
                                         {% endif %}
                                         {% if ev.plant != 0 %}
-                                                {# Vérifiez le contenu de events #}
-                                                {# {{ dump(ev.date_event) }} #}
                                             <a class="menufloatl" href="{{ path('carnet',{'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d') }) }}">
                                                 <div class="cercle_vert"></div>
                                             </a>

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240319102653 extends AbstractMigration
+final class Version20240320120255 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -26,7 +26,7 @@ final class Version20240319102653 extends AbstractMigration
         $this->addSql('CREATE TABLE consommable (id INT AUTO_INCREMENT NOT NULL, parent_id INT DEFAULT NULL, tree_left INT DEFAULT 0 NOT NULL, tree_level INT DEFAULT 0 NOT NULL, tree_right INT DEFAULT 0 NOT NULL, nom VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, icon_lien VARCHAR(255) DEFAULT NULL, badge1 VARCHAR(255) DEFAULT NULL, badge2 VARCHAR(255) DEFAULT NULL, badge3 VARCHAR(255) DEFAULT NULL, prix DOUBLE PRECISION DEFAULT NULL, calorie DOUBLE PRECISION DEFAULT NULL, INDEX IDX_A04C7F4D727ACA70 (parent_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE flux (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, createdat DATETIME NOT NULL, updatedat DATETIME NOT NULL, shared TINYINT(1) NOT NULL, INDEX IDX_7252313AA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE friend (id INT AUTO_INCREMENT NOT NULL, user_friend_id INT NOT NULL, user_followed_id INT NOT NULL, INDEX IDX_55EEAC616AB4D50C (user_friend_id), INDEX IDX_55EEAC61704D3985 (user_followed_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE garden (id INT AUTO_INCREMENT NOT NULL, surface_id INT DEFAULT NULL, region_id INT DEFAULT NULL, sable INT DEFAULT NULL, argile INT DEFAULT NULL, calcaire INT DEFAULT NULL, limon INT DEFAULT NULL, serre INT DEFAULT NULL, cuve INT DEFAULT NULL, minpluvio INT DEFAULT NULL, maxpluvio INT DEFAULT NULL, moyenneprod INT DEFAULT NULL, INDEX IDX_3C0918EACA11F534 (surface_id), INDEX IDX_3C0918EA98260155 (region_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE garden (id INT AUTO_INCREMENT NOT NULL, surface_id INT DEFAULT NULL, region_id INT DEFAULT NULL, user_id INT DEFAULT NULL, sable INT DEFAULT NULL, argile INT DEFAULT NULL, calcaire INT DEFAULT NULL, limon INT DEFAULT NULL, serre INT DEFAULT NULL, cuve INT DEFAULT NULL, minpluvio INT DEFAULT NULL, maxpluvio INT DEFAULT NULL, moyenneprod INT DEFAULT NULL, INDEX IDX_3C0918EACA11F534 (surface_id), INDEX IDX_3C0918EA98260155 (region_id), INDEX IDX_3C0918EAA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE `like` (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, flux_id INT NOT NULL, INDEX IDX_AC6340B3A76ED395 (user_id), INDEX IDX_AC6340B3C85926E (flux_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE methode (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, image_lien VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE panier (id INT AUTO_INCREMENT NOT NULL, flux_id INT DEFAULT NULL, description VARCHAR(255) DEFAULT NULL, createdat DATETIME NOT NULL, updatedat DATETIME NOT NULL, titre VARCHAR(255) DEFAULT NULL, shared TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_24CC0DF2C85926E (flux_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -50,6 +50,7 @@ final class Version20240319102653 extends AbstractMigration
         $this->addSql('ALTER TABLE friend ADD CONSTRAINT FK_55EEAC61704D3985 FOREIGN KEY (user_followed_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE garden ADD CONSTRAINT FK_3C0918EACA11F534 FOREIGN KEY (surface_id) REFERENCES taille (id)');
         $this->addSql('ALTER TABLE garden ADD CONSTRAINT FK_3C0918EA98260155 FOREIGN KEY (region_id) REFERENCES zone_administrative (id)');
+        $this->addSql('ALTER TABLE garden ADD CONSTRAINT FK_3C0918EAA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE `like` ADD CONSTRAINT FK_AC6340B3A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE `like` ADD CONSTRAINT FK_AC6340B3C85926E FOREIGN KEY (flux_id) REFERENCES flux (id)');
         $this->addSql('ALTER TABLE panier ADD CONSTRAINT FK_24CC0DF2C85926E FOREIGN KEY (flux_id) REFERENCES flux (id)');
@@ -81,6 +82,7 @@ final class Version20240319102653 extends AbstractMigration
         $this->addSql('ALTER TABLE friend DROP FOREIGN KEY FK_55EEAC61704D3985');
         $this->addSql('ALTER TABLE garden DROP FOREIGN KEY FK_3C0918EACA11F534');
         $this->addSql('ALTER TABLE garden DROP FOREIGN KEY FK_3C0918EA98260155');
+        $this->addSql('ALTER TABLE garden DROP FOREIGN KEY FK_3C0918EAA76ED395');
         $this->addSql('ALTER TABLE `like` DROP FOREIGN KEY FK_AC6340B3A76ED395');
         $this->addSql('ALTER TABLE `like` DROP FOREIGN KEY FK_AC6340B3C85926E');
         $this->addSql('ALTER TABLE panier DROP FOREIGN KEY FK_24CC0DF2C85926E');

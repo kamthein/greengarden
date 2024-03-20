@@ -109,7 +109,6 @@ class AppFixtures extends Fixture
         }
 
         // USER 1
-
         $user1 = new User();
         $user1->setEmail('camille@example.com');
         $user1->setNickname('Camille');
@@ -126,7 +125,7 @@ class AppFixtures extends Fixture
         $garden1 = new Garden();
         $garden1->setRegion($zones['FR-12']);
         $garden1->setSurface($tailles['petitjardin']);
-       // $garden1->setUser($user1);
+        $garden1->setUser($user1);
         
         $manager->persist($user1);
         $manager->persist($garden1);
@@ -174,7 +173,7 @@ class AppFixtures extends Fixture
         $garden2 = new Garden();
         $garden2->setRegion($zones['FR-20']);
         $garden2->setSurface($tailles['balcon']);
-       // $garden2->setUser($user2);
+        $garden2->setUser($user2);
         
         $manager->persist($user2);
         $manager->persist($garden2);
@@ -221,7 +220,7 @@ class AppFixtures extends Fixture
         $garden3 = new Garden();
         $garden3->setRegion($zones['FR-30']);
         $garden3->setSurface($tailles['grandjardin']);
-        //$garden2->setUser($user2);
+        $garden3->setUser($user3);
         
         $manager->persist($user3);
         $manager->persist($garden3);
@@ -252,9 +251,6 @@ class AppFixtures extends Fixture
 
 
 // ELEMENTS 
-
- 
- 
          // Camille, note2 avec photo
          $fluxuser13 = new Flux();
          $fluxuser13->setCreatedat(new DateTime());
@@ -274,8 +270,6 @@ class AppFixtures extends Fixture
          $manager->persist($fluxuser13);
          $manager->persist($postuser12);
          $manager->persist($photo230);
-
-
 
 
         // John, plantation
