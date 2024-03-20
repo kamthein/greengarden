@@ -62,7 +62,7 @@ class JardinAjouts extends AbstractController
             $this->persistAndFlush($entityManager, $flux);
             $this->addFlash('success', 'Votre note a été publiée !');
             // return $this->redirectToRoute('app_crop_image', ['id'=> $image->getId()]);
-            return $this->redirectToRoute('home');
+            return $this->RedirectCarnetDate();
         }
         return $this->render('carnet/ajouter/addNote.html.twig', [
             'form' => $form->createView(),

@@ -44,9 +44,6 @@ class PageCarnetController extends AbstractController
         
         $event = array_merge($events_note, $events_plantation, $events_recolte, $events_achat);
 
-        // flux vide
-        $vide = $fluxRepository->TrouverVide();
-
 
         // MON HISTORIQUE
         //Liste des posts
@@ -67,7 +64,6 @@ class PageCarnetController extends AbstractController
             'date_premier_jour' => $startingday,
             'jours' => $days,
             'events' => $event,
-            'vides' => $vide,
             'fluxPaniers' =>$FluxPaniers,
             'fluxPosts' => $FluxPosts,
             'fluxAchats' => $FluxAchats,

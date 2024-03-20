@@ -20,7 +20,7 @@ class FluxAchatType extends AbstractType
                 'label' => 'Description',
             ])
             ->add('submit', SubmitType::class, [
-                'label' => "Publier",
+                'label' => "Enregistrer",
                 'attr' => [
                     'class' => 'mdl-button-rond mdl-button--raised mdl-button--bleufonce mdl-button--colored',
                 ],

@@ -58,23 +58,6 @@ class RecolteRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
-    public function methodebyuser($user, $year)
-    {
-        return $this->createQueryBuilder('r')
-            ->innerJoin('r.methode', 'm')
-            ->where( 'r.user = :user')
-            ->andwhere('YEAR(r.createdat)= :year')
-            ->setParameter('user', $user)
-            ->setParameter('year', $year)
-            ->select('m.nom as methode')
-            ->groupBy('methode')
-            //->orderBy('methode.nom', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-
-
     // calcul du nombre de calories récoltées
     public function Cal_byuser($user, $year)
     {
