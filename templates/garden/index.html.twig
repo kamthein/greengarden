@@ -42,13 +42,14 @@
 
     <div class="wrapper text-center">
         <div class="row cadre_blanc_no_border" >
-            <p><b>Surface  :</b> {{ garden.surface.nom}} ({{ garden.surface.metre}}), Objectif de récolte: {{ garden.surface.objectif}} kg</p>
-            <p><b>Région  :</b> {{ garden.region.countryCode}} ({{ garden.region.name}})</p>
-            <p><b>Pluviométrie :</b> Minimun :  {{ garden.minpluvio}} / Maximum : {{ garden.maxpluvio}}</p>
-            <p><b>Terre : </b> Sable : {{ garden.sable}}% , Argile : {{ garden.argile}}% ,  Calcaire :  {{ garden.calcaire}}% , Limon : {{ garden.limon}}%</p>
-            <p><b>Nombre de serres  :</b> {{ garden.serre}} </p>
-            <p><b>Nombre de cuves  :</b> {{ garden.cuve}} </p>
-            <p><b>Production Moyenne Annuelle  :</b> {{ garden.moyenneprod}} KG</p>
+      
+            <p><b class="colorgris">Région  :</b> {{ garden.region.countryCode}} ({{ garden.region.name}})</p>
+            <p><b class="colorvert">Surface  :</b> {{ garden.surface.nom}} ({{ garden.surface.metre}}) => <b class="colorrose"> Objectif de récolte:</b> {{ garden.surface.objectif}} kg</p>
+            <p><b class="colorvert">Terre : </b> Sable : {{ garden.sable}}% / Argile : {{ garden.argile}}% /  Calcaire :  {{ garden.calcaire}}% / Limon : {{ garden.limon}}%</p>
+            <p><b class="colorvert">Surface sous serre  :</b> {{ garden.serre}} m2 </p>
+            <p><b class="colorviolet">Pluviométrie :</b> Minimun :  {{ garden.minpluvio}} / Maximum : {{ garden.maxpluvio}}</p>
+            <p><b class="colorviolet">Litres cuves  :</b> {{ garden.cuve}} L </p>
+            <p><b class="colorrose">Production Moyenne Annuelle  :</b> {{ garden.moyenneprod}} KG</p>
         </div>
     </div>
     <div id="content"> 
