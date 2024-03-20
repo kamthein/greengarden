@@ -34,21 +34,6 @@ use function assert;
 class JardinAjouts extends AbstractController
 {
 
-    #[Route(path: '/sharedflux/{id}', name: 'shared_flux')] // Rendre un flux Publié ou Archivé
-    public function sharedFlux(int $id, ManagerRegistry $doctrine, EntityManagerInterface $em)
-    {
-        $entityManager = $doctrine->getManager();
-        $flux = $em->getRepository(Flux::class)
-            ->find($id);
-
-        $flux->getShared() == true ?
-        $flux->setShared(false) : $flux->setShared(true);
-        $this->persistAndFlush($entityManager, $flux);
-        $this->addFlash('success', 'Flux publié ou archivé');
-
-        return $this->redirectToRoute('garden');
-    }
-
     #[Route(path: '/ajoutpost', name: 'ajouter')] // Ajouter un post (et son flux)
     public function ajoutPost(Request $request, UserInterface $user, ManagerRegistry $doctrine, EntityManagerInterface $em): Response
     {
@@ -138,7 +123,7 @@ class JardinAjouts extends AbstractController
         ]);
     }
 
-    #[Route(path: '/ajoutachat', name: 'ajouter_achat')] // Ajouter un achat
+    #[Route(path: '/ajoutachat', name: 'ajouter_achat')] // Ajouter un achat (et son flux)
     public function ajoutAchat(Request $request, UserInterface $user, ManagerRegistry $doctrine, EntityManagerInterface $em): Response
     {
         $entityManager = $doctrine->getManager();

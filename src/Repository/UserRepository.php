@@ -65,26 +65,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             return  $query->getQuery()->getResult();
     }
 
-    // Liste les Consommables de l'utilisateur, le nombre de semis, de plants, et de récoltes.
-    public function resume_table($user, $year): void
-    {
-        $this->createQueryBuilder('u')
-            ->innerJoin('u.panier')
-            ->innerJoin('u.recoltes', 'r')
-            ->innerJoin('r.consommable', 'c')
-            ->where( 'r.user = :user' )
-            ->andwhere('YEAR(r.createdat)= :year');
-    }
-
-        // Liste les jardins
-        public function gardenbyuser($user): void
-        {
-            $this->createQueryBuilder('u')
-                ->innerJoin('u.garden', 'g')
-                ->where( 'g.user = :user' );
-        }
-    
-
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      * @throws ORMException
