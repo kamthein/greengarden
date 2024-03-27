@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240320120255 extends AbstractMigration
+final class Version20240327204400 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20240320120255 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE achat (id INT AUTO_INCREMENT NOT NULL, type_id INT NOT NULL, flux_id INT DEFAULT NULL, descritpion VARCHAR(255) DEFAULT NULL, createdat DATETIME NOT NULL, shared TINYINT(1) NOT NULL, quantite INT NOT NULL, prix DOUBLE PRECISION NOT NULL, INDEX IDX_26A98456C54C8C93 (type_id), UNIQUE INDEX UNIQ_26A98456C85926E (flux_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE achat (id INT AUTO_INCREMENT NOT NULL, type_id INT NOT NULL, flux_id INT DEFAULT NULL, user_id INT NOT NULL, descritpion VARCHAR(255) DEFAULT NULL, createdat DATETIME NOT NULL, shared TINYINT(1) NOT NULL, quantite INT NOT NULL, prix DOUBLE PRECISION NOT NULL, INDEX IDX_26A98456C54C8C93 (type_id), UNIQUE INDEX UNIQ_26A98456C85926E (flux_id), INDEX IDX_26A98456A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE commentaire (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, commentaire_id INT DEFAULT NULL, flux_id INT DEFAULT NULL, contenu LONGTEXT NOT NULL, date_heure_creation DATETIME NOT NULL, INDEX IDX_67F068BCA76ED395 (user_id), INDEX IDX_67F068BCBA9CD190 (commentaire_id), INDEX IDX_67F068BCC85926E (flux_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE config (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, version DOUBLE PRECISION NOT NULL, default_user VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, logo VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE consommable (id INT AUTO_INCREMENT NOT NULL, parent_id INT DEFAULT NULL, tree_left INT DEFAULT 0 NOT NULL, tree_level INT DEFAULT 0 NOT NULL, tree_right INT DEFAULT 0 NOT NULL, nom VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, icon_lien VARCHAR(255) DEFAULT NULL, badge1 VARCHAR(255) DEFAULT NULL, badge2 VARCHAR(255) DEFAULT NULL, badge3 VARCHAR(255) DEFAULT NULL, prix DOUBLE PRECISION DEFAULT NULL, calorie DOUBLE PRECISION DEFAULT NULL, INDEX IDX_A04C7F4D727ACA70 (parent_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -41,6 +41,7 @@ final class Version20240320120255 extends AbstractMigration
         $this->addSql('CREATE TABLE zone_administrative (id INT AUTO_INCREMENT NOT NULL, country_code VARCHAR(255) DEFAULT NULL, name VARCHAR(255) DEFAULT NULL, meteolink VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE achat ADD CONSTRAINT FK_26A98456C54C8C93 FOREIGN KEY (type_id) REFERENCES type (id)');
         $this->addSql('ALTER TABLE achat ADD CONSTRAINT FK_26A98456C85926E FOREIGN KEY (flux_id) REFERENCES flux (id)');
+        $this->addSql('ALTER TABLE achat ADD CONSTRAINT FK_26A98456A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE commentaire ADD CONSTRAINT FK_67F068BCA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE commentaire ADD CONSTRAINT FK_67F068BCBA9CD190 FOREIGN KEY (commentaire_id) REFERENCES commentaire (id)');
         $this->addSql('ALTER TABLE commentaire ADD CONSTRAINT FK_67F068BCC85926E FOREIGN KEY (flux_id) REFERENCES flux (id)');
@@ -73,6 +74,7 @@ final class Version20240320120255 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE achat DROP FOREIGN KEY FK_26A98456C54C8C93');
         $this->addSql('ALTER TABLE achat DROP FOREIGN KEY FK_26A98456C85926E');
+        $this->addSql('ALTER TABLE achat DROP FOREIGN KEY FK_26A98456A76ED395');
         $this->addSql('ALTER TABLE commentaire DROP FOREIGN KEY FK_67F068BCA76ED395');
         $this->addSql('ALTER TABLE commentaire DROP FOREIGN KEY FK_67F068BCBA9CD190');
         $this->addSql('ALTER TABLE commentaire DROP FOREIGN KEY FK_67F068BCC85926E');

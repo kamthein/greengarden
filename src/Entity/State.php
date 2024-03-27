@@ -10,10 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: StateRepository::class)]
 class State
 {
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    public $plants;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -21,6 +18,9 @@ class State
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $nom;
+
+    #[ORM\OneToMany(mappedBy: 'state', targetEntity: Plant::class)]
+    private Collection $plants;
 
 
     public function __construct(string $nom)
@@ -42,6 +42,25 @@ class State
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+
+    public function addPlant(Plant $plant): static
+    {
+        if (!$this->plants->contains($plant)) {
+            $this->plants->add($plant);
+        }
+
+        return $this;
+    }
+
+    public function removePlant(Plant $plant): static
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->plants->removeElement($plant)) {
+                  }
 
         return $this;
     }

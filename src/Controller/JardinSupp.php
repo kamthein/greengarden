@@ -27,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class JardinSupp extends AbstractController
 {
     #[Route(path: '/suppflux/{id}', name: 'supp_flux')] // Supprimer un flux (et le post ou le panier associé)
-    public function suppFlux(int $id, ManagerRegistry $doctrine, FluxRepository $fluxRepository)
+    public function suppFlux(int $id, ManagerRegistry $doctrine, FluxRepository $fluxRepository): \Symfony\Component\HttpFoundation\RedirectResponse
     {
 
         $entityManager = $doctrine->getManager();
@@ -39,7 +39,7 @@ class JardinSupp extends AbstractController
     }
 
     #[Route(path: '/supppost/{id}', name: 'supp_post')] // Supprimer un post
-    public function suppPost(int $id, ManagerRegistry $doctrine, PostRepository $postRepository)
+    public function suppPost(int $id, ManagerRegistry $doctrine, PostRepository $postRepository): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $entityManager = $doctrine->getManager();
         $post = $postRepository->find($id);
@@ -50,7 +50,7 @@ class JardinSupp extends AbstractController
     }
 
     #[Route(path: '/supppanier/{id}', name: 'supp_panier')] // Supprimer un panier et toutes ses récoltes ou plantations
-    public function suppPanier(int $id, ManagerRegistry $doctrine, PanierRepository $panierRepository )
+    public function suppPanier(int $id, ManagerRegistry $doctrine, PanierRepository $panierRepository ): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $entityManager = $doctrine->getManager();
         $panier =  $panierRepository->find($id);
@@ -61,7 +61,7 @@ class JardinSupp extends AbstractController
     }
 
     #[Route(path: '/supprecolte/{id}', name: 'supp_recolte')] // Supprimer une récolte (le panier n'est pas supprimé)
-    public function suppRecolte(int $id, ManagerRegistry $doctrine, RecolteRepository $recolteRepository)
+    public function suppRecolte(int $id, ManagerRegistry $doctrine, RecolteRepository $recolteRepository): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $entityManager = $doctrine->getManager();
         $recolte = $recolteRepository->find($id);
@@ -73,7 +73,7 @@ class JardinSupp extends AbstractController
 
 
     #[Route(path: '/suppplant/{id}', name: 'supp_plant')] // Supprimer une plantation (le panier n'est pas supprimé)
-    public function suppPlant(int $id, ManagerRegistry $doctrine, PlantRepository $planRepository)
+    public function suppPlant(int $id, ManagerRegistry $doctrine, PlantRepository $planRepository): \Symfony\Component\HttpFoundation\RedirectResponse
     {
 
         $entityManager = $doctrine->getManager();
@@ -86,7 +86,7 @@ class JardinSupp extends AbstractController
 
 
     #[Route(path: '/supppamn/{id}', name: 'supp_achat')] // Supprimer un achat
-    public function suppAchat(int $id, ManagerRegistry $doctrine, AchatRepository $achatRepository)
+    public function suppAchat(int $id, ManagerRegistry $doctrine, AchatRepository $achatRepository): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $entityManager = $doctrine->getManager();
         $achat = $achatRepository->find($id);
@@ -98,7 +98,7 @@ class JardinSupp extends AbstractController
 
 
     #[Route(path: '/suppami/{id}', name: 'supp_ami')] // Supprimer des amis
-    public function suppAmis(int $id, UserInterface $user, ManagerRegistry $doctrine, FriendRepository $friendRepository)
+    public function suppAmis(int $id, UserInterface $user, ManagerRegistry $doctrine, FriendRepository $friendRepository): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $entityManager = $doctrine->getManager();
         $ami = $friendRepository->findOneBy(array('user_followed' => $id, 'user_friend' =>$user ));

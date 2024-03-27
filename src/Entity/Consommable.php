@@ -73,7 +73,7 @@ class Consommable
     #[ORM\Column(type: 'float', nullable: true)]
     private $calorie;
 
-        #[ORM\OneToMany(targetEntity: Recolte::class, mappedBy: 'consommable')]
+    #[ORM\OneToMany(targetEntity: Recolte::class, mappedBy: 'consommable')]
     private $recoltes;
 
     #[ORM\OneToMany(targetEntity: Plant::class, mappedBy: 'consommable')]

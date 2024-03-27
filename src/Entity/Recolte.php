@@ -16,7 +16,6 @@ class Recolte
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    
     #[ORM\Column(type: 'datetime')]
     private $createdat;
 
@@ -24,7 +23,6 @@ class Recolte
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    
     #[ORM\Column(type: 'float', nullable: true)]
     private $quantity;
 

@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: FluxRepository::class)]
 class Flux
 {
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
@@ -31,7 +32,6 @@ class Flux
     #[ORM\Column(type: 'datetime')]
     private $createdat;
 
-
     #[ORM\Column(type: 'datetime')]
     private $updatedat;
 
@@ -39,19 +39,17 @@ class Flux
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-
     #[ORM\Column(type: 'boolean')]
     private $shared;
+
+    #[ORM\OneToOne(targetEntity: Panier::class, mappedBy: 'flux', cascade: ['persist', 'remove'])]
+    private $panier;
 
     #[ORM\OneToOne(targetEntity: Post::class, mappedBy: 'flux', cascade: ['persist', 'remove'])]
     private $post;
 
-
-        #[ORM\OneToOne(targetEntity: Achat::class, mappedBy: 'flux', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Achat::class, mappedBy: 'flux', cascade: ['persist', 'remove'])]
     private $achat;
-
-    #[ORM\OneToOne(targetEntity: Panier::class, mappedBy: 'flux', cascade: ['persist', 'remove'])]
-    private $panier;
 
     #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'flux', cascade: ['persist', 'remove'])]
     private $commentaires;

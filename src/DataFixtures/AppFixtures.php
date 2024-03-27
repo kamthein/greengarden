@@ -348,8 +348,8 @@ class AppFixtures extends Fixture
 
          // Camille, note avec photo
          $fluxuser12 = new Flux();
-         $fluxuser12->setCreatedat(new DateTime());
-         $fluxuser12->setUpdatedat(new DateTime());
+         $fluxuser12->setCreatedat(new DateTime('now +1 day'));
+         $fluxuser12->setUpdatedat(new DateTime('now +1 day'));
          $fluxuser12->setUser($user1);
          $fluxuser12->setShared(True);
          $postuser1 = new post();

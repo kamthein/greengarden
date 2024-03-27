@@ -24,7 +24,6 @@ class PageProfileController extends AbstractController
         $entityManager = $doctrine->getManager();
         assert($user instanceof User);
 
-        //$paniers = $panierRepository->panierbyuser($user);
         
         $form = $this->createForm(UserProfileType::class, $user)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -39,7 +38,6 @@ class PageProfileController extends AbstractController
         return $this->render('profile/index.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-           // 'paniers' => $paniers,
         ]);
     }
 
@@ -52,4 +50,5 @@ class PageProfileController extends AbstractController
             'user' => $user,
         ]);
     }
+
 }

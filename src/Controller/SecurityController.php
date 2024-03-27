@@ -35,7 +35,7 @@ final class SecurityController extends AbstractController
     }
 
     #[Route(path: '/resetting', name: 'forgotten_password')]
-    public function passwordReset()
+    public function passwordReset(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('security/reset.html.twig');
     }

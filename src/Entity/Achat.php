@@ -24,7 +24,7 @@ class Achat
     #[ORM\Column(type: 'datetime')]
     private $createdat;
 
-        #[ORM\OneToOne(targetEntity: Flux::class, inversedBy: 'achat', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Flux::class, inversedBy: 'achat', cascade: ['persist', 'remove'])]
     private $flux;
 
     #[ORM\Column(type: 'boolean')]
@@ -35,6 +35,10 @@ class Achat
 
     #[ORM\Column(type: 'float')]
     private $prix;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'achats')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
 
     public function getId(): ?int
     {
@@ -49,6 +53,18 @@ class Achat
     public function setType(?Type $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getUser(): ?user
+    {
+        return $this->user;
+    }
+
+    public function setUser(?user $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

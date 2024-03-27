@@ -44,8 +44,6 @@ class Panier
     private $flux;
 
 
-
-
     public function __construct()
     {
         $this->recoltes = new ArrayCollection();

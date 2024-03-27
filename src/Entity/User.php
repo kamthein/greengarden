@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     
     #[ORM\Column(type: 'datetime_immutable')]
-    private $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     
     #[ORM\Column(type: 'integer', nullable: true)]
@@ -63,12 +63,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    
-    #[ORM\OneToMany(targetEntity: Recolte::class, mappedBy: 'user', orphanRemoval: true)]
-    private $recoltes;
-
-    #[ORM\OneToMany(targetEntity: Flux::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private $fluxes;
 
     /**
      * @UserPassword(groups={"Profile"})
@@ -89,12 +83,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'user')]
     private $likes;
 
-    #[ORM\OneToMany(targetEntity: Garden::class, mappedBy: 'User', orphanRemoval: true)]
-    private Collection $gardens;
-
-    #[ORM\OneToMany(targetEntity: Plant::class, mappedBy: 'user', orphanRemoval: true)]
-    private $plants;
-
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $last_co;
 
@@ -107,8 +95,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Friend::class, mappedBy: 'user_followed')]
     private $followed;
 
-    #[ORM\OneToMany(targetEntity: Achat::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Garden::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $gardens;
+
+    #[ORM\OneToMany(targetEntity: Flux::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private $fluxes;
+
+    #[ORM\OneToMany(targetEntity: Plant::class, mappedBy: 'user', orphanRemoval: true)]
+    private $plants;
+
+    #[ORM\OneToMany(targetEntity: Recolte::class, mappedBy: 'user', orphanRemoval: true)]
+    private $recoltes;
+
+    #[ORM\OneToMany(targetEntity: Achat::class, mappedBy: 'user', orphanRemoval: true)]
     private $achats;
+
 
     /**
      * le token qui servira lors de l'oubli de mot de passe
@@ -380,14 +381,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->avatar = $avatar;
 
         // set (or unset) the owning side of the relation if necessary
-        $newUser = null === $avatar ? null : $this;
+        $newUser = $avatar instanceof \App\Entity\Photo ? $this : null;
         if ($avatar->getUser() !== $newUser) {
             $avatar->setUser($newUser);
         }
 
         return $this;
     }
-
 
     /**
      * @return Collection|Commentaire[]
@@ -472,11 +472,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removePlant(Plant $plant): self
     {
-        if ($this->plants->removeElement($plant)) {
-            // set the owning side to null (unless already changed)
-            if ($plant->getUser() === $this) {
-                $plant->setUser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->plants->removeElement($plant) && $plant->getUser() === $this) {
+            $plant->setUser(null);
         }
 
         return $this;
@@ -527,11 +525,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeFriend(Friend $friend): self
     {
-        if ($this->friends->removeElement($friend)) {
-            // set the owning side to null (unless already changed)
-            if ($friend->getUserFriend() === $this) {
-                $friend->setUserFriend(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->friends->removeElement($friend) && $friend->getUserFriend() === $this) {
+            $friend->setUserFriend(null);
         }
 
         return $this;
@@ -557,11 +553,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeFollowed(Friend $followed): self
     {
-        if ($this->followed->removeElement($followed)) {
-            // set the owning side to null (unless already changed)
-            if ($followed->getUserFollowed() === $this) {
-                $followed->setUserFollowed(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->followed->removeElement($followed) && $followed->getUserFollowed() === $this) {
+            $followed->setUserFollowed(null);
         }
 
         return $this;
@@ -587,37 +581,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeAchat(Achat $achat): self
     {
-        if ($this->achats->removeElement($achat)) {
-            // set the owning side to null (unless already changed)
-            if ($achat->getUser() === $this) {
-                $achat->setUser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->achats->removeElement($achat) && $achat->getUser() === $this) {
+            $achat->setUser(null);
         }
 
         return $this;
     }
 
 
-    /**
-     * @return int
-     */
     public function getFlagResetToken(): int
     {
         return $this->flagResetToken;
     }
 
-    /**
-     * @param int $flagResetToken
-     */
     public function setFlagResetToken(int $flagResetToken): void
     {
         $this->flagResetToken = $flagResetToken;
     }
 
 
-    /**
-     * @return string
-     */
     public function getResetToken(): string
     {
         return $this->resetToken;
@@ -651,11 +634,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeGarden(Garden $garden): static
     {
-        if ($this->gardens->removeElement($garden)) {
-            // set the owning side to null (unless already changed)
-            if ($garden->getUser() === $this) {
-                $garden->setUser(null);
-            }
+        // set the owning side to null (unless already changed)
+        if ($this->gardens->removeElement($garden) && $garden->getUser() === $this) {
+            $garden->setUser(null);
         }
 
         return $this;

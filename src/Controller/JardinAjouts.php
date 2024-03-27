@@ -136,6 +136,7 @@ class JardinAjouts extends AbstractController
         $achat->setShared(true);
         $achat->setCreatedat(new DateTime('now'));
         $achat->setDescritpion("");
+        $achat->setUser($user);
         $flux->setAchat($achat);
 
         $form = $this->createForm(FluxAchatType::class, $flux)->handleRequest($request);
