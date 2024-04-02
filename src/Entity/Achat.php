@@ -40,6 +40,12 @@ class Achat
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
+
+    public function __construct()
+    {
+  
+    }
+
     public function getId(): ?int
     {
         return $this->id;

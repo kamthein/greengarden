@@ -42,7 +42,7 @@ class PageJardinController extends AbstractController
         return $this->statAnnee($user, $user, $chartBuilder, $entityManager, $request, 2024, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository );
     }
 
-       #[Route(path: '/bou/{nickname}', name: 'app_show_garden')] // Afficher la page Jardin d'un autre utilisateur 2024
+    #[Route(path: '/bou/{nickname}', name: 'app_show_garden')] // Afficher la page Jardin d'un autre utilisateur 2024
     public function pageJardinUser(UserInterface $user_co, User $user, ChartBuilderInterface $chartBuilder,  ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
     {
         $entityManager = $doctrine->getManager();

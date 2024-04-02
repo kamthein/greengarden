@@ -43,17 +43,17 @@ security:
     access_control:
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/reset_password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/me, roles: ROLE_USER }
-        - { path: ^/carnet, roles: ROLE_USER }
-        - { path: ^/u/, roles: ROLE_PUBLISHER }
-        - { path: ^/ajopo, roles: ROLE_USER }
-        - { path: ^/ajolo, roles: ROLE_USER }
+        - { path: ^/carnet/^, roles: ROLE_USER }
+        - { path: ^/ajoutpost, roles: ROLE_USER }
+        - { path: ^/ajoutrecolte/^, roles: ROLE_USER }
+        - { path: ^/ajoutplant/^, roles: ROLE_USER }
+        - { path: ^/ajoutachat, roles: ROLE_USER }
+        - { path: ^/ajoutami, roles: ROLE_USER }
         - { path: ^/bou, roles: ROLE_USER }
-        - { path: ^/r, roles: ROLE_USER }
+        - { path: ^/bou/^, roles: ROLE_USER }
         - { path: ^/ajax/like/, roles: ROLE_USER }
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:
