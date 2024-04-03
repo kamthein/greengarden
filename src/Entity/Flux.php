@@ -16,14 +16,18 @@ class Flux
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     public $paniers;
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     public $posts;
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     public $achats;
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

@@ -16,7 +16,7 @@ class Methode
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $nom;
+    private ?string $nom = null;
 
     #[ORM\OneToMany(targetEntity: Recolte::class, mappedBy: 'methode')]
     private $recoltes;

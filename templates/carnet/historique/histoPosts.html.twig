@@ -10,8 +10,7 @@
                     {{ include('carnet/display_photo.html.twig', { 'p': p }) }}
                 {% endif %}   
             {% endfor %}
-            {{ include('carnet/historique/com_and_like.html.twig', { 'commentaires': fluxpost.commentaires , 'likes': fluxpost.likes, 'flux_id' : fluxpost.id, 'flux': fluxpost }) }}
-        {% endfor %}
+      {% endfor %}
 
         </div>
         <summary class="row cadre_blanc">

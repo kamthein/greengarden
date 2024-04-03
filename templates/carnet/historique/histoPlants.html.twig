@@ -11,7 +11,7 @@
                     <thead>
                         <tr>
                             <th>
-                                {% if app.user.id == fluxpanier.flux.user.id  %}
+                                {% if app.user == fluxpanier.flux.user  %}
                                     <a href="{{ path('ajouter_plant', {id: fluxpanier.id}) }}"> <img src="{{ asset('images/ajouter.png') }}" alt="Image"  width="25"></a>
                                 {% endif %}
                             </th>
@@ -44,8 +44,7 @@
                             {% endfor %}
                     </tbody>
                 </table>
-                {{ include('carnet/historique/com_and_like.html.twig', { 'commentaires': fluxpanier.flux.commentaires , 'likes': fluxpanier.flux.likes, 'flux_id' : fluxpanier.flux.id, 'flux': fluxpanier.flux }) }}
-            {% endif %}
+           {% endif %}
         {% endfor %}
         </div>
         <summary class="row cadre_blanc">

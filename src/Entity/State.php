@@ -17,7 +17,7 @@ class State
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $nom;
+    private ?string $nom = null;
 
     #[ORM\OneToMany(mappedBy: 'state', targetEntity: Plant::class)]
     private Collection $plants;
