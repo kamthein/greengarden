@@ -22,11 +22,11 @@ class Plant
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    #[ORM\ManyToOne(targetEntity: Consommable::class, inversedBy: 'plants')]
+    #[ORM\ManyToOne(targetEntity: Consommable::class, inversedBy: 'plants', fetch:"EAGER")]
     #[ORM\JoinColumn(nullable: false)]
     private $consommable;
 
-    #[ORM\ManyToOne(targetEntity: State::class, inversedBy: 'plants')]
+    #[ORM\ManyToOne(targetEntity: State::class, inversedBy: 'plants', fetch:"EAGER")]
     #[ORM\JoinColumn(nullable: false)]
     private $state;
 

@@ -50,7 +50,6 @@ class PageJardinController extends AbstractController
     }
 
 
-
     /* Fonction pour calculer toutes les données, en fonction de l'utilisateur et de l'année */
     public function statAnnee( $user, $user_show, $chartBuilder, $entityManager, $request, $year, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository){
         $user->setLastCo(new DateTime('now'));

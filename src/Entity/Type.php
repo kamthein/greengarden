@@ -17,7 +17,7 @@ class Type
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $nom = null;
+    private string $nom;
 
     #[ORM\OneToMany(mappedBy: 'type', targetEntity: Achat::class)]
     private Collection $achats;

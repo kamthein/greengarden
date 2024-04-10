@@ -14,7 +14,7 @@ class Achat
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Type::class, inversedBy: 'achats')]
+    #[ORM\ManyToOne(targetEntity: Type::class, inversedBy: 'achats', fetch:"EAGER")]
     #[ORM\JoinColumn(nullable: false)]
     private $type;
 

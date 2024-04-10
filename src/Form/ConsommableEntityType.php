@@ -25,7 +25,8 @@ final class ConsommableEntityType extends AbstractType
                 return str_repeat('', $conso->getTreeLevel()) . '' . $conso->getNom(). ' (' . $conso->getParent()->getNom(). ')' ;
             },
             'group_by' => static function (Consommable $choice): string {
-                return $choice->getParentAtLevel(1)->getNom();
+               return $choice->getParentAtLevel(1)->getNom();
+               //return "liste";
             },
         ]);
     }

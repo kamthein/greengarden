@@ -26,11 +26,11 @@ class Recolte
     #[ORM\Column(type: 'float', nullable: true)]
     private $quantity;
 
-    #[ORM\ManyToOne(targetEntity: Consommable::class, inversedBy: 'recoltes')]
+    #[ORM\ManyToOne(targetEntity: Consommable::class, inversedBy: 'recoltes', fetch:"EAGER")]
     #[ORM\JoinColumn(nullable: false)]
     private $consommable;
 
-    #[ORM\ManyToOne(targetEntity: Methode::class, inversedBy: 'recoltes')]
+    #[ORM\ManyToOne(targetEntity: Methode::class, inversedBy: 'recoltes', fetch:"EAGER")]
     private $methode;
 
     #[ORM\ManyToOne(targetEntity: Panier::class, inversedBy: 'recoltes')]

@@ -17,6 +17,7 @@
         {% set prix_tot = 0 %}
         {% set q_tot = 0 %}
         {% for fluxachat in fluxAchats %}
+        
             {% set prix_tot = prix_tot + fluxachat.achat.prix * fluxachat.achat.quantite %}
             {% set q_tot = q_tot + fluxachat.achat.quantite %}
             <tr>

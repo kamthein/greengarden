@@ -39,6 +39,7 @@ class FluxRepository extends ServiceEntityRepository
             return $this->createQueryBuilder('f')
                 ->innerJoin('f.achat', 'a')
                 ->innerJoin('f.user', 'u')
+                ->innerJoin('a.type', 't')
                 ->where( 'f.user = :user')
                 ->setParameter('user', $user)
                 ->orderBy('a.createdat', 'DESC')

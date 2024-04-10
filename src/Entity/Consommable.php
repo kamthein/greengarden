@@ -41,7 +41,7 @@ class Consommable
     /**
      * @Gedmo\TreeParent
      */
-    #[ORM\ManyToOne(targetEntity: Consommable::class, inversedBy: 'children')]
+    #[ORM\ManyToOne(targetEntity: Consommable::class, inversedBy: 'children', fetch:"EAGER")]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $parent;
 

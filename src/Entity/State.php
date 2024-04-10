@@ -23,7 +23,7 @@ class State
     private Collection $plants;
 
 
-    public function __construct(string $nom)
+    public function __construct(string $nom,)
     {
         $this->plants = new ArrayCollection();
         $this->nom = $nom;
