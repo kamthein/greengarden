@@ -43,13 +43,13 @@
     <div class="wrapper text-center">
         <div class="row cadre_blanc_no_border" >
       
-            <p><b class="colorgris">Région  :</b> {{ garden.region.countryCode}} ({{ garden.region.name}})</p>
-            <p><b class="colorvert">Surface  :</b> {{ garden.surface.nom}} ({{ garden.surface.metre}}) => <b class="colorrose"> Objectif de récolte:</b> {{ garden.surface.objectif}} kg</p>
-            <p><b class="colorvert">Terre : </b> Sable : {{ garden.sable}}% / Argile : {{ garden.argile}}% /  Calcaire :  {{ garden.calcaire}}% / Limon : {{ garden.limon}}%</p>
-            <p><b class="colorvert">Surface sous serre  :</b> {{ garden.serre}} m2 </p>
-            <p><b class="colorviolet">Pluviométrie :</b> Minimun :  {{ garden.minpluvio}} / Maximum : {{ garden.maxpluvio}}</p>
-            <p><b class="colorviolet">Litres cuves  :</b> {{ garden.cuve}} L </p>
-            <p><b class="colorrose">Production Moyenne Annuelle  :</b> {{ garden.moyenneprod}} KG</p>
+            {% if garden.region is not null %}<p class="colorgris">{{ garden.region.countryCode}} ({{ garden.region.name}})</p> {% endif %}
+            {% if garden.surface is not null %}<p><b class="colorvert">Surface  :</b> {{ garden.surface.nom}} ({{ garden.surface.metre}}) <br/> <b class="colorrose"> Objectif de récolte :</b> {{ garden.surface.objectif}} kg</p>{% endif %}
+            {% if garden.sable is not null %}<p><b class="colorvert">Composition terre : </b> <br/> Sable : {{ garden.sable}}% _ Argile : {{ garden.argile}}% _  Calcaire :  {{ garden.calcaire}}% _ Limon : {{ garden.limon}}%</p>{% endif %}
+            {% if garden.serre is not null %}<p><b class="colorvert">Surface sous serre  :</b> {{ garden.serre}} m2 </p>{% endif %}
+            {% if garden.cuve is not null %}<p><b class="colorviolet">Capacité cuves  :</b> {{ garden.cuve}} L </p>{% endif %}
+            {% if garden.minpluvio is not null %}<p><b class="colorviolet">Pluviométrie :</b> Entre  {{ garden.minpluvio}} et {{ garden.maxpluvio}}</p>{% endif %}
+            {% if garden.moyenneprod is not null %}<p><b class="colorrose">Production Moyenne Annuelle  :</b> {{ garden.moyenneprod}} KG</p>{% endif %}
         </div>
     </div>
     <div id="content"> 

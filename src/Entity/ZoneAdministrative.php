@@ -18,13 +18,13 @@ class ZoneAdministrative
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
-    #[ORM\Column(nullable: true)]
-    private ?string $countryCode = null;
+    #[ORM\Column()]
+    private string $countryCode;
 
-    #[ORM\Column(nullable: true)]
-    private ?string $name = null;
+    #[ORM\Column()]
+    private string $name;
 
     #[ORM\Column(nullable: true)]
     private ?string $meteolink = null;
