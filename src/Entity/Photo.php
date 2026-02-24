@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Entity;
-
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -10,9 +8,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
 #[ORM\Entity]
 class Photo
 {
@@ -21,34 +17,17 @@ class Photo
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    // ... other fields
+    #[Vich\UploadableField(mapping: 'photo_image', fileNameProperty: 'imageName', size: 'imageSize')]
+    private ?File $imageFile = null;
 
-    /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     *
-     * @Vich\UploadableField(mapping="photo_image", fileNameProperty="imageName", size="imageSize")
-     *
-     * @var File|null
-     */
-    private $imageFile;
-
-    /**
-     * @var string|null
-     */
     #[ORM\Column(type: 'string')]
-    private $imageName;
+    private ?string $imageName = null;
 
-    /**
-     * @var int|null
-     */
     #[ORM\Column(type: 'integer')]
-    private $imageSize;
+    private ?int $imageSize = null;
 
-    /**
-     * @var DateTimeInterface|null
-     */
     #[ORM\Column(type: 'datetime')]
-    private $updatedAt;
+    private ?DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne(targetEntity: Panier::class, inversedBy: 'photo', cascade: ['persist'])]
     private $panier;
@@ -58,7 +37,6 @@ class Photo
 
     #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'avatar', cascade: ['persist'])]
     private $user;
-
 
     public function __construct()
     {
@@ -70,23 +48,11 @@ class Photo
         return $this->id;
     }
 
-
-    /**
-     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
-     * of 'UploadedFile' is injected into this setter to trigger the update. If this
-     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
-     * must be able to accept an instance of 'File' as the bundle will inject one here
-     * during Doctrine hydration.
-     *
-     * @param File|UploadedFile|null $imageFile
-     */
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
 
-        if ($imageFile instanceof \Symfony\Component\HttpFoundation\File\File) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
+        if ($imageFile instanceof File) {
             $this->updatedAt = new DateTimeImmutable();
         }
     }
@@ -124,33 +90,28 @@ class Photo
     public function setPanier(?Panier $panier): self
     {
         $this->panier = $panier;
-
         return $this;
     }
 
-    public function getPost(): ?post
+    public function getPost(): ?Post
     {
         return $this->post;
     }
 
-    public function setPost(?post $post): self
+    public function setPost(?Post $post): self
     {
         $this->post = $post;
-
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
-
         return $this;
     }
-
-
 }

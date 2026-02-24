@@ -9,9 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use RuntimeException;
 
-/**
- * @Gedmo\Tree(type="nested")
- */
+#[Gedmo\Tree(type: 'nested')]
 #[ORM\Entity(repositoryClass: ConsommableRepository::class)]
 class Consommable
 {
@@ -20,27 +18,19 @@ class Consommable
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Gedmo\TreeLeft
-     */
+    #[Gedmo\TreeLeft]
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $treeLeft;
 
-    /**
-     * @Gedmo\TreeLevel
-     */
+    #[Gedmo\TreeLevel]
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $treeLevel;
 
-    /**
-     * @Gedmo\TreeRight
-     */
+    #[Gedmo\TreeRight]
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $treeRight;
 
-    /**
-     * @Gedmo\TreeParent
-     */
+    #[Gedmo\TreeParent]
     #[ORM\ManyToOne(targetEntity: Consommable::class, inversedBy: 'children', fetch:"EAGER")]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private $parent;

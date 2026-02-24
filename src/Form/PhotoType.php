@@ -18,7 +18,7 @@ class PhotoType extends AbstractType
                 'allow_delete' => false,
                 'delete_label' => '',
                 'download_label' => '',
-                'download_link' => false,
+                'download_uri' => false,
                 'imagine_pattern' => $options['vich_imagine_pattern'],
                 'asset_helper' => true,
                 'label' => false,

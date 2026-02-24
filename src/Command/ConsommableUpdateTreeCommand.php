@@ -12,21 +12,22 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Attribute\AsCommand;
 
-
+#[AsCommand(
+    name: 'app:consommable:update-tree',
+    description: 'Update the nested tree of consommables',
+)]
 class ConsommableUpdateTreeCommand extends Command
 {
     public $manager;
-    protected static $defaultName = 'app:consommable:update-tree';
-    protected static $defaultDescription = 'Update the nested tree of consommables';
     private ConsommableRepository $repository;
 
     public function __construct(ManagerRegistry $entityManager, ConsommableRepository $repository)
     {
         parent::__construct();
 
-        $doctrine->getManager();
-        $this->manager = $manager;
+        $this->manager = $entityManager->getManager();
         $this->repository = $repository;
     }
 
