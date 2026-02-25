@@ -35,210 +35,177 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PageJardinController extends AbstractController
 {
-    #[Route(path: '/bou', name: 'garden')] // Afficher sa propre page Jardin
-    public function pageJardin(UserInterface $user, ChartBuilderInterface $chartBuilder,  ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
+    #[Route(path: '/bou', name: 'garden')]
+    public function pageJardin(UserInterface $user, ChartBuilderInterface $chartBuilder, ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
     {
         $entityManager = $doctrine->getManager();
-        return $this->statAnnee($user, $user, $chartBuilder, $entityManager, $request, 2026, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository );
+
+        // Récupère les années disponibles pour cet utilisateur
+        $availableYears = $recolteRepository->findAvailableYears($user);
+
+        // Année sélectionnée : paramètre URL ou année courante ou dernière année avec données
+        $currentYear = (int) (new DateTime())->format('Y');
+        if (empty($availableYears)) {$availableYears = [$currentYear];}
+        $selectedYear = (int) $request->query->get('year', $currentYear);
+
+        // Si l'année demandée n'a pas de données, on prend la plus récente disponible
+        if (!empty($availableYears) && !in_array($selectedYear, $availableYears)) {
+            $selectedYear = max($availableYears);
+        }
+
+        return $this->statAnnee($user, $user, $chartBuilder, $entityManager, $request, $selectedYear, $availableYears, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository);
     }
 
-    #[Route(path: '/bou/{nickname}', name: 'app_show_garden')] // Afficher la page Jardin d'un autre utilisateur 2026
-    public function pageJardinUser(UserInterface $user_co, User $user, ChartBuilderInterface $chartBuilder,  ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
+    #[Route(path: '/bou/{nickname}', name: 'app_show_garden')]
+    public function pageJardinUser(UserInterface $user_co, User $user, ChartBuilderInterface $chartBuilder, ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
     {
         $entityManager = $doctrine->getManager();
-        return $this->statAnnee($user, $user_co, $chartBuilder, $entityManager, $request, 2026, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository);
+
+        $availableYears = $recolteRepository->findAvailableYears($user);
+
+        $currentYear = (int) (new DateTime())->format('Y');
+        if (empty($availableYears)) {$availableYears = [$currentYear];}
+        $selectedYear = (int) $request->query->get('year', $currentYear);
+
+        if (!empty($availableYears) && !in_array($selectedYear, $availableYears)) {
+            $selectedYear = max($availableYears);
+        }
+
+        return $this->statAnnee($user, $user_co, $chartBuilder, $entityManager, $request, $selectedYear, $availableYears, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository);
     }
 
 
-    /* Fonction pour calculer toutes les données, en fonction de l'utilisateur et de l'année */
-    public function statAnnee( $user, $user_show, $chartBuilder, $entityManager, $request, $year, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository){
-        $user->setLastCo(new DateTime('now'));
+    public function statAnnee($user, $user_co, $chartBuilder, $entityManager, $request, $year, $availableYears, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository)
+    {
+        $user_co->setLastCo(new DateTime('now'));
         $nbco = $user->getNbCo();
-        $user->setNbCo($nbco + 1);
+        $user_co->setNbCo($nbco + 1);
         $entityManager->flush();
 
-        // Jardin User
-        $garden = $gardenRepository->findOneby(array('user' => $user));
-        // Calorie User
-        $calories = $this->calories($user, $year, $recolteRepository);
-        // Liste des espèces plantées en semis / en plant
-        $p_byuser = $this->p_byuser($user, $year, $userRepository);
-        // Liste des espèces récoltées 
-        $r_byuser = $this->r_byuser($user, $year, $userRepository);
-        // Graphique ligne récoltes
-        $chart = $this->graph_recolte($user, $chartBuilder, $year, $recolteRepository);
-        // Graphique donught récoltées par méthode
-        $chart_donR = $this->graph_repartitionRType($user, $chartBuilder, $year, $recolteRepository);
-        //Liste des amis
-        $amis = $this->amis($user, $friendRepository);
-        //Liste des achats
-        $FluxAchats = $fluxRepository->achatbyuser($user);
+        $garden      = $gardenRepository->findOneby(array('user' => $user));
+        $calories    = $this->calories($user, $year, $recolteRepository);
+        $p_byuser    = $this->p_byuser($user, $year, $userRepository);
+        $r_byuser    = $this->r_byuser($user, $year, $userRepository);
+        $chart       = $this->graph_recolte($user, $chartBuilder, $year, $recolteRepository);
+        $chart_donR  = $this->graph_repartitionRType($user, $chartBuilder, $year, $recolteRepository);
+        $amis        = $this->amis($user, $friendRepository);
+        $FluxAchats  = $fluxRepository->achatbyuser($user);
 
+        $templateData = [
+            'user'           => $user,
+            'p_byuser'       => $p_byuser,
+            'r_byuser'       => $r_byuser,
+            'chart'          => $chart,
+            'chart_don_r'    => $chart_donR,
+            'amis'           => $amis,
+            'calories'       => $calories,
+            'garden'         => $garden,
+            'fluxAchats'     => $FluxAchats,
+            'selected_year'  => $year,           // ← année active
+            'available_years' => $availableYears, // ← liste pour le sélecteur
+        ];
 
-        //On vérifie si on a une requête AJAX
-        if($request->get('ajax')) {
+        if ($request->get('ajax')) {
             return new JsonResponse([
-                'content' => $this->renderView('garden/index.html.twig', [
-                    'user' => $user,
-                    'p_byuser' => $p_byuser,
-                    'r_byuser' => $r_byuser,
-                    'chart' => $chart,
-                    'chart_don_r' => $chart_donR,
-                    'amis' => $amis,
-                    'calories' => $calories,
-                    'garden' => $garden,
-                    'fluxAchats' => $FluxAchats
-                ])
+                'content' => $this->renderView('garden/index.html.twig', $templateData)
             ]);
         }
 
-        return $this->render('garden/index.html.twig', [
-            'user' => $user,
-            'p_byuser' => $p_byuser,
-            'r_byuser' => $r_byuser,
-            'chart' => $chart,
-            'chart_don_r' => $chart_donR,
-            'amis' => $amis,
-            'calories' => $calories,
-            'garden' => $garden,
-            'fluxAchats' => $FluxAchats
-        ]);
-       
+        return $this->render('garden/index.html.twig', $templateData);
     }
 
 
-    /**
-     * Récupère les calories
-     */
     public function calories($user, $year, $recolteRepository)
     {
         return $recolteRepository->Cal_byuser($user, $year);
     }
 
-    /**
-     * Récupère la liste des espèces plantées
-     */
     public function p_byuser($user, $year, $userRepository)
     {
-        return $userRepository->p_byuser( $user, $year);
+        return $userRepository->p_byuser($user, $year);
     }
 
-    /**
-     * Récupère la liste des espèces récoltées
-     */
     public function r_byuser($user, $year, $userRepository)
     {
-        return $userRepository->r_byuser( $user, $year);
+        return $userRepository->r_byuser($user, $year);
     }
 
-    /**
-     * Récupère la liste des amis
-     */
     public function amis($user, $friendRepository)
     {
         return $friendRepository->findfriendBy($user);
     }
 
-
-    /**
-     * Créer les données pour le graphique dans stat pour la page Jardin (Répartition par espèce récoltée)
-     */
     public function graph_repartitionRType($user, ChartBuilderInterface $chartBuilder, $year, $recolteRepository)
     {
-        // Liste des espèces récoltées par catégorie
         $r_byuserbycat = $recolteRepository->QteBymethodbyuser($user, $year);
         $cat = [];
         $cat_val = [];
-        foreach($r_byuserbycat as $p)
-        {
-            $cat[] = [$p["methode"]];
+        foreach ($r_byuserbycat as $p) {
+            $cat[]     = [$p["methode"]];
             $cat_val[] = [$p["quantity_tot"]];
         }
 
         $chart_donR = $chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
         $chart_donR->setData([
             'labels' => $cat,
-            'datasets' => [
-                [
-                    'data' => $cat_val,
-                    'backgroundColor' => [
-                        '#2633B6',
-                        '#eb3b75',
-                        '#1c9f27',
-                        '#740ebc',
-                        '#fbe920',
-                        '#757777',
-                    ],
-                ],
-            ],
+            'datasets' => [[
+                'data' => $cat_val,
+                'backgroundColor' => ['#2633B6', '#eb3b75', '#1c9f27', '#740ebc', '#fbe920', '#757777'],
+            ]],
         ]);
         $chart_donR->setOptions([
             'responsive' => true,
             'maintainAspectRatio' => true,
-            'aspectRatio' => 2, // largeur/hauteur, augmente pour réduire la hauteur
+            'aspectRatio' => 2,
         ]);
 
         return $chart_donR;
     }
 
-    // Créer les données pour le graphique dans stat (Qté récoltée)
     public function graph_recolte($user, $chartBuilder, $year, $recolteRepository)
     {
         $stat = $recolteRepository->statbyuser($user, $year);
 
-        $tab_mois = [1,2,3,4,5,6,7,8,9,10,11,12];
+        $tab_mois = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         $tab_val = [0];
         $max = 1;
-        $test = false;
-        foreach($tab_mois as $mois)
-        {
-            $test = false;
-            foreach($stat as $s)
-            {
-                if ((int) $s["mois"] == $mois)
-                {
+
+        foreach ($tab_mois as $mois) {
+            $found = false;
+            foreach ($stat as $s) {
+                if ((int)$s["mois"] == $mois) {
                     $tab_val[] = [$s["quantity_tot"]];
-                    $test = true;
+                    $found = true;
                     if ($s["quantity_tot"] > $max) {
                         $max = $s["quantity_tot"];
                     }
                 }
             }
-            if ($test == false) {
+            if (!$found) {
                 $tab_val[] = [0];
             }
         }
         $max *= 1.2;
 
-        $tab_mois = ["","janvier","février","mars","avril", "mai", "juin", "juillet", "Août", "septembre", "octobre", "novembre", "décembre"];
+        $tab_mois = ["", "janvier", "février", "mars", "avril", "mai", "juin", "juillet", "Août", "septembre", "octobre", "novembre", "décembre"];
         $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData([
             'labels' => $tab_mois,
-            'datasets' => [
-                [
-                    'label' => 'Qté récoltée totale, en kg, par mois',
-                    'borderColor' => '#2633B6',
-                    'data' => $tab_val,
-                    'fill' => false,
-                    'tension' => 0.1,
-                ],
-            ],
+            'datasets' => [[
+                'label' => 'Qté récoltée totale, en kg, par mois',
+                'borderColor' => '#2633B6',
+                'data' => $tab_val,
+                'fill' => false,
+                'tension' => 0.1,
+            ]],
         ]);
-
-
         $chart->setOptions([
             'responsive' => true,
             'scales' => [
-                'yAxes' => [
-                    ['ticks' => ['min' => 0, 'max' => $max]],
-                ],
+                'yAxes' => [['ticks' => ['min' => 0, 'max' => $max]]],
             ],
         ]);
+
         return $chart;
     }
-
-
 }
-
-
-

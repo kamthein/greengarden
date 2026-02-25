@@ -80,6 +80,12 @@
     </div>
     {% endif %}
 
+{# ===== SELECTION ANNEE ===== #}
+    {% include 'garden/year_selector.html.twig' with {
+    years_with_data: available_years,
+    selected_year: selected_year
+    } %}
+
     {# ===== SYNTHESE & GRAPHIQUES ===== #}
     <div id="content">
         {{ include('garden/synthese.html.twig', {'p_byuser': p_byuser, 'r_byuser': r_byuser, 'user': user}) }}

@@ -1,0 +1,179 @@
+{#
+  Paramètres attendus :
+    - years_with_data : tableau des années où il y a des données, ex: [2023, 2024, 2025, 2026]
+    - selected_year   : année actuellement sélectionnée, ex: 2026
+
+  Exemple d'appel :
+    {% include 'components/year_selector.html.twig' with {
+        years_with_data: [2023, 2024, 2025, 2026],
+        selected_year: app.request.query.get('year', 'now'|date('Y'))
+    } %}
+#}
+
+{% set sorted_years = years_with_data|sort|reverse %}
+{% set current_year = 'now'|date('Y') %}
+{% set selected = selected_year|default(current_year) %}
+
+<div class="year-selector">
+
+  {# Flèche gauche — vers le passé #}
+  {% set prev_year = null %}
+  {% for y in sorted_years %}
+    {% if y < selected %}
+      {% set prev_year = y %}
+      {# On veut le plus récent avant selected, donc on break au premier #}
+      {%- if loop.first or true %}{% endif %}
+    {% endif %}
+  {% endfor %}
+  {# Twig ne supporte pas break, on calcule autrement #}
+
+  <button
+    class="year-selector__arrow"
+    onclick="changeYear({{ sorted_years|last }})"
+    data-dir="prev"
+    {% if selected == sorted_years|last %}disabled{% endif %}
+    title="Année précédente"
+  >‹</button>
+
+  {# Boutons d'années #}
+  <div class="year-selector__years">
+    {% for year in sorted_years %}
+      <button
+        class="year-selector__btn
+          {% if year == selected %} is-active{% endif %}
+          {% if year == current_year and year != selected %} is-current{% endif %}"
+        onclick="changeYear({{ year }})"
+        data-year="{{ year }}"
+      >
+        {{ year }}
+        {% if year == current_year %}
+          <span class="year-selector__dot" title="Année en cours"></span>
+        {% endif %}
+      </button>
+    {% endfor %}
+  </div>
+
+  {# Flèche droite — vers le futur #}
+  <button
+    class="year-selector__arrow"
+    data-dir="next"
+    {% if selected == sorted_years|first %}disabled{% endif %}
+    title="Année suivante"
+  >›</button>
+
+</div>
+
+
+<style>
+.year-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background-color: #f8faf5;
+  border-radius: 999px;
+  border: 1px solid #d6e8c4;
+  width: fit-content;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.year-selector__arrow {
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: #4a7c3f;
+  padding: 0 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.year-selector__arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.year-selector__years {
+  display: flex;
+  gap: 4px;
+}
+
+.year-selector__btn {
+  position: relative;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.year-selector__btn:hover {
+  background-color: #eaf4e3;
+}
+
+.year-selector__btn.is-active {
+  background-color: #4a7c3f;
+  color: #fff;
+  border-color: #4a7c3f;
+  box-shadow: 0 1px 4px rgba(74,124,63,0.3);
+}
+
+.year-selector__btn.is-current {
+  border-color: #a8d48a;
+  color: #4a7c3f;
+}
+
+.year-selector__dot {
+  position: absolute;
+  bottom: 4px;
+  right: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #4a7c3f;
+}
+
+.year-selector__btn.is-active .year-selector__dot {
+  background-color: #fff;
+}
+</style>
+
+
+<script>
+(function () {
+  // Récupère les années disponibles depuis les boutons déjà rendus
+  const buttons = document.querySelectorAll('.year-selector__btn');
+  const years = Array.from(buttons).map(b => parseInt(b.dataset.year)).sort((a, b) => b - a);
+  let selected = parseInt(document.querySelector('.year-selector__btn.is-active')?.dataset.year || years[0]);
+
+  // Navigation par flèches
+  document.querySelectorAll('.year-selector__arrow').forEach(arrow => {
+    arrow.addEventListener('click', () => {
+      const dir = arrow.dataset.dir;
+      const idx = years.indexOf(selected);
+      if (dir === 'prev' && idx < years.length - 1) changeYear(years[idx + 1]);
+      if (dir === 'next' && idx > 0) changeYear(years[idx - 1]);
+    });
+  });
+
+  // Change l'année : met à jour l'URL avec ?year=XXXX et recharge
+  window.changeYear = function (year) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('year', year);
+    window.location.href = url.toString();
+  };
+
+  // Met à jour l'état des flèches en fonction de la sélection
+  function updateArrows() {
+    const idx = years.indexOf(selected);
+    document.querySelector('[data-dir="prev"]').disabled = idx >= years.length - 1;
+    document.querySelector('[data-dir="next"]').disabled = idx <= 0;
+  }
+
+  updateArrows();
+})();
+</script>

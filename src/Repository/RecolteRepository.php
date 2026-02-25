@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Recolte;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use DoctrineExtensions\Query\Mysql;
@@ -73,4 +74,23 @@ class RecolteRepository extends ServiceEntityRepository
 
               return  $query->getQuery()->getResult();
     }
+
+/**
+ * Retourne la liste des années pour lesquelles l'utilisateur a des récoltes.
+ * Ex: [2023, 2024, 2026]
+ */
+public function findAvailableYears(User $user): array
+{
+    $result = $this->createQueryBuilder('r')
+        ->select('YEAR(r.createdat) AS annee')
+        ->where('r.user = :user')
+        ->setParameter('user', $user)
+        ->groupBy('annee')
+        ->orderBy('annee', 'DESC')
+        ->getQuery()
+        ->getScalarResult();
+
+    // Retourne un tableau plat d'entiers : [2026, 2024, 2023]
+    return array_map(fn($row) => (int) $row['annee'], $result);
+}
 }
