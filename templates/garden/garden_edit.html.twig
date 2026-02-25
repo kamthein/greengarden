@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mon Jardin — Configuration{% endblock %}
+{% block body %}
+{% form_theme form with ['bootstrap_4_layout.html.twig'] %}
+
+<div class="wrapper" style="margin-top:2rem; margin-bottom:3rem;">
+    <div class="gg-details" style="max-width:520px; margin:0 auto;">
+        <div class="gg-details-content" style="padding:2rem 1.5rem;">
+
+            {# TITRE #}
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <div style="font-size:2.5rem; margin-bottom:0.5rem;">🏡</div>
+                <h1 style="font-size:1.3rem; font-weight:800; color:var(--vertColor); margin-bottom:0.25rem;">
+                    Configurer mon jardin
+                </h1>
+                <p style="font-size:0.78rem; color:#aaa;">
+                    Ces informations permettent de personnaliser vos recommandations
+                </p>
+            </div>
+
+            {# FLASH #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div style="background:#e8f5e9; border-left:3px solid var(--vertColor); padding:0.6rem 0.9rem; border-radius:0 8px 8px 0; font-size:0.85rem; margin-bottom:1rem; color:#333;">
+                        {{ message | raw }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {{ form_start(form) }}
+
+            {# LOCALISATION #}
+            <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#aaa; margin-bottom:0.5rem; margin-top:0.5rem;">
+                🗺️ Localisation
+            </div>
+            <div class="gg-form-group">
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.region) }}</label>
+                    {{ form_widget(form.region, {'attr': {'class': 'gg-form-input'}}) }}
+                    {{ form_errors(form.region) }}
+                </div>
+            </div>
+
+            {# SURFACE #}
+            <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#aaa; margin-bottom:0.5rem; margin-top:1.2rem;">
+                🌱 Surface
+            </div>
+            <div class="gg-form-group">
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.surface) }}</label>
+                    {{ form_widget(form.surface, {'attr': {'class': 'gg-form-input'}}) }}
+                    {{ form_errors(form.surface) }}
+                </div>
+            </div>
+
+            {# COMPOSITION DU SOL #}
+            <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#aaa; margin-bottom:0.5rem; margin-top:1.2rem;">
+                🪨 Composition du sol
+            </div>
+            <div class="gg-form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.sable) }}</label>
+                    {{ form_widget(form.sable, {'attr': {'class': 'gg-form-input'}}) }}
+                </div>
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.argile) }}</label>
+                    {{ form_widget(form.argile, {'attr': {'class': 'gg-form-input'}}) }}
+                </div>
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.calcaire) }}</label>
+                    {{ form_widget(form.calcaire, {'attr': {'class': 'gg-form-input'}}) }}
+                </div>
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.limon) }}</label>
+                    {{ form_widget(form.limon, {'attr': {'class': 'gg-form-input'}}) }}
+                </div>
+            </div>
+
+            {# ÉQUIPEMENTS #}
+            <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#aaa; margin-bottom:0.5rem; margin-top:1.2rem;">
+                🏗️ Équipements
+            </div>
+            <div class="gg-form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.serre) }}</label>
+                    {{ form_widget(form.serre, {'attr': {'class': 'gg-form-input'}}) }}
+                </div>
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.cuve) }}</label>
+                    {{ form_widget(form.cuve, {'attr': {'class': 'gg-form-input'}}) }}
+                </div>
+            </div>
+
+            {# PLUVIOMÉTRIE #}
+            <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#aaa; margin-bottom:0.5rem; margin-top:1.2rem;">
+                🌧️ Pluviométrie
+            </div>
+            <div class="gg-form-group" style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.minpluvio) }}</label>
+                    {{ form_widget(form.minpluvio, {'attr': {'class': 'gg-form-input'}}) }}
+                </div>
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.maxpluvio) }}</label>
+                    {{ form_widget(form.maxpluvio, {'attr': {'class': 'gg-form-input'}}) }}
+                </div>
+            </div>
+
+            {# PRODUCTION #}
+            <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#aaa; margin-bottom:0.5rem; margin-top:1.2rem;">
+                📦 Production
+            </div>
+            <div class="gg-form-group">
+                <div>
+                    <label class="gg-form-label">{{ form_label(form.moyenneprod) }}</label>
+                    {{ form_widget(form.moyenneprod, {'attr': {'class': 'gg-form-input'}}) }}
+                </div>
+            </div>
+
+            {{ form_row(form._token) }}
+
+            <button type="submit" class="gg-action-btn btn-plant gg-submit-btn"
+                    style="width:100%; justify-content:center; border:none; cursor:pointer; font-size:1rem; font-family:inherit; margin-top:1.5rem;">
+                <span class="btn-icon">✅</span>
+                <span class="btn-label">Enregistrer mon jardin</span>
+            </button>
+
+            {{ form_end(form, {'render_rest': false}) }}
+
+            <div style="text-align:center; margin-top:1rem;">
+                <a href="{{ path('garden') }}" style="font-size:0.82rem; color:#aaa; text-decoration:none;">
+                    ← Retour à mon jardin
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

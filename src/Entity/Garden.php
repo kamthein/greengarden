@@ -41,10 +41,10 @@ class Garden
     private ?int $moyenneprod = null;
 
     #[ORM\ManyToOne(inversedBy: 'taille', fetch:"EAGER")]
-    private Taille $surface;
+    private ?Taille $surface = null;
 
     #[ORM\ManyToOne(inversedBy: 'gardens', fetch:"EAGER")]
-    private ZoneAdministrative $region;
+    private ?ZoneAdministrative $region = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'gardens', fetch:"EAGER")]
     private User $user;

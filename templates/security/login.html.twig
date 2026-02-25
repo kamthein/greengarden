@@ -70,8 +70,19 @@
                     <span class="btn-label">Se connecter</span>
                 </button>
 
+                <div style="display:flex; justify-content:space-between; margin-top:1rem; font-size:0.82rem;">
+                    <a href="{{ path('app_register') }}" 
+                    style="color:var(--vertColor); text-decoration:none; font-weight:600;">
+                        🌿 Créer un compte
+                    </a>
+                    <a href="{{ path('forgotten_password') }}" 
+                    style="color:#aaa; text-decoration:none;">
+                        Mot de passe oublié ?
+                    </a>
+                </div>
+
                 <p style="text-align:center; font-size:0.72rem; color:#bbb; margin-top:1rem;">
-                    Test : <strong>camille@example.com</strong> / <strong>admin</strong>
+                    Pour tester sans créer de compte : <strong>camille@example.com</strong> / <strong>admin</strong>
                 </p>
             </form>
 

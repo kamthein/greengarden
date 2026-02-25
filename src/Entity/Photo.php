@@ -39,6 +39,19 @@ class Photo
     #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'avatar', cascade: ['persist'])]
     private $user;
 
+
+    public function __sleep(): array
+    {
+        // On exclut imageFile qui n'est pas sérialisable
+        return ['id', 'imageName', 'imageSize', 'updatedAt', 'user', 'panier', 'post'];
+    }
+
+    public function __wakeup(): void
+    {
+        // imageFile sera rechargé par VichUploader si besoin
+        $this->imageFile = null;
+    }
+
     public function __construct()
     {
         $this->updatedAt = new DateTime();

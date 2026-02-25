@@ -18,6 +18,7 @@ class UserMailerService
     public function sendRegistrationConfirmationEmail(User $user): void
     {
         $message = (new TemplatedEmail())
+            ->from('noreply@greengarden.fr')
             ->to($user->getEmail())
             ->subject('Votre compte a été crée avec succès')
             ->htmlTemplate('registration/mail_confirmation.html.twig')
@@ -29,6 +30,7 @@ class UserMailerService
     public function sendPasswordRecoveryEmail(User $user): void
     {
         $message = (new TemplatedEmail())
+            ->from('noreply@greengarden.fr')
             ->to($user->getEmail())
             ->subject('Réinitialisation du mot de passe')
             ->htmlTemplate('security/reset_password_mail.html.twig')

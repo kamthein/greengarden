@@ -36,8 +36,8 @@
                 </div>
             </div>
 
+        {% if garden is not null %}
             {# Infos jardin #}
-            {% if garden.region is not null or garden.surface is not null %}
             <hr class="gg-divider" style="margin-top:1rem;"/>
             <div style="font-size:0.82rem; color:#666; display:flex; flex-direction:column; gap:0.3rem;">
                 {% if garden.region is not null %}
@@ -62,7 +62,25 @@
                     <span>📦 <strong>Production moyenne :</strong> {{ garden.moyenneprod }} kg/an</span>
                 {% endif %}
             </div>
+                {# Lien édition uniquement si c'est MON jardin #}
+                {% if app.user == user %}
+                    <a href="{{ path('app_garden_edit') }}" class="gg-action-btn btn-plant"
+                    style="display:inline-flex; width:auto; padding:0.4rem 1rem; font-size:0.82rem; margin-top:0.6rem; box-shadow:none;">
+                        <span class="btn-icon" style="font-size:1rem;">✏️</span>
+                        <span class="btn-label">Configurer mon jardin</span>
+                    </a>
+                {% endif %}
+        {% else %}
+            {% if app.user == user %}
+                    <a href="{{ path('app_garden_edit') }}" class="gg-action-btn btn-plant"
+                        style="display:inline-flex; width:auto; padding:0.4rem 1rem; font-size:0.82rem; margin-top:0.6rem; box-shadow:none;">
+                        <span class="btn-icon" style="font-size:1rem;">⚙️</span>
+                        <span class="btn-label">Configurer mon jardin</span>
+                    </a>
+            {% else %}
+                <span style="font-size:0.85rem; color:#aaa;">🌱 Ce jardinier n'a pas encore configuré son jardin.</span>
             {% endif %}
+        {% endif %}
         </div>
     </div>
 
