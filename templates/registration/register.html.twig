@@ -52,20 +52,19 @@
                 </div>
 
                 <div>
-                    <label class="gg-form-label">Mot de passe</label>
-                    {{ form_widget(form.newPlainPassword, {'attr': {'class': 'gg-form-input', 'placeholder': '••••••••'}}) }}
-                    {{ form_errors(form.newPlainPassword) }}
+                {{ form_widget(form.newPlainPassword, {'attr': {'class': 'gg-form-password-container','placeholder': '••••••••'}}) }}
+                {{ form_errors(form.newPlainPassword) }}
                 </div>
 
-                <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.82rem; color:#666; margin-top:0.5rem;">
-                    {{ form_widget(form.agreeTerms, {'attr': {'style': 'width:16px; height:16px; accent-color:var(--vertColor); cursor:pointer; margin-top:2px; flex-shrink:0;'}}) }}
-                    <span>
-                        Je reconnais avoir lu et compris les
-                        <a href="{{ path('app_cond') }}" target="_blank" style="color:var(--vertColor); font-weight:600;">CGU</a>
-                        et je les accepte
-                    </span>
-                </div>
-                {{ form_errors(form.agreeTerms) }}
+            <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.82rem; color:#666; margin-top:0.5rem;">
+            {{ form_widget(form.agreeTerms, {'attr': {'style': 'width:16px; height:16px; accent-color:var(--vertColor); cursor:pointer; margin-top:2px; flex-shrink:0;'}}) }}
+            <span>
+                Je reconnais avoir lu et compris les
+                <a href="{{ path('app_cond') }}" target="_blank" style="color:var(--vertColor); font-weight:600;">CGU</a>
+                et j’accepte leurs conditions
+            </span>
+            </div>
+            {{ form_errors(form.agreeTerms) }}
 
             </div>
 

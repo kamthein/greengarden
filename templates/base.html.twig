@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta name="GreenGarden"
-          content="GreenGarden enregistre toutes les données de ton potager. Il te permet, de partager tes expériences, de demander de l'aide à la communauté, de proposer tes semences et récoltes"/>
+    <meta name="Prepousse"
+          content="Prepousse enregistre toutes les données de ton potager. Il te permet, de partager tes expériences, de demander de l'aide à la communauté, de proposer tes semences et récoltes"/>
     <meta charset="UTF-8">
-    <title>{% block title %}GreenGarden{% endblock %}</title>
+    <title>{% block title %}Prepousse{% endblock %}</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/font-awesome.min.css">
 
     <link rel="manifest" href="/manifest.json"/>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="GreenGarden">
-    <meta name="apple-mobile-web-app-title" content="GreenGarden">
+    <meta name="application-name" content="Prepousse">
+    <meta name="apple-mobile-web-app-title" content="Prepousse">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-starturl" content="/carnet">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -165,10 +165,10 @@
 <nav class="gg-nav">
     <a class="gg-nav__brand" href="{{ path('home') }}">
         <div class="gg-nav__logo">
-            <img alt="GreenGarden" src="{{ asset('images/LOGO.png') }}">
+            <img alt="Prepousse" src="{{ asset('images/LOGO.png') }}">
         </div>
         <div>
-            <div class="gg-nav__name">GreenGarden</div>
+            <div class="gg-nav__name">Prepousse</div>
             <div class="gg-nav__page">
                 {% if route_name == "home" %}Home
                 {% elseif route_name == "carnet" %}Mon Carnet

@@ -15,6 +15,16 @@
 {% block body %}
 <div class="wrapper" style="margin-top:1.5rem;">
 
+
+            {# FLASH #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div style="background:#e8f5e9; border-left:3px solid var(--vertColor); padding:0.6rem 0.9rem; border-radius:0 8px 8px 0; font-size:0.85rem; margin-bottom:1rem; color:#333;">
+                        {{ message | raw }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
     {# ===== HERO ===== #}
     <div class="gg-details" style="margin-bottom:1rem;">
         <div class="gg-details-content" style="text-align:center; padding:2rem 1.25rem;">

@@ -25,7 +25,7 @@ final class RegistrationFormType extends AbstractType
                 'label' => 'Pseudo ',
             ])
             ->add('agreeTerms', CheckboxType::class, [
-               // 'label' => 'J\'accepte les conditions générales ',
+                'label' => false,
                'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -37,7 +37,7 @@ final class RegistrationFormType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'Vos deux mots de passe ne sont pas identiques.',
                 'options' => [
-                    'attr' => ['class' => 'password-field'],
+                    'attr' => ['class' => 'gg-form-input'],
                 ],
                 'label' => false,
                 'first_options' => ['label' => 'Mot de passe '],
