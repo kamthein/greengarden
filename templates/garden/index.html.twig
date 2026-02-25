@@ -1,10 +1,9 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Potager{% endblock %}
 
- {% block stylesheets %}
-     {{ parent() }}
- {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -14,71 +13,98 @@
 {% endblock %}
 
 {% block body %}
-    {% set route_name = app.request.attributes.get('_route') %}
-<div class="wrapper text-center">
-    <div class="row cadre_blanc_no_border" >
-        <div class="entete_user">
-            <h5 class="colorrose">{{user.nickname}}</h5>
-            {% if user.avatar %}
-                <a href="javascript:display_photo('{{ vich_uploader_asset(user.avatar) }}','500','500','Photo de profil')">
-                    <h1><img src="{{ vich_uploader_asset(user.avatar) }}" alt="Image" class="img-circle" width="80" height="80"></h1>
-                </a>
+<div class="wrapper" style="margin-top:1rem;">
+
+    {# ===== CARTE UTILISATEUR ===== #}
+    <div class="gg-details" style="margin-bottom:0.75rem;">
+        <div class="gg-details-content">
+            <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+
+                {# Avatar + pseudo #}
+                <div style="text-align:center; min-width:90px;">
+                    {% if user.avatar %}
+                        <img src="{{ vich_uploader_asset(user.avatar) }}"
+                             alt="Avatar"
+                             style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--vertLightColor);">
+                    {% endif %}
+                    <div style="font-weight:700; color:var(--roseDarkColor); margin-top:0.3rem; font-size:0.9rem;">{{ user.nickname }}</div>
+                </div>
+
+                {# Stats apercu #}
+                <div style="flex:1; border-left:1px solid #ebebeb; padding-left:1rem;">
+                    {{ include('garden/apercu.html.twig', {'r_byuser': r_byuser, 'fluxAchats': fluxAchats, 'calories': calories, 'user': user}) }}
+                </div>
+            </div>
+
+            {# Infos jardin #}
+            {% if garden.region is not null or garden.surface is not null %}
+            <hr class="gg-divider" style="margin-top:1rem;"/>
+            <div style="font-size:0.82rem; color:#666; display:flex; flex-direction:column; gap:0.3rem;">
+                {% if garden.region is not null %}
+                    <span>🗺️ {{ garden.region.countryCode }} — {{ garden.region.name }}</span>
+                {% endif %}
+                {% if garden.surface is not null %}
+                    <span>🌱 <strong>Surface :</strong> {{ garden.surface.nom }} ({{ garden.surface.metre }}) &nbsp;|&nbsp; 🎯 <strong>Objectif :</strong> {{ garden.surface.objectif }} kg</span>
+                {% endif %}
+                {% if garden.sable is not null %}
+                    <span>🪨 <strong>Terre :</strong> Sable {{ garden.sable }}% · Argile {{ garden.argile }}% · Calcaire {{ garden.calcaire }}% · Limon {{ garden.limon }}%</span>
+                {% endif %}
+                {% if garden.serre is not null %}
+                    <span>🏡 <strong>Serre :</strong> {{ garden.serre }} m²</span>
+                {% endif %}
+                {% if garden.cuve is not null %}
+                    <span>💧 <strong>Cuves :</strong> {{ garden.cuve }} L</span>
+                {% endif %}
+                {% if garden.minpluvio is not null %}
+                    <span>🌧️ <strong>Pluviométrie :</strong> {{ garden.minpluvio }} – {{ garden.maxpluvio }}</span>
+                {% endif %}
+                {% if garden.moyenneprod is not null %}
+                    <span>📦 <strong>Production moyenne :</strong> {{ garden.moyenneprod }} kg/an</span>
+                {% endif %}
+            </div>
             {% endif %}
-        </div>
-        <div class="entete_stat">
-            {{ include('garden/apercu.html.twig', { 'r_byuser' : r_byuser, 'fluxAchats' : fluxAchats, 'calories' : calories, 'user' : user }) }}
         </div>
     </div>
 
+    {# ===== BOUTON SUIVRE ===== #}
     {% if app.user != user %}
-    <div class="stars {{ amis == 1 ? 'rating_no' : 'rating' }}">
-        <a href="{{ path('ami',{'id': user.id}) }}"
-           data-user="{{ user.id }}"
-           class="suivis">
-            <i class="fa {{ amis == 1 ? 'fa-star gold' : 'fa-star' }}"> <span class="infosuiveur">{{ amis == 1 ? 'Jardinier suivi' : 'Suivre ce jardinier' }}</span></i>
-        </a>
+    <div class="gg-details" style="margin-bottom:0.75rem;">
+        <div class="gg-details-content" style="text-align:center;">
+            <a href="{{ path('ami', {'id': user.id}) }}"
+               class="gg-action-btn {{ amis == 1 ? 'btn-note' : 'btn-plant' }}"
+               style="display:inline-flex; width:auto;">
+                <span class="btn-icon">{{ amis == 1 ? '⭐' : '🌱' }}</span>
+                <span class="btn-label">{{ amis == 1 ? 'Jardinier suivi' : 'Suivre ce jardinier' }}</span>
+            </a>
+        </div>
     </div>
     {% endif %}
 
-    <div class="wrapper text-center">
-        <div class="row cadre_blanc_no_border" >
-      
-            {% if garden.region is not null %}<p class="colorgris">{{ garden.region.countryCode}} ({{ garden.region.name}})</p> {% endif %}
-            {% if garden.surface is not null %}<p><b class="colorvert">Surface  :</b> {{ garden.surface.nom}} ({{ garden.surface.metre}}) <br/> <b class="colorrose"> Objectif de récolte :</b> {{ garden.surface.objectif}} kg</p>{% endif %}
-            {% if garden.sable is not null %}<p><b class="colorvert">Composition terre : </b> <br/> Sable : {{ garden.sable}}% _ Argile : {{ garden.argile}}% _  Calcaire :  {{ garden.calcaire}}% _ Limon : {{ garden.limon}}%</p>{% endif %}
-            {% if garden.serre is not null %}<p><b class="colorvert">Surface sous serre  :</b> {{ garden.serre}} m2 </p>{% endif %}
-            {% if garden.cuve is not null %}<p><b class="colorviolet">Capacité cuves  :</b> {{ garden.cuve}} L </p>{% endif %}
-            {% if garden.minpluvio is not null %}<p><b class="colorviolet">Pluviométrie :</b> Entre  {{ garden.minpluvio}} et {{ garden.maxpluvio}}</p>{% endif %}
-            {% if garden.moyenneprod is not null %}<p><b class="colorrose">Production Moyenne Annuelle  :</b> {{ garden.moyenneprod}} KG</p>{% endif %}
-        </div>
+    {# ===== SYNTHESE & GRAPHIQUES ===== #}
+    <div id="content">
+        {{ include('garden/synthese.html.twig', {'p_byuser': p_byuser, 'r_byuser': r_byuser, 'user': user}) }}
+        {{ include('garden/graphs.html.twig', {'p_byuser': p_byuser, 'r_byuser': r_byuser, 'chart': chart, 'chart_don_r': chart_don_r, 'user': user}) }}
     </div>
-    <div id="content"> 
-        {{ include('garden/synthese.html.twig', {'p_byuser' : p_byuser, 'r_byuser' : r_byuser, 'user' : user }) }}
-        {{ include('garden/graphs.html.twig', {'p_byuser' : p_byuser, 'r_byuser' : r_byuser, 'chart' : chart, 'chart_don_r' : chart_don_r, 'user' : user}) }}
-    </div>
-    <br/>
 
-        <br/>
+    {# ===== AMIS ===== #}
+    {% set classe = "gg-details" %}
+    {{ include('garden/amis.html.twig', {'amis': amis, 'user': user, 'classe': classe}) }}
 
-        {% set classe = "row cadre_blanc" %}
-        {{ include('garden/amis.html.twig', { 'amis': amis , 'user' : user, 'classe' : classe})}}
-        <br/>
-            <div class="row cadre_blanc_no_border">
-                <a href="{{'whatsapp://send?text=http://www.GreenGarden.fr/bou/' ~ user.nickname }}"> Partager le jardin</a>
-            </div>
-        <div class="row cadre_blanc_no_border">
-        <img src="{{ asset('images/meteo.png') }}" alt="Image" width="50" height="50">
-        <br/>
-     
-            <a target="_blank" href='https://meteofrance.com/previsions-meteo-france/' >
-              Consultez la météo locale <br/>
+    {# ===== PARTAGER & MÉTÉO ===== #}
+    <div class="gg-details" style="margin-bottom:0.75rem;">
+        <div class="gg-details-content" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
+            <a href="{{ 'whatsapp://send?text=http://www.GreenGarden.fr/bou/' ~ user.nickname }}"
+               class="gg-action-btn btn-plant" style="display:inline-flex; width:auto;">
+                <span class="btn-icon">📤</span>
+                <span class="btn-label">Partager le jardin</span>
             </a>
+            <a target="_blank" href="https://meteofrance.com/previsions-meteo-france/"
+               class="gg-action-btn btn-note" style="display:inline-flex; width:auto;">
+                <span class="btn-icon">🌤️</span>
+                <span class="btn-label">Météo locale</span>
+            </a>
+        </div>
     </div>
 
 </div>
 {% endblock %}
-
-
-
-
-

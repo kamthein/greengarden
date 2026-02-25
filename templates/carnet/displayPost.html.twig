@@ -1,27 +1,12 @@
-
-        <table class="table table-striped table_jardin">
-            <thead>
-                <tr>
-                    <th  class="colorblue">Note</th>
-                </tr>
-            </thead>
-            <tbody>
-             <tr>  <th>{{ post.description }} </th><tr/>
-            </tbody>
-   </table>
-            
-
+<div style="font-size:0.78rem; font-weight:700; color:var(--blueDarkColor); margin-bottom:0.4rem;">📓 Note</div>
+<div class="gg-note-text">{{ post.description }}</div>
 
 {% for p in post.photos %}
-        {% if p.imageName != "aujourdhui.png"  %}
-            <img src="{{ vich_uploader_asset(p) }}"
-                    {# Optional but avoids having a page jump when the image is loaded #}
-                 alt="Image"
-                 class="img-responsive mdl-card mdl-shadow--2dp"
-                 style="max-height : 380px;display: block;margin-left: auto;margin-right: auto"/>
-        {% endif %}
+    {% if p.imageName != "aujourdhui.png" %}
+        <img src="{{ vich_uploader_asset(p) }}"
+             alt="Image"
+             class="gg-photo"/>
+    {% endif %}
 {% endfor %}
-<hr/>
 
-
-
+<hr class="gg-divider"/>

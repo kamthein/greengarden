@@ -1,19 +1,19 @@
-<table class="table table-striped table_jardin" >
+<table class="gg-table">
     <thead>
-    <tr>
-        <th class="colortgris">Depense</th>
-        <th></th>
-        <th>Qté</th>
-        <th>Prix</th>
-    </tr>
+        <tr>
+            <th class="th-gris">🛒 Dépense</th>
+            <th>Description</th>
+            <th>Qté</th>
+            <th>Prix</th>
+        </tr>
     </thead>
     <tbody>
         <tr>
-            <td style=" text-align: center">{{ achat.type.nom }}</td>
-            <td style=" text-align: center">{{ achat.descritpion }}</td>
-            <td style=" text-align: center">{{ achat.quantite }}</td>
-            <td style=" text-align: center">{{ achat.prix }}<small><i>€</i></small></td>
+            <td>{{ achat.type.nom }}</td>
+            <td><small>{{ achat.descritpion }}</small></td>
+            <td>{{ achat.quantite }}</td>
+            <td>{{ achat.prix }}<small><i>€</i></small></td>
         </tr>
     </tbody>
 </table>
-<hr/>
+<hr class="gg-divider"/>

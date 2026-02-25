@@ -6,11 +6,9 @@
     <meta charset="UTF-8">
     <title>{% block title %}GreenGarden{% endblock %}</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/font-awesome.min.css">
 
     <link rel="manifest" href="/manifest.json"/>
-
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="GreenGarden">
@@ -23,66 +21,202 @@
     <link rel="apple-touch-icon" href="/images/LOGO.png">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        /* ===== NAVBAR ===== */
+        .gg-nav {
+            background: #ffffff;
+            border-bottom: 2px solid #e8f5e9;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .gg-nav__brand {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+        }
+
+        .gg-nav__logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gg-nav__logo img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .gg-nav__name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #2d6a4f;
+            letter-spacing: -0.3px;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .gg-nav__page {
+            font-size: 0.72rem;
+            color: #95a5a0;
+            font-weight: 400;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .gg-nav__links {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .gg-nav__links a {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #555;
+            font-size: 0.88rem;
+            font-weight: 500;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .gg-nav__links a:hover {
+            background: #e8f5e9;
+            color: #2d6a4f;
+        }
+
+        .gg-nav__links a.gg-active {
+            background: #2d6a4f;
+            color: white;
+        }
+
+        /* BURGER */
+        .gg-nav__burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 0.4rem;
+            border-radius: 6px;
+            background: none;
+            border: none;
+        }
+
+        .gg-nav__burger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #2d6a4f;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            .gg-nav__links { display: none; }
+            .gg-nav__burger { display: flex; }
+
+            .gg-nav__links.gg-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: white;
+                border-bottom: 2px solid #e8f5e9;
+                padding: 0.75rem 1rem;
+                gap: 0.25rem;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            }
+        }
+    </style>
 
     {% block stylesheets %}
-        {# 'app' must match the first argument to addEntry() in webpack.config.js #}
         {{ encore_entry_link_tags('app') }}
-        <!-- Renders a link tag (if your module requires any CSS)-->
     {% endblock %}
+
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
-        <!-- Renders app.js & a webpack runtime.js file
-            <script src="/build/runtime.js" defer></script>
-            <script src="/build/app.js" defer></script>
-           See note below about the "defer" attribute -->
     {% endblock %}
 </head>
+
 <body>
 {% set route_name = app.request.attributes.get('_route') %}
-        <nav class="navbar-default flex-row">
-                <div class="header-logo">
-                    <a class="navbar-brand my-auto" href="{{ path('home') }}">
-                        <img alt="GreenGarden" src="{{ asset('images/LOGO.png') }}">
-                    </a>
-                    <strong class="my-auto">
-                        {% if route_name == "home" %}  Home 
-                        {% elseif route_name == "carnet" %} Le Prepousse - Mon Carnet 
-                        {% elseif route_name == "garden" %} Le Prepousse - Mon Jardin 
-                        {% elseif route_name == "profile" %} Le Prepousse - Mon Profil
-                        {% elseif route_name == "shop" %} La Boutique  
-                        {% else %} Le Prepousse  
-                        {% endif %}
-                    </strong>
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a href="{{ path('garden') }}">Mon Jardin</a></li>
-                        <li><a href="{{ path('carnet', {'date': "now"|date('Y-m-d')}) }}">Mon Carnet</a></li>
-                        <li><a href="{{ path('profile') }}">Mon Profil</a></li>
-                    </ul>
-                    {% endif %}
-                </div><!-- /.navbar-collapse -->  
-        </nav>
+
+<nav class="gg-nav">
+    <a class="gg-nav__brand" href="{{ path('home') }}">
+        <div class="gg-nav__logo">
+            <img alt="GreenGarden" src="{{ asset('images/LOGO.png') }}">
+        </div>
+        <div>
+            <div class="gg-nav__name">GreenGarden</div>
+            <div class="gg-nav__page">
+                {% if route_name == "home" %}Home
+                {% elseif route_name == "carnet" %}Mon Carnet
+                {% elseif route_name == "garden" %}Mon Jardin
+                {% elseif route_name == "profile" %}Mon Profil
+                {% elseif route_name == "shop" %}La Boutique
+                {% else %}Le Prepousse
+                {% endif %}
+            </div>
+        </div>
+    </a>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <ul class="gg-nav__links" id="ggNavLinks">
+        <li>
+            <a href="{{ path('garden') }}" class="{{ route_name == 'garden' ? 'gg-active' : '' }}">
+                🌿 Mon Jardin
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('carnet', {'date': "now"|date('Y-m-d')}) }}" class="{{ route_name == 'carnet' ? 'gg-active' : '' }}">
+                📓 Mon Carnet
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('profile') }}" class="{{ route_name == 'profile' ? 'gg-active' : '' }}">
+                👤 Mon Profil
+            </a>
+        </li>
+    </ul>
+
+    <button class="gg-nav__burger" onclick="document.getElementById('ggNavLinks').classList.toggle('gg-open')">
+        <span></span><span></span><span></span>
+    </button>
+    {% endif %}
+</nav>
+
 <main role="main" class="margin-constraint">
     {% block body %}{% endblock %}
 </main>
-{%  if app.user and app.user.nbco < 7 %}
+
+{% if app.user and app.user.nbco < 7 %}
     <script>
         $(document).ready(function () {
             introJs(".intro").start();
         });
     </script>
-{%  endif %}
-</body>
+{% endif %}
 
+</body>
+</html>

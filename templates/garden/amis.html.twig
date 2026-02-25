@@ -1,38 +1,47 @@
+<details class="gg-details">
+    <div class="gg-details-content">
+        {% set nbr = 0 %}
 
-    <details class="specifications" id="statistics">
-        <div class="row fond">
-            {% set nbr = 0 %}
-        <table class="table">
-            {% for friend in amis %}
-                {% set nbr = nbr + 1 %}
-                    <tr>
-                        <th>
-                            <a href="{{ path('app_show_garden', {nickname: friend.userFollowed.nickname}) }}">
-                                <img src="{{ vich_uploader_asset(friend.userFollowed.avatar) }}" alt="Image" class="img-circle" width="50" height="50">
-                            </a>
-                            <a class="nom_user" href="{{ path('app_show_garden', {nickname: friend.userFollowed.nickname}) }}">{{ friend.userFollowed.nickname }} </a>
-                        </th>
-                        <td style="text-align: right">
-                            {% if user %}
-                                {% if app.user == friend.userFriend %}
-                                    <a href="{{ path('supp_ami', {id: friend.userFollowed.id}) }}"> <img src="{{ asset('images/supp_def.jpg') }}" alt="Image"  width="20"></a>
-                                {% endif %}
-                            {%  endif %}
-                        </td>
-            {% endfor %}
-        </table>
-        {% if app.user == user %}
-            <p>
-                <a href="{{ path("ajout_amis") }}">
-                    <button class="mdl-button mdl-button--raised mdl-button--vert mdl-button--colored">
-                        Ajoutez des amis
-                    </button>
-                </a>
-            </p>
+        {% for friend in amis %}
+            {% set nbr = nbr + 1 %}
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:0.5rem 0; border-bottom:1px solid #f5f5f5;">
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                    <a href="{{ path('app_show_garden', {nickname: friend.userFollowed.nickname}) }}">
+                        <img src="{{ vich_uploader_asset(friend.userFollowed.avatar) }}"
+                             alt="Avatar"
+                             style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid var(--vertLightColor);">
+                    </a>
+                    <a class="nom_user" href="{{ path('app_show_garden', {nickname: friend.userFollowed.nickname}) }}"
+                       style="font-weight:600; color:#333; text-decoration:none;">
+                        {{ friend.userFollowed.nickname }}
+                    </a>
+                </div>
+                {% if user and app.user == friend.userFriend %}
+                    <a href="{{ path('supp_ami', {id: friend.userFollowed.id}) }}">
+                        <img src="{{ asset('images/supp_def.jpg') }}" alt="Supprimer" width="18">
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {% if nbr == 0 %}
+            <p class="gg-empty">Aucun ami suivi pour le moment.</p>
         {% endif %}
-        </div>
-        <summary class="{{ classe }}">
-                <span class="deroulfloatl">&nbsp<img src="{{ asset('images/friends.png') }}" alt="Image" width="25" height="25">&nbsp;&nbsp;Amis ({{ nbr }})</span>
-                <span class="deroulfloatr"><span style="margin-top:0.5em;" class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
-        </summary>
-    </details>
+
+        {% if app.user == user %}
+            <div style="margin-top:0.75rem;">
+                <a href="{{ path('ajout_amis') }}" class="gg-action-btn btn-plant" style="display:inline-flex; width:auto;">
+                    <span class="btn-icon">🌱</span>
+                    <span class="btn-label">Ajouter des amis</span>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    <summary>
+        <span class="summary-left">
+            <span class="summary-icon"><img src="{{ asset('images/friends.png') }}" alt="Amis" width="22" height="22"></span>
+            <span>Amis ({{ nbr }})</span>
+        </span>
+        <span class="summary-chevron">›</span>
+    </summary>
+</details>

@@ -1,53 +1,38 @@
-                <span class="colorvert"><i style="font-size:28px;" class="fa fa-pie-chart "></i></span>
-                <span class="bleu_fonce">
-                    {% set r_tot = 0 %}
-                    {% for consor in r_byuser %}
-                        {% set r_tot = r_tot + consor.recolte%}
-                    {% endfor %}
-                    {{ r_tot|number_format(0, ',', ' ') }} kg
-                </span>
-                <span class="noir_petit"> Récolte</span>
-                <br/>
-                <span style="text-align: left;">
-                        {% for cal in calories %}
-                        <span class="noir_fonce">  {{ cal.nombre|number_format(0, ',', ' ') }} Kcal </span> produites
-                        {% endfor %}
-                </span>
-                <span style="text-align: left;">
-                         {% for cal in calories %}
-                            {% set calo = cal.nombre/700 %}
-                           soit {{ calo|number_format(0, ',', ' ') }}
-                         {% endfor %} repas
-                </span>
-                <br/><br/>
-            
-                    <span class="bleu_fonce">
-                        {% set r_tot =  0  %}
-                        {% for consor in r_byuser %}
-                            {% set r_tot = r_tot + consor.recolte %}
-                        {% endfor %}
-                        {% set tot = (26 * r_tot * 100) /10 %}
-                        {{ tot|number_format(0, ',', ' ') }} g
-                    </span>
-                <span class="noir_petit">CO2 absorbé</span>
-                <span class="colorvert"><i style="font-size:28px;" class="fa fa-leaf "></i></span>
-                <br/><br/>
-                {% set eco =  0  %}
-                {% set dep =  0  %}
-                {% set tot =  0  %}
-                {% for consor in r_byuser %}
-                    {% set eco = eco + consor.prix * consor.recolte %}
-                {% endfor %}
-                {% for fluxachat in fluxAchats %}
-                    {% set dep = dep + fluxachat.achat.prix * fluxachat.achat.quantite %}
-                {% endfor %}
-                {% set tot =  eco - dep  %}
-                
-                <span class="bleu_fonce">
-                        {{ tot|number_format(1, ',', ' ') }} <span class="colorvert"><i style="font-size:28px;" class="fa fa-eur"></i></span> 
-                    </span>
-                économisés
+{% set r_tot = 0 %}
+{% for consor in r_byuser %}
+    {% set r_tot = r_tot + consor.recolte %}
+{% endfor %}
 
+{# Récolte #}
+<div class="gg-stat-row">
+    <span class="gg-stat-value">{{ r_tot|number_format(0, ',', ' ') }} kg</span>
+    <span class="gg-stat-label">Récolte</span>
+</div>
+<div style="font-size:0.78rem; color:#888; margin-bottom:0.5rem;">
+    {% for cal in calories %}
+        {{ cal.nombre|number_format(0, ',', ' ') }} Kcal produites soit {{ (cal.nombre/700)|number_format(0, ',', ' ') }} repas
+    {% endfor %}
+</div>
 
+{# CO2 #}
+{% set tot_co2 = (26 * r_tot * 100) / 10 %}
+<div class="gg-stat-row" style="margin-bottom:0.5rem;">
+    <span class="gg-stat-value">{{ tot_co2|number_format(0, ',', ' ') }} g</span>
+    <span class="gg-stat-label">CO2 absorbé 🌿</span>
+</div>
 
+{# Économies #}
+{% set eco = 0 %}
+{% set dep = 0 %}
+{% for consor in r_byuser %}
+    {% set eco = eco + consor.prix * consor.recolte %}
+{% endfor %}
+{% for fluxachat in fluxAchats %}
+    {% set dep = dep + fluxachat.achat.prix * fluxachat.achat.quantite %}
+{% endfor %}
+{% set tot = eco - dep %}
 
+<div class="gg-stat-row">
+    <span class="gg-stat-value {{ tot >= 0 ? 'th-vert' : 'th-rose' }}">{{ tot|number_format(1, ',', ' ') }} €</span>
+    <span class="gg-stat-label">économisés 💰</span>
+</div>

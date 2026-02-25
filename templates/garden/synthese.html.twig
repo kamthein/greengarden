@@ -1,17 +1,18 @@
-    <details class="specifications" id="statistics">
-        <div class="row fond">
-        <a class="printresult"><img src="{{ asset('images/print.png') }}" alt="Image" width="30" height="30"></a>
+<details class="gg-details">
+    <div class="gg-details-content">
+        <a class="printresult" style="float:right; margin-bottom:0.5rem;">
+            <img src="{{ asset('images/print.png') }}" alt="Imprimer" width="24" height="24">
+        </a>
 
-        <table class="table table-striped table_jardin">
+        <table class="gg-table">
             <thead>
                 <tr>
                     <th>Espèce</th>
-                    <th class="colorvert">Semis</th>
-                    <th class="colorviolet">Plants</th>
-                    <th class="colorrose">Récoltes</th>
+                    <th class="th-vert">Semis</th>
+                    <th style="color:var(--violetColor);">Plants</th>
+                    <th class="th-rose">Récoltes</th>
                 </tr>
             </thead>
-
             <tbody>
                 {% set values_conso = [] %}
                 {% set s_tot = 0 %}
@@ -19,71 +20,66 @@
                 {% set r_tot = 0 %}
 
                 {% for consop in p_byuser %}
-                    {% if {'name' : consop.consonom, 'link' : consop.lien} not in values_conso %}
-                        {% set values_conso = values_conso|merge([{'name' : consop.consonom, 'link' :consop.lien}]|filter(value => value is not null)) %}
+                    {% if {'name': consop.consonom, 'link': consop.lien} not in values_conso %}
+                        {% set values_conso = values_conso|merge([{'name': consop.consonom, 'link': consop.lien}]|filter(value => value is not null)) %}
                     {% endif %}
                 {% endfor %}
 
                 {% for consor in r_byuser %}
-                    {% if {'name' : consor.consonom, 'link' : consor.lien} not in values_conso %}
-                        {% set values_conso = values_conso|merge([{'name' : consor.consonom, 'link' :consor.lien}]|filter(value => value is not null)) %}
+                    {% if {'name': consor.consonom, 'link': consor.lien} not in values_conso %}
+                        {% set values_conso = values_conso|merge([{'name': consor.consonom, 'link': consor.lien}]|filter(value => value is not null)) %}
                     {% endif %}
                 {% endfor %}
-
-                {# Vérifiez le contenu de values_conso #}
-                {# {{ dump(values_conso) }} #}
 
                 {% for conso in values_conso %}
                     {% set s = 0 %}
                     {% set p = 0 %}
                     {% set r = 0 %}
                     <tr>
-                    <td style="text-align: left"><img src="{{ asset('images/icon/' ~ conso.link) }}" alt="Image" width="20" height="20" >&nbsp;{{ conso.name}}</td>
+                        <td>
+                            <img src="{{ asset('images/icon/' ~ conso.link) }}" alt="Image" width="18" height="18">
+                            &nbsp;{{ conso.name }}
+                        </td>
                         {% for consop in p_byuser %}
-                            {% if consop.state == 1 and consop.consonom == conso.name  %}
-                                <td style="text-align: center">
-                                    {{ consop.plante}}
-                                    {% set s = 1 %}
-                                </td>
+                            {% if consop.state == 1 and consop.consonom == conso.name %}
+                                <td>{{ consop.plante }}{% set s = 1 %}</td>
                                 {% set s_tot = s_tot + consop.plante %}
                             {% endif %}
                         {% endfor %}
-                        {% if s == 0 %} <td></td> {% endif %}
+                        {% if s == 0 %}<td></td>{% endif %}
+
                         {% for consop in p_byuser %}
-                            {% if consop.state == 2 and consop.consonom == conso.name  %}
-                                <td style="text-align: center">
-                                    {{ consop.plante}}
-                                    {% set p = 1 %}
-                                </td>
+                            {% if consop.state == 2 and consop.consonom == conso.name %}
+                                <td>{{ consop.plante }}{% set p = 1 %}</td>
                                 {% set p_tot = p_tot + consop.plante %}
                             {% endif %}
                         {% endfor %}
-                        {% if p == 0 %} <td></td> {% endif %}
+                        {% if p == 0 %}<td></td>{% endif %}
+
                         {% for consor in r_byuser %}
                             {% if consor.consonom == conso.name %}
-                                <td style="text-align: center">
-                                    {{consor.recolte}}<small><i>kg</i></small><br/>
-                                    {% set s = 1 %}
-                                </td>
+                                <td>{{ consor.recolte }}<small><i>kg</i></small>{% set r = 1 %}</td>
                                 {% set r_tot = r_tot + consor.recolte %}
                             {% endif %}
                         {% endfor %}
-                        {% if r == 0 %} <td></td> {% endif %}
+                        {% if r == 0 %}<td></td>{% endif %}
                     </tr>
                 {% endfor %}
-                    <tr>
-                        <td style="text-align: left"><strong>TOTAL</strong></td>
-                        <td style="text-align: center"><strong>{{ s_tot}}</strong></td>
-                        <td style="text-align: center"><strong>{{ p_tot}}</strong></td>
-                        <td style="text-align: center"><strong>{{ r_tot|number_format(2, '.', ' ')}}<small><i>kg</i></small></strong></td>
-                    </tr>
 
+                <tr style="border-top:2px solid #f0f0f0; font-weight:700;">
+                    <td><strong>TOTAL</strong></td>
+                    <td>{{ s_tot }}</td>
+                    <td>{{ p_tot }}</td>
+                    <td>{{ r_tot|number_format(2, '.', ' ') }}<small><i>kg</i></small></td>
+                </tr>
             </tbody>
         </table>
     </div>
-
-        <summary class="row cadre_blanc">
-                <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/objectif_ja.png') }}" alt="Image" width="25" height="25">&nbsp;&nbsp;Résumé ({{ r_tot|number_format(2, '.', ' ')}}<small><i>kg</i></small>)</span>
-                <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
-        </summary>
-    </details>
+    <summary>
+        <span class="summary-left">
+            <span class="summary-icon"><img src="{{ asset('images/objectif_ja.png') }}" alt="Résumé" width="22" height="22"></span>
+            <span>Résumé ({{ r_tot|number_format(2, '.', ' ') }}<small><i>kg</i></small>)</span>
+        </span>
+        <span class="summary-chevron">›</span>
+    </summary>
+</details>

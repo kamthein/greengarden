@@ -1,56 +1,65 @@
-    <details class="specifications" id="statistics" >
-        <div class="row fond">
-        <div>
-            <img src="{{ asset('photo/plantation.png') }}" alt="Image" class="img-responsive size-img" style="max-height : 340px;display: block;margin-left: auto;margin-right: auto;">
-        </div>
-        <hr>
+<details class="gg-details">
+    <div class="gg-details-content">
+        {% if fluxPaniers is not empty %}
+            <div style="text-align:center; margin-bottom:0.75rem;">
+                <img src="{{ asset('photo/plantation.png') }}" alt="Plantation" style="max-height:200px; border-radius:10px; object-fit:cover; width:100%;">
+            </div>
+        {% endif %}
+
         {% set nbr = 0 %}
         {% for fluxpanier in fluxPaniers %}
             {% if fluxpanier.plants is not empty %}
-                <table class="table table-hover table-striped table_jardin">
+                <table class="gg-table">
                     <thead>
                         <tr>
+                            <th>Date</th>
+                            <th class="th-vert">🌱 Espèce</th>
+                            <th>Qté</th>
+                            <th>État</th>
                             <th>
-                                {% if app.user == fluxpanier.flux.user  %}
-                                    <a href="{{ path('ajouter_plant', {id: fluxpanier.id}) }}"> <img src="{{ asset('images/ajouter.png') }}" alt="Image"  width="25"></a>
+                                {% if app.user == fluxpanier.flux.user %}
+                                    <a href="{{ path('ajouter_plant', {id: fluxpanier.id}) }}">
+                                        <img src="{{ asset('images/ajouter.png') }}" alt="Ajouter" width="20">
+                                    </a>
                                 {% endif %}
                             </th>
-                            <th>Espèce</th>
-                            <th>Qté</th>
-                            <th><strong>Etat</strong></th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for pl in fluxpanier.plants %}
                             {% set nbr = nbr + pl.quantite %}
                             <tr>
-                                <td style="text-align: center"><small>{{ pl.createdAt|date("d/m/y") }}</small></td>
-                                <td style="text-align: left"><img src="{{ asset('images/icon/' ~ pl.consommable.iconlien) }}" alt="Image" width="20" height="20">&nbsp;{{ pl.consommable.description }}</td>
-                                <td style="text-align: center"> {{ pl.quantite }}</td>
-                                <td style="text-align: center"> <i><small>{{ pl.state.nom }}</small></i></td>
-                                
-                                {% if pl.user == user %}
-                                    <td >
-                                        {% if user %}
-                                            {% if app.user == pl.user %}
-                                              <a href="{{ path('supp_plant', {id: pl.id}) }}"> <img src="{{ asset('images/supp_def.jpg') }}" alt="Image"  width="20"></a>
-                                            {% endif %}
-                                            
-                                        {%  endif %}
-                                    </td>
-                                {% endif %}
-                                
+                                <td><small>{{ pl.createdAt|date("d/m/y") }}</small></td>
+                                <td>
+                                    <img src="{{ asset('images/icon/' ~ pl.consommable.iconlien) }}" alt="Icon" width="18" height="18">
+                                    &nbsp;{{ pl.consommable.description }}
+                                </td>
+                                <td>{{ pl.quantite }}</td>
+                                <td><small><i>{{ pl.state.nom }}</i></small></td>
+                                <td>
+                                    {% if pl.user == user and app.user == pl.user %}
+                                        <a href="{{ path('supp_plant', {id: pl.id}) }}">
+                                            <img src="{{ asset('images/supp_def.jpg') }}" alt="Supprimer" width="18">
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
-                            {% endfor %}
+                        {% endfor %}
                     </tbody>
                 </table>
-           {% endif %}
+                <hr class="gg-divider"/>
+            {% endif %}
         {% endfor %}
-        </div>
-        <summary class="row cadre_blanc">
-            <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/semis_ja.png') }}" alt="Image" width="25" height="25">&nbsp;&nbsp;Plantations ({{ nbr }})</span>
-            <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
 
-        </summary>
-    </details>
-
+        {% if nbr == 0 %}
+            <p class="gg-empty">Aucune plantation enregistrée.</p>
+        {% endif %}
+    </div>
+    <summary>
+        <span class="summary-left">
+            <span class="summary-icon"><img src="{{ asset('images/semis_ja.png') }}" alt="Plantations" width="22" height="22"></span>
+            <span>Plantations ({{ nbr }})</span>
+        </span>
+        <span class="summary-chevron">›</span>
+    </summary>
+</details>

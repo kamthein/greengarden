@@ -1,21 +1,32 @@
-    <details class="specifications" id="statistics">
-        <div class="row fond">
+<details class="gg-details">
+    <div class="gg-details-content">
         {% set nbr = 0 %}
         {% for fluxpost in fluxPosts %}
-             {{  fluxpost.post.description }}
-            <br/><small>{{  fluxpost.createdat|date('d/m/y') }} </small>
-            {% set nbr = nbr +1 %}
-            {% for p in fluxpost.post.photos %}
-                {% if p.imageName != "aujourdhui.png"  %}
-                    {{ include('carnet/display_photo.html.twig', { 'p': p }) }}
-                {% endif %}   
-            {% endfor %}
-            <br/>
-      {% endfor %}
-
-        </div>
-        <summary class="row cadre_blanc">
-            <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/a_propos.png') }}" alt="Image" width="30" height="30">&nbsp;&nbsp;Notes ({{ nbr }})</span>
-            <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
-        </summary>
-    </details>
+            <div style="margin-bottom: 1rem;">
+                <div class="gg-note-text">
+                    <div style="font-size:0.8rem; color:#aaa; margin-bottom:0.3rem;">{{ fluxpost.createdat|date('d/m/y') }}</div>
+                    {{ fluxpost.post.description }}
+                </div>
+                {% for p in fluxpost.post.photos %}
+                    {% if p.imageName != "aujourdhui.png" %}
+                        {{ include('carnet/display_photo.html.twig', {'p': p}) }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% if not loop.last %}
+                <hr class="gg-divider"/>
+            {% endif %}
+            {% set nbr = nbr + 1 %}
+        {% endfor %}
+        {% if nbr == 0 %}
+            <p class="gg-empty">Aucune note enregistrée.</p>
+        {% endif %}
+    </div>
+    <summary>
+        <span class="summary-left">
+            <span class="summary-icon"><img src="{{ asset('images/a_propos.png') }}" alt="Notes" width="22" height="22"></span>
+            <span>Notes ({{ nbr }})</span>
+        </span>
+        <span class="summary-chevron">›</span>
+    </summary>
+</details>

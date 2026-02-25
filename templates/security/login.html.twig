@@ -1,74 +1,82 @@
 {% extends 'base.html.twig' %}
 {% block title %}Se connecter{% endblock %}
+
 {% block body %}
+<div class="wrapper" style="margin-top:2rem;">
 
-<div class="wrapper">
-    <div class="container-fluid text-center">
-        <div class="row">
-            <div class="col-sm-12">
-                {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="col-sm-12">
-                            <div class="alert  alert-{{ label }} alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                                    &times;
-                                </button>
+    <div class="gg-details" style="max-width:420px; margin:0 auto;">
+        <div class="gg-details-content" style="padding:2rem 1.5rem;">
 
-                                <span class="msg_login">{{ message | raw }}</span>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-                <form method="post" action="{{ path('app_login') }}">
-                    {% if error %}
-                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                    {% endif %}
-
-                    <h1 class="h3 mb-3 font-weight-normal"><strong>Connectez-vous</strong></h1>
-                    <hr style="width: 100%; background: none repeat scroll 0 0 #EAEAEA; height: 1px;" />
-                    <p><small>Use credentials <b>camille@example.com / admin </b> to test the platform</small></p>
-                    <div class="form-group">
-                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" autofocus>
-                    </div>
-
-
-                    <div class="form-group">
-                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe">
-                    </div>
-
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" name="_remember_me" class="form-control"> Se souvenir de moi
-                        </label>
-                    </div>
-
-                    <input type="hidden" name="_csrf_token"
-                           value="{{ csrf_token('authenticate') }}"
-                    >
-
-            {#
-                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-                See https://symfony.com/doc/current/security/remember_me.html
-
-                <div class="checkbox mb-3">
-                    <label>
-                        <input type="checkbox" name="_remember_me"> Remember me
-                    </label>
-                </div>
-            #}
-                    <br/>
-                    <button class="mdl-button-rond mdl-button--raised mdl-button--bleufonce mdl-button--colored" type="submit">
-                        Se connecter
-                    </button><br/><br/>
-                    {#<a href="{{ path('reset_password') }}"> Mot de passe oublié ? </a>#}
-                    <hr style="width: 100%; background: none repeat scroll 0 0 #EAEAEA; height: 1px;" />
-                   {#<span><a class="mdl-button add_item mdl-button--raised mdl-button--vert mdl-button--colored" href="{{ path('app_register') }}"> Créer un compte </a></span> #}
-                </form>
-
+            {# LOGO + TITRE #}
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <div style="font-size:2.5rem; margin-bottom:0.5rem;">🌱</div>
+                <h1 style="font-size:1.3rem; font-weight:800; color:var(--vertColor); margin-bottom:0.25rem;">
+                    Connectez-vous
+                </h1>
+                <p style="font-size:0.78rem; color:#aaa;">
+                    Bienvenue sur Le Prepousse
+                </p>
             </div>
+
+            {# MESSAGES FLASH #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div style="background:#e8f5e9; border-left:3px solid var(--vertColor); padding:0.6rem 0.9rem; border-radius:0 8px 8px 0; font-size:0.85rem; margin-bottom:1rem; color:#333;">
+                        {{ message | raw }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {# ERREUR #}
+            {% if error %}
+                <div style="background:#fce4ec; border-left:3px solid var(--roseDarkColor); padding:0.6rem 0.9rem; border-radius:0 8px 8px 0; font-size:0.85rem; margin-bottom:1rem; color:#333;">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            {# FORM #}
+            <form method="post" action="{{ path('app_login') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="gg-form-group">
+                    <div>
+                        <label class="gg-form-label" for="inputEmail">Adresse email</label>
+                        <input type="email"
+                               value="{{ last_username }}"
+                               name="email"
+                               id="inputEmail"
+                               class="gg-form-input"
+                               placeholder="exemple@email.com"
+                               autofocus>
+                    </div>
+                    <div>
+                        <label class="gg-form-label" for="inputPassword">Mot de passe</label>
+                        <input type="password"
+                               name="password"
+                               id="inputPassword"
+                               class="gg-form-input"
+                               placeholder="••••••••">
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.82rem; color:#666;">
+                        <input type="checkbox" name="_remember_me" id="remember"
+                               style="width:16px; height:16px; accent-color:var(--vertColor); cursor:pointer;">
+                        <label for="remember" style="cursor:pointer;">Se souvenir de moi</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="gg-action-btn btn-plant gg-submit-btn"
+                        style="width:100%; justify-content:center; border:none; cursor:pointer; font-size:1rem; font-family:inherit; margin-top:1rem;">
+                    <span class="btn-icon">🔑</span>
+                    <span class="btn-label">Se connecter</span>
+                </button>
+
+                <p style="text-align:center; font-size:0.72rem; color:#bbb; margin-top:1rem;">
+                    Test : <strong>camille@example.com</strong> / <strong>admin</strong>
+                </p>
+            </form>
+
         </div>
     </div>
 
 </div>
-
 {% endblock %}

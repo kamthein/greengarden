@@ -1,49 +1,61 @@
-<details class="specifications" id="statistics">
-    <div class="row fond">
-    <table class="table table-hover table_jardin" >
-        <thead>
-            <tr>
-                <th>
-                    <a href="{{ path('ajouter_achat') }}"> <img src="{{ asset('images/ajouter.png') }}" alt="Image"  width="25"></a>
-                </th>
-                <th>Type</th>
-                <th>Titre</th>
-                <th>Qté</th>
-                <th>Prix</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
+<details class="gg-details">
+    <div class="gg-details-content">
         {% set prix_tot = 0 %}
         {% set q_tot = 0 %}
-        {% for fluxachat in fluxAchats %}
-        
-            {% set prix_tot = prix_tot + fluxachat.achat.prix * fluxachat.achat.quantite %}
-            {% set q_tot = q_tot + fluxachat.achat.quantite %}
-            <tr>
-                <td><small>{{ fluxachat.achat.createdAt|date("d/m/y") }}</small></td>
-                <td style=" text-align: center">{{ fluxachat.achat.type.nom }}</td>
-                <td style=" text-align: center">{{ fluxachat.achat.descritpion }}</td>
-                <td style=" text-align: center">{{ fluxachat.achat.quantite }}</td>
-                <td style=" text-align: center">{{ fluxachat.achat.prix }}<small><i>€</i></small></td>
 
-                    <td>
-                    <a href="{{ path('supp_achat', {id: fluxachat.achat.id}) }}"> <img src="{{ asset('images/supp_def.jpg') }}" alt="Image"  width="20"></a>
-                    </td>
-            </tr>
-        {% endfor %}
-        <tr>
-            <td style="text-align: left"><strong>TOTAL</strong></td>
-            <td style="text-align: center"></td>
-            <td style="text-align: center"></td>
-            <td style="text-align: center"><strong>{{ q_tot}}</strong></td>
-            <td style="text-align: center"><strong>{{ prix_tot|number_format(2, '.', ' ')}}<small><i>€</i></small></strong></td>
-        </tr>
-        </tbody>
-    </table>
+        <table class="gg-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th class="th-gris">🛒 Type</th>
+                    <th>Titre</th>
+                    <th>Qté</th>
+                    <th>Prix</th>
+                    <th>
+                        <a href="{{ path('ajouter_achat') }}">
+                            <img src="{{ asset('images/ajouter.png') }}" alt="Ajouter" width="20">
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fluxachat in fluxAchats %}
+                    {% set prix_tot = prix_tot + fluxachat.achat.prix * fluxachat.achat.quantite %}
+                    {% set q_tot = q_tot + fluxachat.achat.quantite %}
+                    <tr>
+                        <td><small>{{ fluxachat.achat.createdAt|date("d/m/y") }}</small></td>
+                        <td>{{ fluxachat.achat.type.nom }}</td>
+                        <td><small>{{ fluxachat.achat.descritpion }}</small></td>
+                        <td>{{ fluxachat.achat.quantite }}</td>
+                        <td>{{ fluxachat.achat.prix }}<small><i>€</i></small></td>
+                        <td>
+                            <a href="{{ path('supp_achat', {id: fluxachat.achat.id}) }}">
+                                <img src="{{ asset('images/supp_def.jpg') }}" alt="Supprimer" width="18">
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                {% if fluxAchats is not empty %}
+                <tr style="border-top: 2px solid #f0f0f0; font-weight:700;">
+                    <td colspan="3"><strong>TOTAL</strong></td>
+                    <td>{{ q_tot }}</td>
+                    <td>{{ prix_tot|number_format(2, '.', ' ') }}<small><i>€</i></small></td>
+                    <td></td>
+                </tr>
+                {% endif %}
+
+                {% if fluxAchats is empty %}
+                <tr><td colspan="6" class="gg-empty">Aucune dépense enregistrée.</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
     </div>
-    <summary class="row cadre_blanc">
-        <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/amenagement_ja.png') }}" alt="Image" width="25" height="25">&nbsp;&nbsp;Dépenses ({{ prix_tot }}<small><i>€</i></small>)</span>
-        <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
+    <summary>
+        <span class="summary-left">
+            <span class="summary-icon"><img src="{{ asset('images/amenagement_ja.png') }}" alt="Dépenses" width="22" height="22"></span>
+            <span>Dépenses ({{ prix_tot|number_format(2, '.', ' ') }}<small><i>€</i></small>)</span>
+        </span>
+        <span class="summary-chevron">›</span>
     </summary>
 </details>

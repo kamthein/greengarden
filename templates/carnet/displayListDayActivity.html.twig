@@ -1,39 +1,37 @@
+<details class="gg-details" id="statistics" open>
 
-    <details class="specifications" id="statistics">
-        <div class="row fond">
-                
-{% set vide = 0 %}
-{% if fluxes is not empty %}
-        {% for flux in fluxes %}
-            {% if flux.panier is not null %}
-                {% if flux.panier.plants is not empty or flux.panier.recoltes is not empty %}
-                    <p>
-                        {{ include('carnet/displayPanier.html.twig', { 'panier': flux.panier, 'date' : date}) }}
-                    </p>
+    <div class="gg-details-content">
+        {% set vide = 0 %}
+        {% if fluxes is not empty %}
+            {% for flux in fluxes %}
+
+                {% if flux.panier is not null %}
+                    {% if flux.panier.plants is not empty or flux.panier.recoltes is not empty %}
+                        {{ include('carnet/displayPanier.html.twig', {'panier': flux.panier, 'date': date}) }}
+                    {% endif %}
+
+                {% elseif flux.post is not null %}
+                    {{ include('carnet/displayPost.html.twig', {'post': flux.post}) }}
+
+                {% elseif flux.achat is not null %}
+                    {{ include('carnet/displayAchat.html.twig', {'achat': flux.achat}) }}
+
                 {% endif %}
-            {% elseif flux.post is not null%}
-                <p>
-                    {{ include('carnet/displayPost.html.twig', { 'post': flux.post}) }}
-                </p>
-            {% elseif flux.achat is not null%}
-                    {{ include('carnet/displayAchat.html.twig', { 'achat' : flux.achat}) }}
-            {% endif %}
-        {% endfor %}
-        
-    {% set vide = 1 %}
+            {% endfor %}
+            {% set vide = 1 %}
+        {% endif %}
 
-{% endif %}
+        {% if vide == 0 %}
+            <p class="gg-empty">Aucune activité aujourd'hui !</p>
+        {% endif %}
+    </div>
 
-{% if vide == 0 %}
-    <p><i>Aucune activité aujourd'hui!</i></p>
-{% endif %}
+    <summary>
+        <span class="summary-left">
+            <span class="summary-icon">📅</span>
+            <span>{{ date_calendrier }}</span>
+        </span>
+        <span class="summary-chevron">›</span>
+    </summary>
 
-        </div>
-        <summary class="row cadre_blanc">
-            <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/aujourdhui.png') }}" alt="Image" width="30" height="30">&nbsp;&nbsp; {{ date_calendrier }}</span>
-            <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
-        </summary>
-    </details>
-
-
-
+</details>

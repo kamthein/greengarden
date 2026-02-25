@@ -1,50 +1,64 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Ajout amis{% endblock %}
 
 {% block body %}
-<div class="row" style="background-color: white;border-radius: 1em;padding: 1em 0.5em;margin-bottom: 0.5em;">
-    <div class="wrapper" style="text-align: left">
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <p>
-            <a href="{{ path("garden") }}">
-                <button class="mdl-button mdl-button--raised mdl-button--vert mdl-button--colored">
-                    <img class="img-responsive" src="{{ asset('images/prec.png') }}" alt="Image" width="32" height="32">
-                    Retour à mon jardin
-                </button>
-            </a>
-        </p>
-        <br/><br/>
+<div class="wrapper" style="margin-top:1rem;">
 
-        {% set values = [] %}
-        {% for friend in amis %}
-            {% set values = values|merge([friend.userFollowed.nickname]) %}
-        {% endfor %}
-
-    <table class="table">
-        {% for user in users %}
-            {% if user.nickname not in values %}
-            <tr>
-                <th>
-                    <a href="{{ path('app_show_garden', {nickname: user.nickname}) }}">
-                        <img src="{{ vich_uploader_asset(user.avatar) }}" alt="Image" class="img-circle" width="50" height="50">
-                    </a>
-                    <a class="nom_user" href="{{ path('app_show_garden', {nickname: user.nickname}) }}">{{ user.nickname }} </a>
-                </th>
-                <td style="text-align: right">
-                    <input type="checkbox" name="friendzone[]" value="{{ user.id }}">
-                </td>
-            </tr>
-            {% endif %}
-        {% endfor %}
-    </table>
-    <span style="text-align: center">
-        {{ form_end(form) }}
-    </span>
-    <br/>
+    {# RETOUR #}
+    <div style="margin-bottom:1rem;">
+        <a href="{{ path('garden') }}" class="gg-action-btn btn-plant" style="display:inline-flex; width:auto;">
+            <span class="btn-icon">←</span>
+            <span class="btn-label">Retour à mon jardin</span>
+        </a>
     </div>
+
+    {# LISTE DES UTILISATEURS #}
+    <div class="gg-details">
+        <div class="gg-details-content">
+            <div class="gg-section-title" style="text-align:left; padding-top:0; margin-bottom:0.75rem;">
+                🌱 Choisissez des jardiniers à suivre
+            </div>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {% set values = [] %}
+            {% for friend in amis %}
+                {% set values = values|merge([friend.userFollowed.nickname]) %}
+            {% endfor %}
+
+            {% for user in users %}
+                {% if user.nickname not in values %}
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid #f5f5f5;">
+                    <div style="display:flex; align-items:center; gap:0.75rem;">
+                        <a href="{{ path('app_show_garden', {nickname: user.nickname}) }}">
+                            <img src="{{ vich_uploader_asset(user.avatar) }}"
+                                 alt="Avatar"
+                                 style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid var(--vertLightColor);">
+                        </a>
+                        <a href="{{ path('app_show_garden', {nickname: user.nickname}) }}"
+                           style="font-weight:600; color:#333; text-decoration:none; font-size:0.9rem;">
+                            {{ user.nickname }}
+                        </a>
+                    </div>
+                    <input type="checkbox"
+                           name="friendzone[]"
+                           value="{{ user.id }}"
+                           style="width:18px; height:18px; accent-color:var(--vertColor); cursor:pointer;">
+                </div>
+                {% endif %}
+            {% endfor %}
+
+            <div style="margin-top:1rem;">
+                <button type="submit" class="gg-action-btn btn-plant" style="width:100%; justify-content:center; border:none; cursor:pointer; font-size:1rem; font-family:inherit;">
+                    <span class="btn-icon">✅</span>
+                    <span class="btn-label">Ajouter</span>
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
 </div>
-
 {% endblock %}
-

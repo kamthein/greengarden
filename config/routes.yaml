@@ -1,10 +1,6 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
-
 app_cond:
     path: /condition
     methods: GET
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
     defaults:
         template: registration/conditions.html.twig
-    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController:templateAction

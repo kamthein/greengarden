@@ -1,52 +1,65 @@
-    <details class="specifications" id="statistics">
-        <div class="row fond">
-        <div>
-            <img src="{{ asset('photo/recoltes.png') }}" alt="Image" class="img-responsive size-img" style="max-height : 340px;display: block;margin-left: auto;margin-right: auto;">
-        </div>
-        <hr>
+<details class="gg-details">
+    <div class="gg-details-content">
+        {% if fluxPaniers is not empty %}
+            <div style="text-align:center; margin-bottom:0.75rem;">
+                <img src="{{ asset('photo/recoltes.png') }}" alt="Récoltes" style="max-height:200px; border-radius:10px; object-fit:cover; width:100%;">
+            </div>
+        {% endif %}
+
         {% set nbr = 0 %}
         {% for fluxpanier in fluxPaniers %}
             {% if fluxpanier.recoltes is not empty %}
-                <table class="table table-hover table-striped table_jardin">
+                <table class="gg-table">
                     <thead>
                         <tr>
-                            <th style="text-align: center">
-                                {% if app.user == fluxpanier.flux.user  %}
-                                    <a href="{{ path('ajouter_recolte', {id: fluxpanier.id}) }}"> <img src="{{ asset('images/ajouter.png') }}" alt="Image"  width="25"></a>
+                            <th>Date</th>
+                            <th class="th-rose">🌿 Espèce</th>
+                            <th>Qté</th>
+                            <th>Méthode</th>
+                            <th>
+                                {% if app.user == fluxpanier.flux.user %}
+                                    <a href="{{ path('ajouter_recolte', {id: fluxpanier.id}) }}">
+                                        <img src="{{ asset('images/ajouter.png') }}" alt="Ajouter" width="20">
+                                    </a>
                                 {% endif %}
                             </th>
-                            <th style="text-align: center">Espèce</th>
-                            <th style="text-align: center">Qté</th>
-                            <th>Méthode</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                         {% for recolte in fluxpanier.recoltes %}
+                        {% for recolte in fluxpanier.recoltes %}
+                            {% set nbr = nbr + recolte.quantity %}
                             <tr>
-                                <td style="text-align: center"><small>{{ recolte.createdAt|date("d/m/y") }}</small></td>
-                                <td style="text-align: center"><img src="{{ asset('images/icon/' ~ recolte.consommable.iconlien) }}" alt="Image" width="20" height="20"> {{ recolte.consommable.nom }}</td>
-                                <td style="text-align: center">{{ recolte.quantity }}<small><i>kg</i></small></td>
-                                <td style="text-align: center"><small><i>{{ recolte.methode.nom }} </i></small></td>
-                                {% set nbr = nbr + recolte.quantity %}
-                                    {% if recolte.user == user %}
-                                        <td >
-                                            {% if user %}
-                                                {% if app.user == recolte.user %}
-                                                    <a href="{{ path('supp_recolte', {id: recolte.id}) }}"> <img src="{{ asset('images/supp_def.jpg') }}" alt="Image"  width="20"></a>
-                                                {% endif %}
-                                            {%  endif %}
-                                        </td>
+                                <td><small>{{ recolte.createdAt|date("d/m/y") }}</small></td>
+                                <td>
+                                    <img src="{{ asset('images/icon/' ~ recolte.consommable.iconlien) }}" alt="Icon" width="18" height="18">
+                                    &nbsp;{{ recolte.consommable.nom }}
+                                </td>
+                                <td>{{ recolte.quantity }}<small><i>kg</i></small></td>
+                                <td><small><i>{{ recolte.methode.nom }}</i></small></td>
+                                <td>
+                                    {% if recolte.user == user and app.user == recolte.user %}
+                                        <a href="{{ path('supp_recolte', {id: recolte.id}) }}">
+                                            <img src="{{ asset('images/supp_def.jpg') }}" alt="Supprimer" width="18">
+                                        </a>
                                     {% endif %}
+                                </td>
                             </tr>
-                         {% endfor %}
+                        {% endfor %}
                     </tbody>
                 </table>
-           {% endif %}
+                <hr class="gg-divider"/>
+            {% endif %}
         {% endfor %}
-        </div>
-        <summary class="row cadre_blanc">
-            <span class="deroulfloatl">&nbsp;<img src="{{ asset('images/panier_ja.png') }}" alt="Image" width="25" height="25">&nbsp;&nbsp;Récoltes ({{ nbr }}<small><i>kg</i></small>)</span>
-            <span class="deroulfloatr"><span class="chevron glyphicon glyphicon-menu-right"> </span>&nbsp;</span>
-        </summary>
-    </details>
+
+        {% if nbr == 0 %}
+            <p class="gg-empty">Aucune récolte enregistrée.</p>
+        {% endif %}
+    </div>
+    <summary>
+        <span class="summary-left">
+            <span class="summary-icon"><img src="{{ asset('images/panier_ja.png') }}" alt="Récoltes" width="22" height="22"></span>
+            <span>Récoltes ({{ nbr }}<small><i>kg</i></small>)</span>
+        </span>
+        <span class="summary-chevron">›</span>
+    </summary>
+</details>

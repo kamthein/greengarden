@@ -4,91 +4,64 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {%  if app.user.nbco < 7 %}
+    {% if app.user.nbco < 7 %}
         <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
-    {%  endif %}
+    {% endif %}
     {{ encore_entry_script_tags('style') }}
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    {%  if app.user.nbco < 7 %}
+    {% if app.user.nbco < 7 %}
         <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
-    {%  endif %}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
-    <div class="wrapper text-center">
-       <div class="row">
-            <table class="table noborder">
-                <tr>
-                    <th>
-                            {# Vérifiez le contenu de  #}
-                            {# {{ dump() }} #}
-                        <a href="{{ path('ajouter_plant', {id: 0}) }}">
-                            <button class="colorvert mdl-button mdl-button--raised mdl-button--colored">
-                                <img class="img-responsive" src="{{ asset('images/ajout_plant.png') }}" alt="Image" width="32" height="32" >
-                                Plantation <div class="cercle_vert"></div>
-                            </button>
-                        </a>
-                    </th>
-                    <th>
-                        <a href="{{ path('ajouter_recolte', {id: 0}) }}">
-                            <button class="colorrose mdl-button mdl-button--raised mdl-button--colored">
-                                <img class="img-responsive" src="{{ asset('images/ajout_recolte.png') }}" alt="Image" width="32" height="32" >
-                                Récolte <div class="cercle_rose"></div>
-                            </button>
-                        </a>
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        <a href="{{ path ('ajouter_achat') }}">
-                            <button class="colorgris mdl-button mdl-button--raised mdl-button--colored">
-                                <img class="img-responsive" src="{{ asset('images/ajout_achat.png') }}" alt="Image" width="32" height="32" >
-                                Dépense <div class="cercle_gris"></div>
-                            </button>
-                        </a>
-                    </th>
-                    <th>
-                        <a href="{{ path ('ajouter') }}">
-                            <button class="colorblue mdl-button mdl-button--raised mdl-button--colored">
-                                <img class="img-responsive" src="{{ asset('images/carnet.png') }}" alt="Image" width="32" height="32" >
-                                Note <div class="cercle_bleu"></div>
-                            </button>
-                        </a>
-                    </th>
-                </tr>
-            </table>
+<div class="wrapper">
+
+    {# ===== BOUTONS D'ACTION ===== #}
+    <div class="gg-actions">
+        <a href="{{ path('ajouter_plant', {id: 0}) }}" class="gg-action-btn btn-plant">
+            <span class="btn-icon"><img src="{{ asset('images/ajout_plant.png') }}" alt="Plantation" width="28" height="28"></span>
+            <span class="btn-label">Plantation</span>
+            <span class="btn-dot"></span>
+        </a>
+        <a href="{{ path('ajouter_recolte', {id: 0}) }}" class="gg-action-btn btn-recolte">
+            <span class="btn-icon"><img src="{{ asset('images/ajout_recolte.png') }}" alt="Récolte" width="28" height="28"></span>
+            <span class="btn-label">Récolte</span>
+            <span class="btn-dot"></span>
+        </a>
+        <a href="{{ path('ajouter_achat') }}" class="gg-action-btn btn-depense">
+            <span class="btn-icon"><img src="{{ asset('images/ajout_achat.png') }}" alt="Dépense" width="28" height="28"></span>
+            <span class="btn-label">Dépense</span>
+            <span class="btn-dot"></span>
+        </a>
+        <a href="{{ path('ajouter') }}" class="gg-action-btn btn-note">
+            <span class="btn-icon"><img src="{{ asset('images/carnet.png') }}" alt="Note" width="28" height="28"></span>
+            <span class="btn-label">Note</span>
+            <span class="btn-dot"></span>
+        </a>
+    </div>
+
+    {# ===== CALENDRIER ===== #}
+    {% set date_avt = date|date_modify("first day of this month -1 month")|date('Y-m-d') %}
+    {% set date_aps = date|date_modify("first day of this month +1 month")|date('Y-m-d') %}
+
+    <div class="gg-calendar-wrap">
+        <div class="gg-calendar-nav">
+            <a class="gg-nav-arrow" href="{{ path('carnet', {'date': date_avt}) }}">←</a>
+            <strong>{{ date_calendrier_mois }}</strong>
+            <a class="gg-nav-arrow" href="{{ path('carnet', {'date': date_aps}) }}">→</a>
         </div>
-        <div class="row cadre_blanc">
-                {%  set date_avt =  date|date_modify("first day of this month -1 month")|date('Y-m-d') %}
-                {%  set date_aps =  date|date_modify("first day of this month +1 month")|date('Y-m-d') %}
-            <div id="conteneur">
-                <div class="element 1">
-                    <a class="navbar-brand" href="{{ path('carnet',{'date': date_avt}) }}">
-                        <img src="{{ asset('images/prec.png') }}" alt="Image" class="img-responsive" width="30" height="30">
-                    </a>
-                </div>
-                <div>
-                    <strong><span>{{ date_calendrier_mois }}</span></strong>
-                </div>
-                <div class="element 3">
-                    <a class="navbar-brand" href="{{ path('carnet',{'date': date_aps}) }}">
-                        <img src="{{ asset('images/suiv.png') }}" alt="Image" class="img-responsive" width="30" height="30">
-                    </a>
-                </div>
-            </div>
-        
-        <table class="calendar">
+
+        <table class="gg-calendar">
             {% set j = 0 %}
-                {# Vérifiez le contenu de events #}
-                {# {{ dump(events) }} #}
             {% for i in 1..date_semaine %}
                 <tr>
                     {% for day in jours %}
                         {% if date_premier_jour|date_modify('+' ~ j ~ 'day')|date('d-y-m') == date|date('d-y-m') %}
-                            <td style="background-color:gainsboro">
+                            <td class="today">
                         {% else %}
                             <td>
                         {% endif %}
@@ -100,66 +73,61 @@
                             {% else %}
                                 <div class="calendar_day_opacity">{{ date_premier_jour|date_modify('+' ~ j ~ 'day')|date('d') }}</div>
                             {% endif %}
-                            {% set break = false %}
-                            {% for ev in events %}
-                                    {% if date_premier_jour|date_modify('+' ~ j ~ 'day')|date('d-m-y') ==  ev.date_event|date('d-m-y')   %}
+                            <div class="dot-row">
+                                {% for ev in events %}
+                                    {% if date_premier_jour|date_modify('+' ~ j ~ 'day')|date('d-m-y') == ev.date_event|date('d-m-y') %}
                                         {% if ev.recolte != 0 %}
-                                            <a class="menufloatl" href="{{ path('carnet',{'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d') }) }}">
-                                                <div class="cercle_rose"></div>
+                                            <a href="{{ path('carnet', {'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d')}) }}">
+                                                <span class="dot dot-rose"></span>
                                             </a>
                                         {% endif %}
                                         {% if ev.plant != 0 %}
-                                            <a class="menufloatl" href="{{ path('carnet',{'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d') }) }}">
-                                                <div class="cercle_vert"></div>
+                                            <a href="{{ path('carnet', {'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d')}) }}">
+                                                <span class="dot dot-vert"></span>
                                             </a>
                                         {% endif %}
                                         {% if ev.achat != 0 %}
-                                            <a class="menufloatl" href="{{ path('carnet',{'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d') }) }}">
-                                                <div class="cercle_gris"></div>
+                                            <a href="{{ path('carnet', {'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d')}) }}">
+                                                <span class="dot dot-gris"></span>
                                             </a>
                                         {% endif %}
                                         {% if ev.post != 0 %}
-                                            <a class="menufloatl" href="{{ path('carnet',{'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d') }) }}">
-                                                <div class="cercle_bleu"></div>
+                                            <a href="{{ path('carnet', {'date': date_premier_jour|date_modify('+' ~ j ~ 'day')|date('y-m-d')}) }}">
+                                                <span class="dot dot-bleu"></span>
                                             </a>
                                         {% endif %}
                                     {% endif %}
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
                         </td>
                         {% set j = j + 1 %}
                     {% endfor %}
                 </tr>
             {% endfor %}
         </table>
-      </div>
-
-    <p> 
-        <div class="calendar_day">Mon activité du jour</div>
-    </p>
-        {{ include('carnet/displayListDayActivity.html.twig', { 'fluxes': fluxes_day, 'date' : date}) }}
-
-    <p><strong><div  class="calendar_day">Mon historique</div></strong></p>
-        {{ include('carnet/historique/histoPosts.html.twig', { 'fluxPosts': fluxPosts|reverse , 'user' : user })}}
-        {{ include('carnet/historique/histoPlants.html.twig', { 'fluxPaniers': fluxPaniers|reverse, 'user' : user  })}}
-        {{ include('carnet/historique/histoRecoltes.html.twig', { 'fluxPaniers': fluxPaniers|reverse , 'user' : user }) }}
-        {{ include('carnet/historique/histoAchat.html.twig', { 'fluxAchats': fluxAchats|reverse , 'user' : user }) }}
-
-        {% if app.user == user and fluxPosts is empty and fluxPaniers is empty and fluxAchats is empty %}
-        <div class="row cadre_post">
-            <a href="{{ path('ajouter') }}">
-                <button class="colorblue mdl-button mdl-button--raised mdl-button--colored">
-                    <img class="img-responsive" src="{{ asset('images/carnet.png') }}" alt="Image" width="32" height="32">
-                    Publiez un premier post
-                </button>
-            </a>
-        </div>
-        {% endif %}
-
-    </div>
     </div>
 
+    {# ===== ACTIVITÉ DU JOUR ===== #}
+    <div class="gg-section-title">Mon activité du jour</div>
+
+    {{ include('carnet/displayListDayActivity.html.twig', {'fluxes': fluxes_day, 'date': date}) }}
+
+    {# ===== HISTORIQUE ===== #}
+    <div class="gg-section-title">Mon historique</div>
+
+    {{ include('carnet/historique/histoPosts.html.twig',   {'fluxPosts':   fluxPosts|reverse,   'user': user}) }}
+    {{ include('carnet/historique/histoPlants.html.twig',  {'fluxPaniers': fluxPaniers|reverse, 'user': user}) }}
+    {{ include('carnet/historique/histoRecoltes.html.twig',{'fluxPaniers': fluxPaniers|reverse, 'user': user}) }}
+    {{ include('carnet/historique/histoAchat.html.twig',   {'fluxAchats':  fluxAchats|reverse,  'user': user}) }}
+
+    {% if app.user == user and fluxPosts is empty and fluxPaniers is empty and fluxAchats is empty %}
+    <div class="gg-details" style="text-align:center; padding:1.5rem;">
+        <a href="{{ path('ajouter') }}" class="gg-action-btn btn-note" style="display:inline-flex; width:auto;">
+            <span class="btn-icon"><img src="{{ asset('images/carnet.png') }}" alt="Note" width="24" height="24"></span>
+            <span class="btn-label">Publiez un premier post</span>
+        </a>
+    </div>
+    {% endif %}
+
+</div>
 {% endblock %}
-
-
-
-
