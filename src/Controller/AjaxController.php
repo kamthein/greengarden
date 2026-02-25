@@ -43,23 +43,29 @@ class AjaxController extends AbstractController
     }
 
 
-    #[Route(path: '/ami/{id}', name: 'ami', methods: ['POST'])] // Ajouter une personne à suivre depuis la page de son profil, ou ne plus suivre
-    public function addFriend(User $user, FriendRepository $friendRepository, ManagerRegistry $doctrine): Response
-    {
-        $entityManager = $doctrine->getManager();
-        $user_co = $this->getUser();
-        assert($user instanceof User);
-        $friend = $friendRepository->findOneBy(['user_followed' => $user, 'user_friend' => $user_co]);
-        if ($friend instanceof Friend) {
-            $entityManager->remove($friend);
-            $suiveur = 0;
-        } else {
-            $entityManager->persist(new Friend($user_co, $user));
-            $suiveur = 1;
-        }
-        $entityManager->flush();
-        return new JsonResponse($suiveur);
+#[Route(path: '/ami/{id}', name: 'ami', methods: ['POST'])]
+public function addFriend(User $user, FriendRepository $friendRepository, ManagerRegistry $doctrine, Request $request): Response
+{
+    $entityManager = $doctrine->getManager();
+    $user_co = $this->getUser();
+    assert($user instanceof User);
+
+    $friend = $friendRepository->findOneBy(['user_followed' => $user, 'user_friend' => $user_co]);
+    $estAmi = $friend instanceof Friend;
+
+    if ($estAmi) {
+        $entityManager->remove($friend);
+    } else {
+        $entityManager->persist(new Friend($user_co, $user));
     }
+    $entityManager->flush();
+
+    if ($request->isXmlHttpRequest()) {
+        return new JsonResponse($estAmi ? 0 : 1);
+    }
+
+    return $this->redirectToRoute('app_show_garden', ['nickname' => $user->getNickname()]);
+}
 
     #[Route(path: '/addcomment/{id}', name: 'addcomment', methods: ['POST'])]
     public function addcomment(Request $request, Flux $flux, ManagerRegistry $doctrine): Response

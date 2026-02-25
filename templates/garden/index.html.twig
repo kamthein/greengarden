@@ -85,24 +85,37 @@
     </div>
 
     {# ===== BOUTON SUIVRE ===== #}
-    {% if app.user != user %}
-    <div class="gg-details" style="margin-bottom:0.75rem;">
-        <div class="gg-details-content" style="text-align:center;">
-            <a href="{{ path('ami', {'id': user.id}) }}"
-               class="gg-action-btn {{ amis == 1 ? 'btn-note' : 'btn-plant' }}"
-               style="display:inline-flex; width:auto;">
-                <span class="btn-icon">{{ amis == 1 ? '⭐' : '🌱' }}</span>
-                <span class="btn-label">{{ amis == 1 ? 'Jardinier suivi' : 'Suivre ce jardinier' }}</span>
-            </a>
-        </div>
-    </div>
+
+{% set est_suivi = false %}
+{% for ami in amis %}
+    {% if ami.userFollowed == user %}
+        {% set est_suivi = true %}
     {% endif %}
+{% endfor %}
+
+{% if app.user != user %}
+<div class="gg-details" style="margin-bottom:0.75rem;">
+    <div class="gg-details-content" style="text-align:center;">
+        <form method="post" action="{{ path('ami', {'id': user.id}) }}" style="margin:0;">
+            <input type="hidden" name="_token" value="{{ csrf_token('ami') }}">
+            <button type="submit" class="gg-action-btn {{ est_suivi ? 'btn-note' : 'btn-plant' }}"
+                    style="display:inline-flex; width:auto; border:none; cursor:pointer; font-family:inherit;">
+                <span class="btn-icon">{{ est_suivi ? '⭐' : '🌱' }}</span>
+                <span class="btn-label">{{ est_suivi ? 'Jardinier suivi' : 'Suivre ce jardinier' }}</span>
+            </button>
+        </form>
+    </div>
+</div>
+{% endif %}
+
 
 {# ===== SELECTION ANNEE ===== #}
+<div style="margin-bottom:0.75rem;">
     {% include 'garden/year_selector.html.twig' with {
     years_with_data: available_years,
     selected_year: selected_year
     } %}
+</div>
 
     {# ===== SYNTHESE & GRAPHIQUES ===== #}
     <div id="content">
@@ -111,22 +124,51 @@
     </div>
 
     {# ===== AMIS ===== #}
+{% if app.user == user %}
     {% set classe = "gg-details" %}
     {{ include('garden/amis.html.twig', {'amis': amis, 'user': user, 'classe': classe}) }}
+{% endif %}
 
     {# ===== PARTAGER & MÉTÉO ===== #}
-    <div class="gg-details" style="margin-bottom:0.75rem;">
-        <div class="gg-details-content" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
-            <a href="{{ 'whatsapp://send?text=http://www.GreenGarden.fr/bou/' ~ user.nickname }}"
-               class="gg-action-btn btn-plant" style="display:inline-flex; width:auto;">
-                <span class="btn-icon">📤</span>
-                <span class="btn-label">Partager le jardin</span>
-            </a>
-            <a target="_blank" href="https://meteofrance.com/previsions-meteo-france/"
-               class="gg-action-btn btn-note" style="display:inline-flex; width:auto;">
+                    {# ===== COPIER LE LIEN PUBLIC ===== #}
+                    {% set publicUrl = app.request.schemeAndHttpHost ~ '/bou/' ~ user.nickname %}
+
+                    <button type="button"
+                            class="gg-action-btn btn-plant"
+                            style="display:inline-flex; width:auto;"
+                            onclick="copyGardenLink()">
+                        <span class="btn-icon">🔗</span>
+                        <span class="btn-label">Copier le lien du jardin</span>
+                    </button>
+
+                    <script>
+                    function copyGardenLink() {
+                        const url = "{{ publicUrl }}";
+
+                        navigator.clipboard.writeText(url).then(function() {
+                            alert("Lien copié !");
+                        }).catch(function() {
+                            alert("Impossible de copier le lien.");
+                        });
+                    }
+                    </script>
+
+        {# ===== MÉTÉO PERSONNALISÉE ===== #}
+        {% if garden is not null and garden.region is not empty %}
+            <a target="_blank" href="{{ garden.region.meteolink }}"
+               class="gg-action-btn btn-note"
+               style="display:inline-flex; width:auto; opacity:0.8;">
                 <span class="btn-icon">🌤️</span>
-                <span class="btn-label">Météo locale</span>
+                <span class="btn-label">Météo {{ garden.region.name }}</span>
             </a>
+        {% else %}
+            <a href="{{ path('app_garden_edit') }}"
+               class="gg-action-btn btn-note"
+               style="display:inline-flex; width:auto;">
+                <span class="btn-icon">🌤️</span>
+                <span class="btn-label">Choisir ma région météo</span>
+            </a>
+        {% endif %}
         </div>
     </div>
 

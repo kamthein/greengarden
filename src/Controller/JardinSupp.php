@@ -11,6 +11,7 @@ use App\Entity\Panier;
 use App\Entity\Plant;
 use App\Entity\Post;
 use App\Entity\Recolte;
+use DateTime;
 use App\Repository\FluxRepository;
 use App\Repository\PostRepository;
 use App\Repository\PanierRepository;
@@ -46,7 +47,7 @@ class JardinSupp extends AbstractController
         $this->RemoveAndFlush($entityManager, $post);
         $this->addFlash('success', 'Post supprimé');
 
-        return $this->redirectToRoute('garden');
+        return $this->RedirectCarnetDate();
     }
 
     #[Route(path: '/supppanier/{id}', name: 'supp_panier')] // Supprimer un panier et toutes ses récoltes ou plantations
@@ -58,6 +59,7 @@ class JardinSupp extends AbstractController
         $this->addFlash('success', 'Panier supprimé');
 
         return $this->redirectToRoute('garden');
+        
     }
 
     #[Route(path: '/supprecolte/{id}', name: 'supp_recolte')] // Supprimer une récolte (le panier n'est pas supprimé)
@@ -68,7 +70,7 @@ class JardinSupp extends AbstractController
         $this->RemoveAndFlush($entityManager, $recolte);
         $this->addFlash('success', 'récolte supprimée');
 
-        return $this->redirectToRoute('garden');
+        return $this->RedirectCarnetDate();
     }
 
 
@@ -81,7 +83,7 @@ class JardinSupp extends AbstractController
         $this->RemoveAndFlush($entityManager, $plant);
         $this->addFlash('success', 'Plant supprimé');
 
-        return $this->redirectToRoute('garden');
+        return $this->RedirectCarnetDate();
     }
 
 
@@ -93,7 +95,7 @@ class JardinSupp extends AbstractController
         $this->RemoveAndFlush($entityManager, $achat);
         $this->addFlash('success', 'Achat supprimé');
 
-        return $this->redirectToRoute('garden');
+        return $this->RedirectCarnetDate();
     }
 
 
@@ -106,6 +108,21 @@ class JardinSupp extends AbstractController
         $this->addFlash('success', 'Amis supprimé');
 
         return $this->redirectToRoute('garden');
+    }
+
+
+    /**
+     * @return RedirectResponse
+     * Permet de rediriger l'utilisateur vers la page Carnet avec la date du jour
+     */
+    public function RedirectCarnetDate(): RedirectResponse
+    {
+        $date = new DateTime('now');
+        $date_jour = $date->format('Y-m-d');
+        $url = $this->generateUrl('carnet', [
+            'date' => $date_jour,
+        ]);
+        return new RedirectResponse($url);
     }
 
     /**

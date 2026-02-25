@@ -57,11 +57,11 @@ class PageJardinController extends AbstractController
     }
 
     #[Route(path: '/bou/{nickname}', name: 'app_show_garden')]
-    public function pageJardinUser(UserInterface $user_co, User $user, ChartBuilderInterface $chartBuilder, ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
+    public function pageJardinUser(UserInterface $user_co, User $user_show, ChartBuilderInterface $chartBuilder, ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
     {
         $entityManager = $doctrine->getManager();
 
-        $availableYears = $recolteRepository->findAvailableYears($user);
+        $availableYears = $recolteRepository->findAvailableYears($user_show);
 
         $currentYear = (int) (new DateTime())->format('Y');
         if (empty($availableYears)) {$availableYears = [$currentYear];}
@@ -71,28 +71,28 @@ class PageJardinController extends AbstractController
             $selectedYear = max($availableYears);
         }
 
-        return $this->statAnnee($user, $user_co, $chartBuilder, $entityManager, $request, $selectedYear, $availableYears, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository);
+        return $this->statAnnee($user_show, $user_co, $chartBuilder, $entityManager, $request, $selectedYear, $availableYears, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository);
     }
 
 
-    public function statAnnee($user, $user_co, $chartBuilder, $entityManager, $request, $year, $availableYears, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository)
+    public function statAnnee($user_show, $user_co, $chartBuilder, $entityManager, $request, $year, $availableYears, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository)
     {
         $user_co->setLastCo(new DateTime('now'));
-        $nbco = $user->getNbCo();
+        $nbco = $user_co->getNbCo();
         $user_co->setNbCo($nbco + 1);
         $entityManager->flush();
 
-        $garden      = $gardenRepository->findOneby(array('user' => $user));
-        $calories    = $this->calories($user, $year, $recolteRepository);
-        $p_byuser    = $this->p_byuser($user, $year, $userRepository);
-        $r_byuser    = $this->r_byuser($user, $year, $userRepository);
-        $chart       = $this->graph_recolte($user, $chartBuilder, $year, $recolteRepository);
-        $chart_donR  = $this->graph_repartitionRType($user, $chartBuilder, $year, $recolteRepository);
-        $amis        = $this->amis($user, $friendRepository);
-        $FluxAchats  = $fluxRepository->achatbyuser($user);
+        $garden      = $gardenRepository->findOneby(array('user' => $user_show));
+        $calories    = $this->calories($user_show, $year, $recolteRepository);
+        $p_byuser    = $this->p_byuser($user_show, $year, $userRepository);
+        $r_byuser    = $this->r_byuser($user_show, $year, $userRepository);
+        $chart       = $this->graph_recolte($user_show, $chartBuilder, $year, $recolteRepository);
+        $chart_donR  = $this->graph_repartitionRType($user_show, $chartBuilder, $year, $recolteRepository);
+        $amis        = $this->amis($user_co, $friendRepository);
+        $FluxAchats  = $fluxRepository->achatbyuser($user_show);
 
         $templateData = [
-            'user'           => $user,
+            'user'           => $user_show,
             'p_byuser'       => $p_byuser,
             'r_byuser'       => $r_byuser,
             'chart'          => $chart,

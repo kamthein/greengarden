@@ -79,8 +79,23 @@ class JardinAjouts extends AbstractController
 
         $daydate = new DateTime('now');
 
-        //si panier non précisé, on prend le panier par défaut
-        $panier = ($id == 0) ? $em->getRepository(Panier::class)->panierbyuser($user)[0] : $em->getRepository(Panier::class)->find($id);
+        if ($id == 0) {
+            $panier = $em->getRepository(Panier::class)->panierbyuser($user);
+            $panier = $panier ? $panier[0] : null;
+        } else {
+            $panier = $em->getRepository(Panier::class)->find($id);
+        }
+
+        if (!$panier) {
+        $flux = $this->NewFluxDefault($user, $daydate);
+        $panier = new Panier();
+        $panier->setCreatedat($daydate);
+        $panier->setUpdatedat($daydate);
+        $panier->setShared(true);
+        $flux->setPanier($panier);
+        $this->persistAndFlush($entityManager, $flux);
+        }
+        
         $panier->setUpdatedat($daydate);
         $flux = $panier->getflux();
         $flux->setUpdatedat($daydate);
@@ -106,7 +121,24 @@ class JardinAjouts extends AbstractController
 
         $daydate = new DateTime('now');
 
-        $panier = ($id == 0) ? $em->getRepository(Panier::class)->panierbyuser($user)[0] : $em->getRepository(Panier::class)->find($id);
+        if ($id == 0) {
+            $panier = $em->getRepository(Panier::class)->panierbyuser($user);
+            $panier = $panier ? $panier[0] : null;
+        } else {
+            $panier = $em->getRepository(Panier::class)->find($id);
+        }
+
+        if (!$panier) {
+            $flux = $this->NewFluxDefault($user, $daydate);
+            $panier = new Panier();
+            $panier->setCreatedat($daydate);
+            $panier->setUpdatedat($daydate);
+            $panier->setShared(true);
+            $flux->setPanier($panier);
+            $this->persistAndFlush($entityManager, $flux);
+        }
+    
+       
         $panier->setUpdatedat($daydate);
         $flux = $panier->getflux();
         $flux->setUpdatedat($daydate);
