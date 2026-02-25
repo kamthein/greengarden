@@ -39,14 +39,14 @@ class PageJardinController extends AbstractController
     public function pageJardin(UserInterface $user, ChartBuilderInterface $chartBuilder,  ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
     {
         $entityManager = $doctrine->getManager();
-        return $this->statAnnee($user, $user, $chartBuilder, $entityManager, $request, 2024, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository );
+        return $this->statAnnee($user, $user, $chartBuilder, $entityManager, $request, 2026, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository );
     }
 
-    #[Route(path: '/bou/{nickname}', name: 'app_show_garden')] // Afficher la page Jardin d'un autre utilisateur 2024
+    #[Route(path: '/bou/{nickname}', name: 'app_show_garden')] // Afficher la page Jardin d'un autre utilisateur 2026
     public function pageJardinUser(UserInterface $user_co, User $user, ChartBuilderInterface $chartBuilder,  ManagerRegistry $doctrine, Request $request, FluxRepository $fluxRepository, GardenRepository $gardenRepository, PanierRepository $panierRepository, AchatRepository $achatRepository, RecolteRepository $recolteRepository, UserRepository $userRepository, FriendRepository $friendRepository): Response
     {
         $entityManager = $doctrine->getManager();
-        return $this->statAnnee($user, $user_co, $chartBuilder, $entityManager, $request, 2024, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository);
+        return $this->statAnnee($user, $user_co, $chartBuilder, $entityManager, $request, 2026, $fluxRepository, $gardenRepository, $panierRepository, $achatRepository, $recolteRepository, $userRepository, $friendRepository);
     }
 
 
@@ -174,6 +174,8 @@ class PageJardinController extends AbstractController
         ]);
         $chart_donR->setOptions([
             'responsive' => true,
+            'maintainAspectRatio' => true,
+            'aspectRatio' => 2, // largeur/hauteur, augmente pour réduire la hauteur
         ]);
 
         return $chart_donR;

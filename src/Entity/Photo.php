@@ -6,7 +6,8 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
+
 
 #[Vich\Uploadable]
 #[ORM\Entity]
@@ -53,7 +54,7 @@ class Photo
         $this->imageFile = $imageFile;
 
         if ($imageFile instanceof File) {
-            $this->updatedAt = new DateTimeImmutable();
+            $this->updatedAt = new DateTime();
         }
     }
 

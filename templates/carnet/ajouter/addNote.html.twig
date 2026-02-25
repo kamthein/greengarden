@@ -35,7 +35,9 @@
                         <span class="btn-icon">📷</span>
                         <span class="btn-label name-file">Ajouter une image</span>
                     </button>
-                    {{ form_widget(form.post.photos) }}
+                    <div style="display:none">
+                        {{ form_widget(form.post.photos) }}
+                    </div>
                 </div>
             </div>
 

@@ -19,16 +19,19 @@
                 🌱 Choisissez des jardiniers à suivre
             </div>
 
-            {{ form_start(form) }}
-            {{ form_errors(form) }}
+            
 
             {% set values = [] %}
             {% for friend in amis %}
                 {% set values = values|merge([friend.userFollowed.nickname]) %}
             {% endfor %}
 
+            <form method="post" action="{{ path('ajout_amis') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('ajout_amis') }}">
+
             {% for user in users %}
                 {% if user.nickname not in values %}
+
                 <div style="display:flex; align-items:center; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid #f5f5f5;">
                     <div style="display:flex; align-items:center; gap:0.75rem;">
                         <a href="{{ path('app_show_garden', {nickname: user.nickname}) }}">
@@ -46,17 +49,15 @@
                            value="{{ user.id }}"
                            style="width:18px; height:18px; accent-color:var(--vertColor); cursor:pointer;">
                 </div>
+
                 {% endif %}
             {% endfor %}
 
-            <div style="margin-top:1rem;">
-                <button type="submit" class="gg-action-btn btn-plant" style="width:100%; justify-content:center; border:none; cursor:pointer; font-size:1rem; font-family:inherit;">
-                    <span class="btn-icon">✅</span>
-                    <span class="btn-label">Ajouter</span>
-                </button>
-            </div>
-
-            {{ form_end(form) }}
+   <button type="submit" class="gg-action-btn btn-plant" ...>
+        <span class="btn-icon">✅</span>
+        <span class="btn-label">Ajouter</span>
+    </button>
+</form>
         </div>
     </div>
 

@@ -154,42 +154,39 @@ class JardinAjouts extends AbstractController
         ]);
     }
 
-    #[Route(path: '/ajoutami', name: 'ajout_amis')] // AJouter des personnes à suivre
-    public function ajoutAmis(Request $request, UserInterface $user, ManagerRegistry $doctrine, EntityManagerInterface $em): Response
-    {
-        $entityManager = $doctrine->getManager();
-        // Liste des utilisateurs
-        $users = $em->getRepository(User::class)
-            ->findBy(array(), array('nickname' => 'ASC'));
-        //Liste des amis
-        $amis = $em->getRepository(Friend::class)
-            ->findBy(array('user_friend' => $user));
-        $friend = new Friend();
-        $form = $this->createForm(FriendType::class, $friend);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $inputValue = $request->get("friendzone");
-            if ($inputValue)
-            {
-                foreach ($inputValue as $fri)
-                {
-                    $followed = $em->getRepository(User::class)
-                        ->find($fri);
-                    $friend = new Friend();
-                    $friend->setUserFriend($user);
-                    $friend->setUserFollowed($followed);
-                    $entityManager->persist($friend);
-                }
-                $entityManager->flush();
-            }
-            return $this->redirectToRoute('garden');
+#[Route(path: '/ajoutami', name: 'ajout_amis')]
+public function ajoutAmis(Request $request, UserInterface $user, EntityManagerInterface $em): Response
+{
+    // Liste des utilisateurs
+    $users = $em->getRepository(User::class)
+        ->findBy(array(), array('nickname' => 'ASC'));
+    // Liste des amis
+    $amis = $em->getRepository(Friend::class)
+        ->findBy(array('user_friend' => $user));
+
+    if ($request->isMethod('POST')) {
+        if (!$this->isCsrfTokenValid('ajout_amis', $request->get('_token'))) {
+            throw $this->createAccessDeniedException('Token CSRF invalide');
         }
-        return $this->render('garden/addAmis.html.twig', [
-            'users' => $users,
-            'amis' => $amis,
-            'form' => $form->createView(),
-        ]);
+        $inputValue = $request->get("friendzone");
+        if ($inputValue) {
+            foreach ($inputValue as $fri) {
+                $followed = $em->getRepository(User::class)->find($fri);
+                $friend = new Friend();
+                $friend->setUserFriend($user);
+                $friend->setUserFollowed($followed);
+                $em->persist($friend);
+            }
+            $em->flush();
+        }
+        return $this->redirectToRoute('garden');
     }
+
+    return $this->render('garden/addAmis.html.twig', [
+        'users' => $users,
+        'amis' => $amis,
+    ]);
+}
 
     /**
      * @param ManagerRegistry $doctrine

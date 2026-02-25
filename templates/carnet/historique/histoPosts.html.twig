@@ -1,23 +1,30 @@
 <details class="gg-details">
     <div class="gg-details-content">
         {% set nbr = 0 %}
-        {% for fluxpost in fluxPosts %}
-            <div style="margin-bottom: 1rem;">
-                <div class="gg-note-text">
-                    <div style="font-size:0.8rem; color:#aaa; margin-bottom:0.3rem;">{{ fluxpost.createdat|date('d/m/y') }}</div>
-                    {{ fluxpost.post.description }}
-                </div>
-                {% for p in fluxpost.post.photos %}
-                    {% if p.imageName != "aujourdhui.png" %}
-                        {{ include('carnet/display_photo.html.twig', {'p': p}) }}
-                    {% endif %}
-                {% endfor %}
+{% for fluxpost in fluxPosts %}
+    <div style="margin-bottom: 1rem;">
+        <div class="gg-note-text">
+            <div style="font-size:0.8rem; color:#aaa; margin-bottom:0.3rem;">
+                {{ fluxpost.createdat|date('d/m/y') }}
+                <a href="{{ path('supp_post', {'id': fluxpost.post.id}) }}"
+                   onclick="return confirm('Supprimer cette note ?')"
+                   style="float:right; color:#e57373; font-size:0.85rem; text-decoration:none;">
+                    🗑 Supprimer
+                </a>
             </div>
-            {% if not loop.last %}
-                <hr class="gg-divider"/>
+            {{ fluxpost.post.description }}
+        </div>
+        {% for p in fluxpost.post.photos %}
+            {% if p.imageName != "aujourdhui.png" %}
+                {{ include('carnet/display_photo.html.twig', {'p': p}) }}
             {% endif %}
-            {% set nbr = nbr + 1 %}
         {% endfor %}
+    </div>
+    {% if not loop.last %}
+        <hr class="gg-divider"/>
+    {% endif %}
+    {% set nbr = nbr + 1 %}
+{% endfor %}
         {% if nbr == 0 %}
             <p class="gg-empty">Aucune note enregistrée.</p>
         {% endif %}
