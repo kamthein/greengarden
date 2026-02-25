@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}Mot de passe oublié {% endblock %}
- {% block MessageFlash %} {% endblock %}
+
+{% block MessageFlash %} {% endblock %}
 {% block body %}
 
     <div class="wrapper">
@@ -21,24 +22,32 @@
                         {% endfor %}
                     {% endfor %}
                     <form method="post" action="{{ path('reset_password') }}">
-                        <h1 class="h3 mb-3 font-weight-normal"> Entrez votre adresse Mail</h1>
-                        <br/>
-                        <div class="form-group">
+  
+               
+            <div class="gg-form-group">
+                    <div>
+                        <label class="gg-form-label" for="inputEmail">Adresse email</label>
+                        <input type="email"
+                               name="email"
+                               id="inputEmail"
+                               class="gg-form-input"
+                               placeholder="exemple@email.com"
+                               autofocus>
+                    </div>
 
-                            <input type="email" value="" name="email" id="inputEmail" class="form-control"
-                                   placeholder="Email" required
-                                   autofocus
-                                   aria-placeholder="Veuillez saisir votre adresse Mail *">
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                               <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                
 
-                        </div>
 
-                        <br>
-                        <button class="mdl-button-rond mdl-button--raised mdl-button--bleufonce mdl-button--colored" type="submit">
-                            Rénitialiser votre mot de passe
-                        </button>
+                        
+                <button type="submit" class="gg-action-btn btn-plant gg-submit-btn"
+                        style="width:100%; justify-content:center; border:none; cursor:pointer; font-size:1rem; font-family:inherit; margin-top:1rem;">
+                    <span class="btn-icon">🔑</span>
+                    <span class="btn-label">Rénitialiser votre mot de passe</span>
+                </button>
 
                     </form>
+                        </div>
                 </div>
             </div>
         </div>
